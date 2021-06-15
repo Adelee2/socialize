@@ -9,7 +9,7 @@ class Auth{
     constructor (){
 
         passport.serializeUser(function(user, done) {
-            console.log("serializing " + user.username);
+            console.log("serializing " + user.name);
             done(null, user);
         });
         
@@ -21,12 +21,12 @@ class Auth{
         // Use the LocalStrategy within Passport to login users.
         passport.use('local-signin', new LocalStrategy(
             {passReqToCallback : true}, //allows us to pass back the request to the callback
-            function(req, username, password, done) {
-            localAuth(username, password)
+            function(req, email, password, done) {
+            localAuth(email, password)
             .then(function (user) {
                 if (user) {
-                console.log("LOGGED IN AS: " + user.username);
-                req.session.success = 'You are successfully logged in ' + user.username + '!';
+                console.log("LOGGED IN AS: " + user.email);
+                req.session.success = 'You are successfully logged in ' + user.email + '!';
                 done(null, user);
                 }
                 if (!user) {
@@ -44,17 +44,17 @@ class Auth{
         // Use the LocalStrategy within Passport to Register/"signup" users.
         passport.use('local-signup', new LocalStrategy(
             {passReqToCallback : true}, //allows us to pass back the request to the callback
-            function(req, username, password, done) {
-            localReg(username, password)
+            function(req, name, email, password, done) {
+            localReg(name, email, password)
             .then(function (user) {
                 if (user) {
-                console.log("REGISTERED: " + user.username);
-                req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+                console.log("REGISTERED: " + user.email);
+                req.session.success = 'You are successfully registered and logged in ' + user.email + '!';
                 done(null, user);
                 }
                 if (!user) {
                 console.log("COULD NOT REGISTER");
-                req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
+                req.session.error = 'That name is already in use, please try a different one.'; //inform user could not log them in
                 done(null, user);
                 }
             })
@@ -68,12 +68,12 @@ class Auth{
         // Use the LocalStrategy within Passport to login users.
         // passport.use('google-signin', new GoogleStrategy(
         //     {passReqToCallback : true}, //allows us to pass back the request to the callback
-        //     function(req, username, password, done) {
-        //     localAuth(username, password)
+        //     function(req, name, password, done) {
+        //     localAuth(name, password)
         //     .then(function (user) {
         //         if (user) {
-        //         console.log("LOGGED IN AS: " + user.username);
-        //         req.session.success = 'You are successfully logged in ' + user.username + '!';
+        //         console.log("LOGGED IN AS: " + user.name);
+        //         req.session.success = 'You are successfully logged in ' + user.name + '!';
         //         done(null, user);
         //         }
         //         if (!user) {
@@ -91,17 +91,17 @@ class Auth{
         // Use the LocalStrategy within Passport to Register/"signup" users.
         // passport.use('google-signup', new GoogleStrategy(
         //     {passReqToCallback : true}, //allows us to pass back the request to the callback
-        //     function(req, username, password, done) {
-        //     localReg(username, password)
+        //     function(req, name, password, done) {
+        //     localReg(name, password)
         //     .then(function (user) {
         //         if (user) {
-        //         console.log("REGISTERED: " + user.username);
-        //         req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+        //         console.log("REGISTERED: " + user.name);
+        //         req.session.success = 'You are successfully registered and logged in ' + user.name + '!';
         //         done(null, user);
         //         }
         //         if (!user) {
         //         console.log("COULD NOT REGISTER");
-        //         req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
+        //         req.session.error = 'That name is already in use, please try a different one.'; //inform user could not log them in
         //         done(null, user);
         //         }
         //     })
