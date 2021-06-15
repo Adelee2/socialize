@@ -118,12 +118,19 @@ class Auth{
             res.render('singup')
         }
         logout= function(req, res){
-            var name = req.user.name;
+            var name = req.user.name;s
             console.log("LOGGIN OUT " + req.user.name)
             req.logout();
             res.redirect('/login',{});
             req.session.notice = "You have successfully been logged out " + name + "!";
           }
+
+        // Simple route middleware to ensure user is authenticated.
+        ensureAuthenticated = function(req, res, next) {
+            if (req.isAuthenticated()) { return next(); }
+            req.session.error = 'Please sign in!';
+            res.redirect('/login');
+        }
 }
 
 // Auth.prototype.authlogin=()=> {
@@ -134,12 +141,7 @@ class Auth{
 // }
 
 
-// Simple route middleware to ensure user is authenticated.
-// function ensureAuthenticated(req, res, next) {
-//   if (req.isAuthenticated()) { return next(); }
-//   req.session.error = 'Please sign in!';
-//   res.redirect('/signin');
-// }
+
 
 
 module.exports = Auth;
