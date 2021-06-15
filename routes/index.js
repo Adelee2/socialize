@@ -28,11 +28,11 @@ router.get('/logout', auth.logout);
 //     failureRedirect: '/register'
 //     }))
 // Dashboard
-router.get('/',mypages.posts);
-router.get('/feeds',mypages.feeds);
-router.get('/mypage',mypages.mypage);
-router.get('/explore',mypages.explore);
-router.get('/chat',mypages.chat);
+router.get('/',auth.ensureAuthenticated,mypages.posts);
+router.get('/feeds',auth.ensureAuthenticated,mypages.feeds);
+router.get('/mypage',auth.ensureAuthenticated,mypages.mypage);
+router.get('/explore',auth.ensureAuthenticated,mypages.explore);
+router.get('/chat',auth.ensureAuthenticated,mypages.chat);
 
 router.get('/error',mypages.error)
 
