@@ -21,35 +21,35 @@ class Auth{
         // Use the LocalStrategy within Passport to login users.
         passport.use('local-signin', new LocalStrategy(
             {passReqToCallback : true}, //allows us to pass back the request to the callback
-            function(req, username, password, done) {
-            localAuth(username, password)
-            .then(function (user) {
-                if (user) {
-                console.log("LOGGED IN AS: " + user.username);
-                req.session.success = 'You are successfully logged in ' + user.username + '!';
-                done(null, user);
-                }
-                if (!user) {
-                console.log("COULD NOT LOG IN");
-                req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
-                done(null, user);
-                }
-            })
-            .fail(function (err){
-                console.log(err.body);
-            });
+            function(req, email, password, done) {
+                localAuth(email, password)
+                .then(function (user) {
+                    if (user) {
+                    console.log("LOGGED IN AS: " + user.email);
+                    req.session.success = 'You are successfully logged in ' + user.email + '!';
+                    done(null, user);
+                    }
+                    if (!user) {
+                    console.log("COULD NOT LOG IN");
+                    req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
+                    done(null, user);
+                    }
+                })
+                .fail(function (err){
+                    console.log(err.body);
+                });
             }
         ));
         
         // Use the LocalStrategy within Passport to Register/"signup" users.
         passport.use('local-signup', new LocalStrategy(
             {passReqToCallback : true}, //allows us to pass back the request to the callback
-            function(req, username, password, done) {
-            localReg(username, password)
+            function(req, name, email, password, done) {
+            localReg(name,email, password)
             .then(function (user) {
                 if (user) {
-                console.log("REGISTERED: " + user.username);
-                req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+                console.log("REGISTERED: " + user.email);
+                req.session.success = 'You are successfully registered and logged in ' + user.email + '!';
                 done(null, user);
                 }
                 if (!user) {
