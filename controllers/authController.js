@@ -1,9 +1,9 @@
 const {localAuth,localReg} = require('./utils/auth')
 const notification = require('../model/notification')
 var passport = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy;
-var GoogleStrategy = require('passport-google').Strategy;
-var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook');
+var GoogleStrategy = require('passport-google');
+var LocalStrategy = require('passport-local');
 
 class Auth{
     constructor (){
