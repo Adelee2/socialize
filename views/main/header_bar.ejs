@@ -1,0 +1,230 @@
+     <!-- header -->
+     <div id="main_header">
+        <header>
+            <div class="header-innr">
+                
+                <!-- Logo-->
+                <div class="header-btn-traiger is-hidden" uk-toggle="target: #wrapper ; cls: collapse-sidebar mobile-visible">
+                    <span></span>
+                </div>
+                <span style="display: inline-flex;"><h4 style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-style: italic;margin-top: 10px;">Socialize!</h4><img src="/assets/images/internet.png" width="40" height="30" alt="logo"></span>
+
+                 <!-- Logo-->
+                 <div id="logo" class="ml-5">
+                    <a href="/"> <img src="/assets/images/logo.png" alt=""></a>
+                    <a href="/"> <img src="/assets/images/logo-light.png" class="logo-inverse"
+                            alt=""></a>
+                   
+                </div>
+                
+                <!-- form search-->
+                <div class="head_search">
+                    <form>
+                        <div class="head_search_cont">
+                            <input value="" type="text" class="form-control"
+                                placeholder="Search for Friends , Videos and more.." autocomplete="off">
+                            <i class="s_icon uil-search-alt"></i>
+                        </div>
+
+                        <!-- Search box dropdown -->
+                        <div uk-dropdown="pos: top;mode:click;animation: uk-animation-slide-bottom-small"
+                            class="dropdown-search display-hidden">
+                            <!-- User menu -->
+
+                            <ul class="dropdown-search-list">
+                                <li class="list-title"> Recent Searches </li>
+                                <li> <a href="#">
+                                        <img src="/assets/images/avatars/avatar-2.jpg" alt="">
+                                        <p> Erica Jones <span> 2 hours ago </span> </p>
+                                    </a>
+                                </li>
+                                <li> <a href="#">
+                                        <img src="/assets/images/avatars/avatar-3.jpg" alt="">
+                                        <p> Adrian Mohani <span> 13 days ago </span> </p>
+                                    </a>
+                                </li>
+                                <li> <a href="#">
+                                        <img src="/assets/images/avatars/avatar-4.jpg" alt="">
+                                        <p> Mountain Riders <span> 3 days ago <span>Group</span> </span> </p>
+                                    </a>
+                                </li>
+                                <li> <a href="#">
+                                        <img src="/assets/images/avatars/avatar-5.jpg" alt="">
+                                        <p> Coffee Addicts <span> 12 days ago <span> Page</span></span> </p>
+                                    </a>
+                                </li>
+                                <li class="menu-divider"></li>
+                                <li class="list-footer"> <a href="your-history.html"> Searches History </a>
+                                </li>
+                            </ul>
+
+                        </div>
+
+
+                    </form>
+                </div>
+
+                <!-- user icons -->
+                <div class="head_user">
+
+                    <!-- posts -->
+                    <a href="/" class="opts_icon active" uk-tooltip="title: Posts ; pos: bottom ;offset:7" onclick="getActive(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="#047cac" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"></path>
+                        </svg>
+                    </a>
+
+                    <!-- feeds -->
+                    <a href="/feeds" class="opts_icon" uk-tooltip="title: Feeds ; pos: bottom ;offset:7" onclick="getActive(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="#8d73cc"
+                                d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zm-1-2V4H5v16h14zM7 6h4v4H7V6zm0 6h10v2H7v-2zm0 4h10v2H7v-2zm6-9h4v2h-4V7z">
+                            </path>
+                        </svg>
+                    </a>
+
+                    <!-- Message  notificiation dropdown -->
+                    <a href="/chat" class="opts_icon" uk-tooltip="title: Messages ; pos: bottom ;offset:7" onclick="getActive(this)">
+                        <img src="/assets/images/icons/message.svg" alt="">
+                    </a>
+
+                    <!-- find friends -->
+                    <a href="/explore" class="opts_icon" uk-tooltip="title: Messages ; pos: bottom ;offset:7" onclick="getActive(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="#b2c17c"
+                                d="M15.5,12C18,12 20,14 20,16.5C20,17.38 19.75,18.21 19.31,18.9L22.39,22L21,23.39L17.88,20.32C17.19,20.75 16.37,21 15.5,21C13,21 11,19 11,16.5C11,14 13,12 15.5,12M15.5,14A2.5,2.5 0 0,0 13,16.5A2.5,2.5 0 0,0 15.5,19A2.5,2.5 0 0,0 18,16.5A2.5,2.5 0 0,0 15.5,14M10,4A4,4 0 0,1 14,8C14,8.91 13.69,9.75 13.18,10.43C12.32,10.75 11.55,11.26 10.91,11.9L10,12A4,4 0 0,1 6,8A4,4 0 0,1 10,4M2,20V18C2,15.88 5.31,14.14 9.5,14C9.18,14.78 9,15.62 9,16.5C9,17.79 9.38,19 10,20H2Z">
+                            </path>
+                        </svg>
+                    </a>
+
+                    <!-- notificiation icon  -->
+                    <a href="#" class="opts_icon" uk-tooltip="title: Notifications ; pos: bottom ;offset:7" onclick="getActive(this)">
+                        <img src="/assets/images/icons/bell.svg" alt=""> <span>3</span>
+                    </a>
+                    <!-- notificiation dropdown -->
+                    <div uk-dropdown="mode:click ; animation: uk-animation-slide-bottom-small"
+                        class="dropdown-notifications display-hidden">
+
+                        <!-- notification contents -->
+                        <div class="dropdown-notifications-content" data-simplebar>
+
+                            <!-- notivication header -->
+                            <div class="dropdown-notifications-headline">
+                                <h4>Notifications </h4>
+                                <a href="#">
+                                    <i class="icon-feather-settings"
+                                        uk-tooltip="title: Notifications settings ; pos: left"></i>
+                                </a>
+                            </div>
+
+                            <!-- notiviation list -->
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <span class="notification-avatar">
+                                            <img src="/assets/images/avatars/avatar-2.jpg" alt="">
+                                        </span>
+                                        <span class="notification-icon bg-gradient-primary">
+                                            <i class="icon-feather-thumbs-up"></i></span>
+                                        <span class="notification-text">
+                                            <strong>Adrian Moh.</strong> Like Your Comment On Video
+                                            <span class="text-primary">Learn Prototype Faster</span>
+                                            <br> <span class="time-ago"> 9 hours ago </span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="notification-avatar">
+                                            <img src="/assets/images/avatars/avatar-3.jpg" alt="">
+                                        </span>
+                                        <span class="notification-icon bg-gradient-danger">
+                                            <i class="icon-feather-star"></i></span>
+                                        <span class="notification-text">
+                                            <strong>Alex Dolgove</strong> Added New Review In Video
+                                            <span class="text-primary">Full Stack PHP Developer</span>
+                                            <br> <span class="time-ago"> 19 hours ago </span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="notification-avatar">
+                                            <img src="/assets/images/avatars/avatar-2.jpg" alt="">
+                                        </span>
+                                        <span class="notification-icon bg-gradient-primary">
+                                            <i class="icon-feather-thumbs-up"></i></span>
+                                        <span class="notification-text">
+                                            <strong>Adrian Moh.</strong> Like Your Comment On Video
+                                            <span class="text-primary">Learn Prototype Faster</span>
+                                            <br> <span class="time-ago"> 9 hours ago </span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="notification-avatar">
+                                            <img src="/assets/images/avatars/avatar-3.jpg" alt="">
+                                        </span>
+                                        <span class="notification-icon bg-gradient-warning">
+                                            <i class="icon-feather-star"></i></span>
+                                        <span class="notification-text">
+                                            <strong>Alex Dolgove</strong> Added New Review In Video
+                                            <span class="text-primary">Full Stack PHP Developer</span>
+                                            <br> <span class="time-ago"> 19 hours ago </span>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <!-- profile -image -->
+                    <a class="opts_account" href="#"> <img src="/assets/images/avatars/avatar-2.jpg" alt=""></a>
+
+                    <!-- profile dropdown-->
+                    <div uk-dropdown="mode:click ; animation: uk-animation-slide-bottom-small"
+                        class="dropdown-notifications rounded display-hidden">
+
+                        <!-- User Name / Avatar -->
+                        <!-- User Name / Avatar -->
+                        <a href="/mypage">
+
+                            <div class="dropdown-user-details">
+
+                                <div class="dropdown-user-cover">
+                                    <img src="/assets/images/avatars/profile-cover.jpg" alt="">
+                                </div>
+                                <div class="dropdown-user-avatar">
+                                    <img src="/assets/images/avatars/avatar-1.jpg" alt="">
+                                </div>
+                                <div class="dropdown-user-name"> James Lewis </div>
+                            </div>
+
+                        </a>
+
+                        <ul class="dropdown-user-menu">
+                            <li><a href="#"> <i class="fas fa-user-edit"></i> General Settings</a></li>
+                            <li>
+                                <a href="#" id="night-mode" class="btn-night-mode">
+                                    <i class="fas fa-moon"></i> Night mode
+                                    <span class="btn-night-mode-switch">
+                                        <span class="uk-switch-button"></span>
+                                    </span>
+                                </a>
+                            </li>
+                            </li>
+                            <li><a href="/"> <i class="fas fa-sign-out-alt"></i>Log Out</a>
+                            </li>
+                        </ul>
+
+                    </div>
+
+
+                </div>
+
+            </div> <!-- / heaader-innr -->
+        </header>
+
+    </div>
