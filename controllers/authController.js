@@ -3,7 +3,7 @@ const notification = require('../model/notification')
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook');
 var GoogleStrategy = require('passport-google');
-var LocalStrategy = require('passport-local');
+var LocalStrategy = require('passport-local').Strategy;
 
 class Auth{
     constructor (){
@@ -11,108 +11,44 @@ class Auth{
         passport.serializeUser(function(user, done) {
             console.log("serializing " + user.name);
             done(null, user);
-        });
-        
-        passport.deserializeUser(function(obj, done) {
+          });
+          
+          passport.deserializeUser(function(obj, done) {
             console.log("deserializing " + obj);
             done(null, obj);
-        });
-        
-        // Use the LocalStrategy within Passport to login users.
-        passport.use('local-signin', new LocalStrategy(
-            {passReqToCallback : true}, //allows us to pass back the request to the callback
-            function(req, email, password, done) {
-            localAuth(email, password)
-            .then(function (user) {
-                if (user) {
-                console.log("LOGGED IN AS: " + user.email);
-                req.session.success = 'You are successfully logged in ' + user.email + '!';
-                done(null, user);
-                }
-                if (!user) {
-                console.log("COULD NOT LOG IN");
-                req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
-                done(null, user);
-                }
-            })
-            .fail(function (err){
-                console.log(err.body);
-            });
+          });
+          
+          // Use the LocalStrategy within Passport to login users.
+          passport.use('local-signin', new LocalStrategy(
+            {
+                  passReqToCallback: true
+              }, //allows us to pass back the request to the callback
+            
+            function(req, username, password, done) {
+                console.log("username",username)
+                console.log('password',password)
+                localAuth(username, password)
+                .then(function (user) {
+                    if (user) {
+                        console.log("LOGGED IN AS: " + user.email);
+                        req.session.success = 'You are successfully logged in ' + user.email + '!';
+                        
+                        done(null, user);
+                    }
+                    console.log("COULD NOT LOG IN");
+                    req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
+                    
+                    done(null, user);
+                })
+                .fail(function (err){
+                    console.log(err.body);
+                });
             }
-        ));
-        
-        // Use the LocalStrategy within Passport to Register/"signup" users.
-        passport.use('local-signup', new LocalStrategy(
-            {passReqToCallback : true}, //allows us to pass back the request to the callback
-            function(req, name, email, password, done) {
-            localReg(name, email, password)
-            .then(function (user) {
-                if (user) {
-                console.log("REGISTERED: " + user.email);
-                req.session.success = 'You are successfully registered and logged in ' + user.email + '!';
-                done(null, user);
-                }
-                if (!user) {
-                console.log("COULD NOT REGISTER");
-                req.session.error = 'That name is already in use, please try a different one.'; //inform user could not log them in
-                done(null, user);
-                }
-            })
-            .fail(function (err){
-                console.log(err.body);
-            });
-            }
-        ));
-     
-
-        // Use the LocalStrategy within Passport to login users.
-        // passport.use('google-signin', new GoogleStrategy(
-        //     {passReqToCallback : true}, //allows us to pass back the request to the callback
-        //     function(req, name, password, done) {
-        //     localAuth(name, password)
-        //     .then(function (user) {
-        //         if (user) {
-        //         console.log("LOGGED IN AS: " + user.name);
-        //         req.session.success = 'You are successfully logged in ' + user.name + '!';
-        //         done(null, user);
-        //         }
-        //         if (!user) {
-        //         console.log("COULD NOT LOG IN");
-        //         req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
-        //         done(null, user);
-        //         }
-        //     })
-        //     .fail(function (err){
-        //         console.log(err.body);
-        //     });
-        //     }
-        // ));
-        
-        // Use the LocalStrategy within Passport to Register/"signup" users.
-        // passport.use('google-signup', new GoogleStrategy(
-        //     {passReqToCallback : true}, //allows us to pass back the request to the callback
-        //     function(req, name, password, done) {
-        //     localReg(name, password)
-        //     .then(function (user) {
-        //         if (user) {
-        //         console.log("REGISTERED: " + user.name);
-        //         req.session.success = 'You are successfully registered and logged in ' + user.name + '!';
-        //         done(null, user);
-        //         }
-        //         if (!user) {
-        //         console.log("COULD NOT REGISTER");
-        //         req.session.error = 'That name is already in use, please try a different one.'; //inform user could not log them in
-        //         done(null, user);
-        //         }
-        //     })
-        //     .fail(function (err){
-        //         console.log(err.body);
-        //     });
-        //     }
-        // ));
+          ));
         }
         login= function(req,res){
-            res.render('index')
+        
+            res.render('index',{newerror:null})
         }
         register= function(req,res){
             res.render('singup')
