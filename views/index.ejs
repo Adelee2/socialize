@@ -50,8 +50,8 @@
                     <div class="mb-4 uk-text-center">
                         <h2 class="mb-0"> Socialize</h3>
                         <p class="my-2">Login to manage your account.</p>
-                        <% if (newerror !== null) { %>
-                            <p class="alert alert-warning"><%= newerror %></p>
+                        <% if (user == false) { %>
+                            <p class="alert alert-warning" style="color: red;">Invalid username or password</p>
                         <% } %>
                     </div>
                     

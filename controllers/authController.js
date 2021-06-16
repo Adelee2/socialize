@@ -25,20 +25,21 @@ class Auth{
               }, //allows us to pass back the request to the callback
             
             function(req, username, password, done) {
-                console.log("username",username)
-                console.log('password',password)
+                // console.log("username",username)
+                // console.log('password',password)
                 localAuth(username, password)
                 .then(function (user) {
+                    console.log("user",user)
                     if (user) {
                         console.log("LOGGED IN AS: " + user.email);
                         req.session.success = 'You are successfully logged in ' + user.email + '!';
                         
-                        done(null, user);
+                        done(null, user, {message: 'Successfully'});
                     }
                     console.log("COULD NOT LOG IN");
                     req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
                     
-                    done(null, user);
+                    done(null, user, {message: 'Incorrect Username/Email'});
                 })
                 .fail(function (err){
                     console.log(err.body);
@@ -48,7 +49,7 @@ class Auth{
         }
         login= function(req,res){
         
-            res.render('index',{newerror:null})
+            res.render('index',{user})
         }
         register= function(req,res){
             res.render('singup')
