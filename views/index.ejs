@@ -40,18 +40,18 @@
 
                 <!-- column one -->
                 <div class="uk-margin-auto-vertical uk-text-center uk-animation-scale-up p-3 uk-light">
-                    <img src="assets/images/logo-light-icon.png" alt="">
-                    <h3 class="mb-3 mt-lg-4"> Simplest</h3>
+                    <img src="assets/images/internet.png" alt="">
+                    <h3 class="mb-3 mt-lg-4"> Socialize</h3>
                     <p>Share what's new and life moments with <br> your friends. </p>
                 </div>
 
                 <!-- column two -->
                 <div class="uk-card-default px-5 py-8">
                     <div class="mb-4 uk-text-center">
-                        <h2 class="mb-0"> Welcome back</h3>
+                        <h2 class="mb-0"> Socialize</h3>
                         <p class="my-2">Login to manage your account.</p>
                     </div>
-                    <form>
+                    <form action="/login" method="post">
 
                         <div class="uk-form-group">
                             <label class="uk-form-label"> Email</label>
@@ -60,7 +60,7 @@
                                 <span class="uk-form-icon">
                                     <i class="icon-feather-mail"></i>
                                 </span>
-                                <input class="uk-input" type="email" placeholder="name@example.com">
+                                <input class="uk-input" type="email" name="email" placeholder="name@example.com">
                             </div>
 
                         </div>
@@ -72,7 +72,7 @@
                                 <span class="uk-form-icon">
                                     <i class="icon-feather-lock"></i>
                                 </span>
-                                <input class="uk-input" type="password" placeholder="********">
+                                <input class="uk-input" type="password" name="password" placeholder="********">
                             </div>
 
                         </div>
@@ -91,7 +91,7 @@
 
                         <div class="mt-4 uk-flex-middle uk-grid-small" uk-grid>
                             <div class="uk-width-expand@s">
-                                <p> Don't have account <a href="form-singup">Sign up</a></p>
+                                <p> Don't have account <a href="/register">Sign up</a></p>
                             </div>
                             <div class="uk-width-auto@s">
                                 <button type="submit" class="button primary">Get Started</button>
@@ -116,7 +116,15 @@
     <script src="assets/js/uikit.js"></script>
     <script src="assets/js/simplebar.js"></script>
     
+    <script>
+        function login(e){
+            // e.preventDefault()
+            var body = {
 
+            }
+            axios.post()
+        }
+    </script>
 
 </body>
 

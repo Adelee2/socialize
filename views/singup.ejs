@@ -40,8 +40,8 @@
 
                 <!-- column one -->
                 <div class="uk-margin-auto-vertical uk-text-center uk-animation-scale-up p-3 uk-light">
-                    <img src="assets/images/logo-light-icon.png" alt="">
-                    <h3 class="mb-3 mt-lg-4"> Simplest</h3>
+                    <img src="assets/images/internet.png" alt="">
+                    <h3 class="mb-3 mt-lg-4"> Socialize</h3>
                     <p>Share what's new and life moments with <br> your friends. </p>
                 </div>
 
@@ -52,7 +52,7 @@
                             <p class="my-2">Login to manage your account.</p>
                         </div>
 
-                    <form class="uk-child-width-1-1 uk-grid-small" uk-grid>
+                    <form class="uk-child-width-1-1 uk-grid-small" uk-grid action="/register" method="post">
 
                         <div>
                             <div class="uk-form-group">
@@ -62,7 +62,7 @@
                                     <span class="uk-form-icon">
                                         <i class="icon-feather-user"></i>
                                     </span>
-                                    <input class="uk-input" type="text" placeholder="Full name">
+                                    <input class="uk-input" type="text" name="name" placeholder="Full name">
                                 </div>
 
                             </div>
@@ -75,7 +75,7 @@
                                     <span class="uk-form-icon">
                                         <i class="icon-feather-mail"></i>
                                     </span>
-                                    <input class="uk-input" type="email" placeholder="name@example.com">
+                                    <input class="uk-input" type="email" name="email" placeholder="name@example.com">
                                 </div>
 
                             </div>
@@ -89,7 +89,7 @@
                                     <span class="uk-form-icon">
                                         <i class="icon-feather-lock"></i>
                                     </span>
-                                    <input class="uk-input" type="password" placeholder="********">
+                                    <input class="uk-input" type="password" name="password" placeholder="********">
                                 </div>
 
                             </div>
@@ -102,7 +102,7 @@
                                     <span class="uk-form-icon">
                                         <i class="icon-feather-lock"></i>
                                     </span>
-                                    <input class="uk-input" type="password" placeholder="********">
+                                    <input class="uk-input" type="password" name="confirmpassword" placeholder="********">
                                 </div>
 
                             </div>
@@ -111,7 +111,7 @@
                         <div>
                             <div class="mt-4 uk-flex-middle uk-grid-small" uk-grid>
                                 <div class="uk-width-expand@s">
-                                    <p> Do you have account <a href="form-login.html">Sign in</a></p>
+                                    <p> Do you have account <a href="/login">Sign in</a></p>
                                 </div>
                                 <div class="uk-width-auto@s">
                                     <input type="submit" class="button primary" value="Get Started"></input>
