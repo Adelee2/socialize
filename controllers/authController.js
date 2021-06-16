@@ -49,7 +49,7 @@ class Auth{
         }
         login= function(req,res){
         
-            res.render('index',{user})
+            res.render('index',{user:''})
         }
         register= function(req,res){
             res.render('singup')
