@@ -1,5 +1,6 @@
 var bcrypt = require('bcryptjs'),
     Q = require('q'),
+    { uuid } = require('uuidv4'),
     User = require('../../model/users'); //config file contains all tokens and other private info
 
 //used in local-signup strategy
@@ -15,14 +16,15 @@ exports.localReg = function (name,email,password) {
         else  {
           var hash = bcrypt.hashSync(password, 10);
           var user = {
-            "name": name,
-            "email": email,
-            "password": hash,
+            name: name,
+            email: email,
+            password: hash,
+            token: uuid()
           }
 
           console.log("CREATING USER:", name);
         
-          User.insert(user)
+          User.create(user)
             .then(function () {
               deferred.resolve(user);
             });
