@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 let pageController = require('../controllers/pageController');
-let  AuthController = require('../controllers/authController');
 var passport = require('passport');
 let mypages = new pageController();
 const Auth = require('../controllers/authController');
@@ -11,7 +10,7 @@ router.post('/sessionlogin', (req, res) => passport.authenticate('local-signin',
 
 router.get('/login',auth.login );
 router.get('/register', auth.register );
-
+router.post('/sessionregister',auth.sessionregister);
 router.get('/logout', auth.logout);
 
 // Dashboard

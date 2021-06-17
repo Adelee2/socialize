@@ -4,6 +4,7 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook');
 var GoogleStrategy = require('passport-google');
 var LocalStrategy = require('passport-local').Strategy;
+const User = require('../model/users');
 
 class Auth{
     constructor (){
@@ -54,6 +55,26 @@ class Auth{
         register= function(req,res){
             res.render('singup')
         }
+        sessionregister = function(req,res){
+            let inputs = req.body;
+            if(!inputs.name || !inputs.email || !inputs.password ){
+                throw new Error("fill in all required fields");
+            }
+            localReg(inputs.name,inputs.email,inputs.password).then(user=>{
+                console.log("user",user)
+                    if (user) {
+                        console.log("LOGGED IN AS: " + user.email);
+
+                        return res.json({status:true,message: 'Registration Successful'});
+                    }
+                    console.log("COULD NOT REGISTER");
+
+                    return res.json({status:false, message: 'Incorrect Username/Email'});
+                })
+                .fail(function (err){
+                    console.log(err.body);
+                });
+        }
         logout= function(req, res){
             var name = req.user.name;s
             console.log("LOGGIN OUT " + req.user.name)
@@ -69,16 +90,5 @@ class Auth{
             res.redirect('/login');
         }
 }
-
-// Auth.prototype.authlogin=()=> {
-//     passport.authenticate('local-signin', {
-//         successRedirect: '/',
-//         failureRedirect: '/login'
-//         }) 
-// }
-
-
-
-
 
 module.exports = Auth;

@@ -5,6 +5,9 @@ const feedSchema = new mongoose.Schema(
       objtext: {
         type: String,
       },
+      description:{
+        type:String,
+      },
       isdownload:{
         type:Boolean
       },

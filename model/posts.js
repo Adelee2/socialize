@@ -5,6 +5,9 @@ const postSchema = new mongoose.Schema(
       objtext: {
         type: String,
       },
+      description:{
+        type:String,
+      },
       isdownload:{
         type:Boolean
       },

@@ -15,6 +15,13 @@ const userSchema = new mongoose.Schema(
         type:String,
         required: true,
     },
+    token:{
+      type:String
+    },
+    isActive:{
+      type:Boolean,
+      default:false
+    },
     userinfo:{
         type: mongoose.Schema.Types.ObjectId,ref:'UserInfo'
     },
