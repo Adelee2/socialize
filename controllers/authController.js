@@ -30,7 +30,7 @@ class Auth{
                 // console.log('password',password)
                 localAuth(username, password)
                 .then(function (user) {
-                    console.log("user",user)
+                    // console.log("user",user)
                     if (user) {
                         console.log("LOGGED IN AS: " + user.email);
                         req.session.success = 'You are successfully logged in ' + user.email + '!';
@@ -60,7 +60,8 @@ class Auth{
             if(!inputs.name || !inputs.email || !inputs.password ){
                 throw new Error("fill in all required fields");
             }
-            localReg(inputs.name,inputs.email,inputs.password).then(user=>{
+            
+            localReg(inputs.name,inputs.email,inputs.password,inputs.location).then(user=>{
                 console.log("user",user)
                     if (user) {
                         console.log("LOGGED IN AS: " + user.email);

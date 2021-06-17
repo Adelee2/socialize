@@ -1,4 +1,31 @@
 <%- include('main/header'); %>
+<style>
+    .clearfix{*zoom:1;}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0;}
+    .clearfix:after{clear:both;}
+    .hide-text{font:0/0 a;color:transparent;text-shadow:none;background-color:transparent;border:0;}
+    .input-block-level{display:block;width:100%;min-height:30px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+    .btn-file{overflow:hidden;position:relative;vertical-align:middle;}.btn-file>input{position:absolute;top:0;right:0;margin:0;opacity:0;filter:alpha(opacity=0);transform:translate(-300px, 0) scale(4);font-size:23px;direction:ltr;cursor:pointer;}
+    .fileupload{margin-bottom:9px;}.fileupload .uneditable-input{display:inline-block;margin-bottom:0px;vertical-align:middle;cursor:text;}
+    .fileupload .thumbnail{overflow:hidden;display:inline-block;margin-bottom:5px;vertical-align:middle;text-align:center;}.fileupload .thumbnail>img{display:inline-block;vertical-align:middle;max-height:100%;}
+    .fileupload .btn{vertical-align:middle;}
+    .fileupload-exists .fileupload-new,.fileupload-new .fileupload-exists{display:none;}
+    .fileupload-inline .fileupload-controls{display:inline;}
+    .fileupload-new .input-append .btn-file{-webkit-border-radius:0 3px 3px 0;-moz-border-radius:0 3px 3px 0;border-radius:0 3px 3px 0;}
+    .thumbnail-borderless .thumbnail{border:none;padding:0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
+    .fileupload-new.thumbnail-borderless .thumbnail{border:1px solid rgb(5, 6, 8);}
+    .control-group.warning .fileupload .uneditable-input{color:#a47e3c;border-color:#a47e3c;}
+    .control-group.warning .fileupload .fileupload-preview{color:#a47e3c;}
+    .control-group.warning .fileupload .thumbnail{border-color:#a47e3c;}
+    .control-group.error .fileupload .uneditable-input{color:#b94a48;border-color:#b94a48;}
+    .control-group.error .fileupload .fileupload-preview{color:#b94a48;}
+    .control-group.error .fileupload .thumbnail{border-color:#b94a48;}
+    .control-group.success .fileupload .uneditable-input{color:#468847;border-color:#468847;}
+    .control-group.success .fileupload .fileupload-preview{color:#468847;}
+    .control-group.success .fileupload .thumbnail{border-color:#468847;}
+</style>
+<script>
+    !function(e){var t=function(t,n){this.$element=e(t),this.type=this.$element.data("uploadtype")||(this.$element.find(".thumbnail").length>0?"image":"file"),this.$input=this.$element.find(":file");if(this.$input.length===0)return;this.name=this.$input.attr("name")||n.name,this.$hidden=this.$element.find('input[type=hidden][name="'+this.name+'"]'),this.$hidden.length===0&&(this.$hidden=e('<input type="hidden" />'),this.$element.prepend(this.$hidden)),this.$preview=this.$element.find(".fileupload-preview");var r=this.$preview.css("height");this.$preview.css("display")!="inline"&&r!="0px"&&r!="none"&&this.$preview.css("line-height",r),this.original={exists:this.$element.hasClass("fileupload-exists"),preview:this.$preview.html(),hiddenVal:this.$hidden.val()},this.$remove=this.$element.find('[data-dismiss="fileupload"]'),this.$element.find('[data-trigger="fileupload"]').on("click.fileupload",e.proxy(this.trigger,this)),this.listen()};t.prototype={listen:function(){this.$input.on("change.fileupload",e.proxy(this.change,this)),e(this.$input[0].form).on("reset.fileupload",e.proxy(this.reset,this)),this.$remove&&this.$remove.on("click.fileupload",e.proxy(this.clear,this))},change:function(e,t){if(t==="clear")return;var n=e.target.files!==undefined?e.target.files[0]:e.target.value?{name:e.target.value.replace(/^.+\\/,"")}:null;if(!n){this.clear();return}this.$hidden.val(""),this.$hidden.attr("name",""),this.$input.attr("name",this.name);if(this.type==="image"&&this.$preview.length>0&&(typeof n.type!="undefined"?n.type.match("image.*"):n.name.match(/\.(gif|png|jpe?g)$/i))&&typeof FileReader!="undefined"){var r=new FileReader,i=this.$preview,s=this.$element;r.onload=function(e){i.html('<img src="'+e.target.result+'" '+(i.css("max-height")!="none"?'style="max-height: '+i.css("max-height")+';"':"")+" />"),s.addClass("fileupload-exists").removeClass("fileupload-new")},r.readAsDataURL(n)}else this.$preview.text(n.name),this.$element.addClass("fileupload-exists").removeClass("fileupload-new")},clear:function(e){this.$hidden.val(""),this.$hidden.attr("name",this.name),this.$input.attr("name","");if(navigator.userAgent.match(/msie/i)){var t=this.$input.clone(!0);this.$input.after(t),this.$input.remove(),this.$input=t}else this.$input.val("");this.$preview.html(""),this.$element.addClass("fileupload-new").removeClass("fileupload-exists"),e&&(this.$input.trigger("change",["clear"]),e.preventDefault())},reset:function(e){this.clear(),this.$hidden.val(this.original.hiddenVal),this.$preview.html(this.original.preview),this.original.exists?this.$element.addClass("fileupload-exists").removeClass("fileupload-new"):this.$element.addClass("fileupload-new").removeClass("fileupload-exists")},trigger:function(e){this.$input.trigger("click"),e.preventDefault()}},e.fn.fileupload=function(n){return this.each(function(){var r=e(this),i=r.data("fileupload");i||r.data("fileupload",i=new t(this,n)),typeof n=="string"&&i[n]()})},e.fn.fileupload.Constructor=t,e(document).on("click.fileupload.data-api",'[data-provides="fileupload"]',function(t){var n=e(this);if(n.data("fileupload"))return;n.fileupload(n.data());var r=e(t.target).closest('[data-dismiss="fileupload"],[data-trigger="fileupload"]');r.length>0&&(r.trigger("click.fileupload"),t.preventDefault())})}(window.jQuery)
+</script>
         <!-- Wrapper -->
     <div id="wrapper">
 
@@ -38,24 +65,23 @@
 
                     <div class="nav-profile" uk-sticky="media : @s">
                         <div class="py-md-2 uk-flex-last">
-                            <a href="#" class="button primary mr-2 "> <i class="uil-plus"></i> Add your story</a>
+                            <a href="#" class="button primary mr-2 " uk-toggle="target: body ; cls: post-focus"> <i class="uil-plus"></i> Add your Post</a>
                             <!-- <a href="#" class="button light button-icon mr-2"> <i class="uil-list-ul"> </i> </a>
                             <a href="#" class="button light button-icon mr-lg-3"> <i class="uil-ellipsis-h"> </i> </a> -->
-                            <div uk-dropdown="pos: bottom-left ; mode:hover" class="display-hidden">
+                            <!-- <div uk-dropdown="pos: bottom-left ; mode:hover" class="display-hidden">
                                 <ul class="uk-nav uk-dropdown-nav">
                                     <li><a href="#" class="uk-input"> Feeds </a></li>
                                     <li><a href="#" class="uk-input"> Posts </a></li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </div>
                         <div>
                             <nav class="responsive-tab ml-lg-3">
                                 <ul>
-                                    <li class="uk-active"><a class="active" href="#">Your Posts</a></li>
-                                    <li><a href="timeline-friends.html">Your Feeds</a></li>
-                                    <li><a href="timeline-friends.html">Friends</a></li>
-                                    <!-- <li><a href="timeline-friends.html">Photoes</a></li>
-                                    <li><a href="timeline-friends.html">Videos</a></li> -->
+                                    <li class="uk-active"><a class="active" href="/mypage">Your Posts</a></li>
+                                    <li><a href="/mypagefriends">Friends</a></li>
+                                    <li><a href="timeline-friends.html">About</a></li>                                    
+                                    <!-- <li><a href="timeline-friends.html">Videos</a></li> -->
                                 </ul>
                             </nav>
                             <!-- <div class="uk-visible@s">
@@ -120,88 +146,10 @@
                                     </div>
                                 </div> -->
     
-                                <div class="post-pop" id="postmodal">
-    
-                                    <div class="post-new-overyly" uk-toggle="target: body ; cls: post-focus"></div>
-    
-                                    <div class="post-new uk-animation-slide-top-small">
-    
-    
-                                        <div class="post-new-header">
-    
-                                            <h4> Create new post</h4>
-    
-                                            <!-- close button-->
-                                            <span class="post-new-btn-close" uk-toggle="target: body ; cls: post-focus"
-                                                uk-tooltip="title:Close; pos: left "></span>
-    
-                                        </div>
-    
-                                        <div class="post-new-media">
-                                            <div class="post-new-media-user">
-                                                <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                            </div>
-                                            <div class="post-new-media-input">
-                                                <input type="text" class="uk-input"
-                                                    placeholder="What's Your Mind ? Dennis!">
-                                            </div>
-                                        </div>
-                                        <div class="post-new-tab-nav">
-                                            <a href="#">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24">
-                                                    <path fill="#4db3f6"
-                                                        d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z">
-                                                    </path>
-                                                </svg>
-                                                <span> Upload Image</span>
-                                            </a>
-                                            <a href="#">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 512 512">
-                                                    <path fill="#71a257"
-                                                        d="M450.6 153.6c-3.3 0-6.5.9-9.3 2.7l-86.5 54.6c-2.5 1.6-4 4.3-4 7.2v76c0 2.9 1.5 5.6 4 7.2l86.5 54.6c2.8 1.7 6 2.7 9.3 2.7h20.8c4.8 0 8.6-3.8 8.6-8.5v-188c0-4.7-3.9-8.5-8.6-8.5h-20.8zM273.5 384h-190C55.2 384 32 360.8 32 332.6V179.4c0-28.3 23.2-51.4 51.4-51.4h190c28.3 0 51.4 23.2 51.4 51.4v153.1c.1 28.3-23 51.5-51.3 51.5z">
-                                                    </path>
-                                                </svg>
-                                                <span> Upload Videos</span>
-                                            </a>
-                                            
-                                            <a href="#">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                    viewBox="0 0 512 512">
-                                                    <path fill="#6bcfef"
-                                                        d="M312 155h91c2.8 0 5-2.2 5-5 0-8.9-3.9-17.3-10.7-22.9L321 63.5c-5.8-4.8-13-7.4-20.6-7.4-4.1 0-7.4 3.3-7.4 7.4V136c0 10.5 8.5 19 19 19z">
-                                                    </path>
-                                                    <path fill="#6bcfef"
-                                                        d="M267 136V56H136c-17.6 0-32 14.4-32 32v336c0 17.6 14.4 32 32 32h240c17.6 0 32-14.4 32-32V181h-96c-24.8 0-45-20.2-45-45z">
-                                                    </path>
-                                                </svg>
-                                                <span> File </span>
-                                            </a>
-                                        
-    
-                                        </div>
-                                        <div class="uk-flex uk-flex-between">
-    
-                                            <button class="button outline-light circle" type="button" style="
-                                            border-color: #e6e6e6;  border-width: 1px;  ">downloadable</button>
-                                            <!-- <div uk-dropdown>
-                                                <ul class="uk-nav uk-dropdown-nav">
-                                                    <li class="uk-active"><a href="#">Only me</a></li>
-                                                    <li><a href="#">Every one</a></li>
-                                                    <li><a href="#"> People I Follow </a></li>
-                                                    <li><a href="#">I People Follow Me</a></li>
-                                                </ul>
-                                            </div> -->
-    
-                                            <a href="#" class="button primary px-6"> Share </a>
-                                        </div>
-                                    </div>
-    
-                                </div>
+                              
     
                             </div>
-                            <% if(result.userinfo.posts.length>0)%>
+                            <% if(userinfos && userinfos.posts.length >0 ) {%>
                                 <div class="post">
                                     <div class="post-heading">
                                         <div class="post-avature">
@@ -338,10 +286,127 @@
                                     </div>
         
                                 </div>
-                            <%}%>
- 
+     
                             <div class="load-more">
                                 <button class="btn button">Load more post</button>
+                            </div>
+                            <%} else {%>
+                                <div class="post-title load-more">
+                                    <a href="javascript:;" class="button primary mr-2" uk-toggle="target: body ; cls: post-focus"> <i class="uil-plus"></i> Create a Post</a>
+                                </div>
+                                
+                            <%}%>
+                            <div class="post-pop" id="postmodal">
+    
+                                <div class="post-new-overyly" uk-toggle="target: body ; cls: post-focus"></div>
+                        
+                                <div class="post-new uk-animation-slide-top-small">
+                        
+                        
+                                    <div class="post-new-header">
+                        
+                                        <h4> Create new post</h4>
+                        
+                                        <!-- close button-->
+                                        <span class="post-new-btn-close" uk-toggle="target: body ; cls: post-focus"
+                                            uk-tooltip="title:Close; pos: left "></span>
+                        
+                                    </div>
+                                    <form class="uk-flex-group" action="" method="POST" enctype="multipart/form-data">
+                                        <div class="post-new-media">
+                                            <div class="post-new-media-user">
+                                                <img src="assets/images/avatars/avatar-2.jpg" alt="">
+                                            </div>
+                                            <div class="post-new-media-input">
+                                                <input type="text" class="uk-input"
+                                                    placeholder="What's Your Mind ? Dennis!">
+                                            </div>
+                                        </div><hr>
+                                        <h5>Upload Options</h5>
+                                        <div class="uk-flex" id="choose">
+                                            <div class="post-new" style="margin-top: 2%;">
+                                                <label for="video">Video</label>
+                                                <input type="radio" id="video" class="options uk-radio" name="option" value="video" />
+                                                <div class="fileupload fileupload-new" data-provides="fileupload" id="filevideo" style="visibility: hidden;">
+                                                    <span class="btn btn-primary btn-file"><span class="fileupload-new">Select video</span>
+                                                    <span class="fileupload-exists">Change</span>         <input type="file" name="videofile" /></span>
+                                                    <span class="fileupload-preview"></span>
+                                                    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                                                </div>
+                                            </div>
+                                            <div class="post-new" style="margin-top: 2%;">
+                                                <label for="video">Picture</label>
+                                                <input type="radio" id="image" class="options uk-radio" name="option" value="image" />
+                                                <div class="fileupload fileupload-new" data-provides="fileupload" id="filepicture" style="visibility: hidden;">
+                                                    <span class="btn btn-primary btn-file"><span class="fileupload-new">Select picture</span>
+                                                    <span class="fileupload-exists">Change</span>         <input type="file" name="picturefile"/></span>
+                                                    <span class="fileupload-preview"></span>
+                                                    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                                                </div>
+                                            </div>
+                                            <script>
+                                                document.getElementById('choose').addEventListener('change',function(){
+                                                    let val = $("input[type='radio'][name='option']:checked").val();
+
+                                                    console.log(val)
+                                                    if(val=='video'){
+                                                        document.getElementById('filepicture').style.visibility = 'hidden';
+                                                        document.getElementById('filevideo').style.visibility = 'visible';
+                                                        
+                                                    }else{
+                                                        document.getElementById('filevideo').style.visibility = 'hidden';
+                                                        document.getElementById('filepicture').style.visibility = 'visible';
+                                                    }
+                                                })
+                                                
+                                                
+                                            </script>
+                                              
+                                              
+                                            <!-- <input  type="hidden" id="filevideo" name="video" placeholder="choose video"/>
+                                            <input  type="hidden" id="filepicture" name="picture" placeholder="choose picture"/> -->
+                                            <!-- <a href="#">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24">
+                                                    <path fill="#4db3f6"
+                                                        d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z">
+                                                    </path>
+                                                </svg>
+                                                <span> Upload Image</span>
+                                            </a>
+                                            <a href="#">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 512 512">
+                                                    <path fill="#71a257"
+                                                        d="M450.6 153.6c-3.3 0-6.5.9-9.3 2.7l-86.5 54.6c-2.5 1.6-4 4.3-4 7.2v76c0 2.9 1.5 5.6 4 7.2l86.5 54.6c2.8 1.7 6 2.7 9.3 2.7h20.8c4.8 0 8.6-3.8 8.6-8.5v-188c0-4.7-3.9-8.5-8.6-8.5h-20.8zM273.5 384h-190C55.2 384 32 360.8 32 332.6V179.4c0-28.3 23.2-51.4 51.4-51.4h190c28.3 0 51.4 23.2 51.4 51.4v153.1c.1 28.3-23 51.5-51.3 51.5z">
+                                                    </path>
+                                                </svg>
+                                                <span> Upload Videos</span>
+                                            </a> -->
+                                        
+                            
+                                        </div>
+                                        <div class="uk-flex uk-flex-between" >
+                                            <span>
+                                               
+                                                <input class="outline-light circle" type="radio" style="
+                                                border-color: #e6e6e6;  border-width: 1px; " value="downloadable" placeholder="downloadable?">
+                                                <label for="download">download option</label>
+                                            </span>
+                                            <!-- <div uk-dropdown>
+                                                <ul class="uk-nav uk-dropdown-nav">
+                                                    <li class="uk-active"><a href="#">Only me</a></li>
+                                                    <li><a href="#">Every one</a></li>
+                                                    <li><a href="#"> People I Follow </a></li>
+                                                    <li><a href="#">I People Follow Me</a></li>
+                                                </ul>
+                                            </div> -->
+                            
+                                            <button href="#"  class="button primary px-6" style="float: right;"> Post </button>
+                                        </div>
+                                    </form>
+                                </div>
+                        
                             </div>
 
                         </div>
@@ -503,75 +568,77 @@
                             </div> -->
 
                             <!-- friends -->
-                            <div class="sl_user-widget">
-                                <div class="sl_user-widget-wrap-header">
-                                    <div class="sl_user-widget-wrap-header-left">
-                                        <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                    d="M22,16V4A2,2 0 0,0 20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16M11,12L13.03,14.71L16,11L20,16H8M2,6V20A2,2 0 0,0 4,22H18V20H4V6">
-                                                </path>
-                                            </svg></span> 
-                                            <a href="#">Friends</a>&nbsp;<div style="font-weight: 600">124</div>
+                            <%if(userinfos && userinfos.friends.length>0){%>
+                                <div class="sl_user-widget">
+                                    <div class="sl_user-widget-wrap-header">
+                                        <div class="sl_user-widget-wrap-header-left">
+                                            <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                                                    <path fill="currentColor"
+                                                        d="M22,16V4A2,2 0 0,0 20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16M11,12L13.03,14.71L16,11L20,16H8M2,6V20A2,2 0 0,0 4,22H18V20H4V6">
+                                                    </path>
+                                                </svg></span> 
+                                                <a href="#">Friends</a>&nbsp;<div style="font-weight: 600">124</div>
+                                        </div>
+                                        <div class="sl_user-widget-wrap-right"> <a href="#" class="see-all"> See all</a></div>
                                     </div>
-                                    <div class="sl_user-widget-wrap-right"> <a href="#" class="see-all"> See all</a></div>
+                                
+                                 
+                                    <ul class="sidebar-user-data-container">
+                                
+                                        <li class="sidebar-user-data">
+                                            <div class="sidebar-listed-user-avatar">
+                                                <a href="#">
+                                                    <img src="assets/images/avatars/avatar-4.jpg">
+                                                    <div class="sidebar-listed-user-name">Adrian Moh</div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li class="sidebar-user-data">
+                                            <div class="sidebar-listed-user-avatar">
+                                                <a href="#">
+                                                    <img src="assets/images/avatars/avatar-5.jpg">
+                                                    <div class="sidebar-listed-user-name">Alex Dolgo</div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li class="sidebar-user-data">
+                                            <div class="sidebar-listed-user-avatar">
+                                                <a href="#">
+                                                    <img src="assets/images/avatars/avatar-6.jpg">
+                                                    <div class="sidebar-listed-user-name">Stella Joh</div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li class="sidebar-user-data">
+                                            <div class="sidebar-listed-user-avatar">
+                                                <a href="#">
+                                                    <img src="assets/images/avatars/avatar-7.jpg">
+                                                    <div class="sidebar-listed-user-name">Alex Dolgo</div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li class="sidebar-user-data">
+                                            <div class="sidebar-listed-user-avatar">
+                                                <a href="#">
+                                                    <img src="assets/images/avatars/avatar-2.jpg">
+                                                    <div class="sidebar-listed-user-name">Adrian Moh</div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li class="sidebar-user-data">
+                                            <div class="sidebar-listed-user-avatar">
+                                                <a href="#">
+                                                    <img src="assets/images/avatars/avatar-1.jpg">
+                                                    <div class="sidebar-listed-user-name">Alex Dolgo</div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                            
+                                        </ul>
+                                    <a href="/mypagefriends" class="sl_user-widget-see-all button block light small px-0">  See all </a>
+                                
                                 </div>
-                            
-                             
-                                <ul class="sidebar-user-data-container">
-                            
-                                    <li class="sidebar-user-data">
-                                        <div class="sidebar-listed-user-avatar">
-                                            <a href="#">
-                                                <img src="assets/images/avatars/avatar-4.jpg">
-                                                <div class="sidebar-listed-user-name">Adrian Moh</div>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li class="sidebar-user-data">
-                                        <div class="sidebar-listed-user-avatar">
-                                            <a href="#">
-                                                <img src="assets/images/avatars/avatar-5.jpg">
-                                                <div class="sidebar-listed-user-name">Alex Dolgo</div>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li class="sidebar-user-data">
-                                        <div class="sidebar-listed-user-avatar">
-                                            <a href="#">
-                                                <img src="assets/images/avatars/avatar-6.jpg">
-                                                <div class="sidebar-listed-user-name">Stella Joh</div>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li class="sidebar-user-data">
-                                        <div class="sidebar-listed-user-avatar">
-                                            <a href="#">
-                                                <img src="assets/images/avatars/avatar-7.jpg">
-                                                <div class="sidebar-listed-user-name">Alex Dolgo</div>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li class="sidebar-user-data">
-                                        <div class="sidebar-listed-user-avatar">
-                                            <a href="#">
-                                                <img src="assets/images/avatars/avatar-2.jpg">
-                                                <div class="sidebar-listed-user-name">Adrian Moh</div>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li class="sidebar-user-data">
-                                        <div class="sidebar-listed-user-avatar">
-                                            <a href="#">
-                                                <img src="assets/images/avatars/avatar-1.jpg">
-                                                <div class="sidebar-listed-user-name">Alex Dolgo</div>
-                                            </a>
-                                        </div>
-                                    </li>
-                                        
-                                    </ul>
-                                <a class="sl_user-widget-see-all button block light small px-0">  See all </a>
-                            
-                            </div>
+                                <%}%>
                             
 
                             <!-- Footer menus-->
@@ -621,136 +688,35 @@
 
         </div>
 
-        <!-- Chat sidebar -->
-        <!-- <a class="chat-plus-btn" href="#sidebar-chat" uk-toggle>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
-            </svg>
-           
-        </a> -->
-        <!-- <div id="sidebar-chat" class="sidebar-chat px-3" uk-offcanvas="flip: true; overlay: true">
-            <div class="uk-offcanvas-bar">
-
-                <div class="sidebar-chat-head mb-2">
-
-                    <div class="btn-actions">
-                        <a href="#" uk-tooltip="title: Search ;offset:7"
-                            uk-toggle="target: .sidebar-chat-search; animation: uk-animation-slide-top-small"> <i
-                                class="icon-feather-search"></i> </a>
-                        <a href="#" uk-tooltip="title: settings ;offset:7"> <i class="icon-feather-settings"></i> </a>
-                        <a href="#"> <i class="uil-ellipsis-v"></i> </a>
-                        <a href="#" class="uk-hidden@s"> <button class="uk-offcanvas-close uk-close" type="button"
-                                uk-close> </button> </a>
+        <!-- <div class="modal-body" id="postmodal" tabindex="-1" role="dialog" aria-labelledby="postmodalTitle" aria-hidden="true">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-4">.col-md-4</div>
+                <div class="col-md-4 ml-auto">.col-md-4 .ml-auto</div>
+              </div>
+              <div class="row">
+                <div class="col-md-3 ml-auto">.col-md-3 .ml-auto</div>
+                <div class="col-md-2 ml-auto">.col-md-2 .ml-auto</div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 ml-auto">.col-md-6 .ml-auto</div>
+              </div>
+              <div class="row">
+                <div class="col-sm-9">
+                  Level 1: .col-sm-9
+                  <div class="row">
+                    <div class="col-8 col-sm-6">
+                      Level 2: .col-8 .col-sm-6
                     </div>
-
-                    <h2> Chats </h2>
+                    <div class="col-4 col-sm-6">
+                      Level 2: .col-4 .col-sm-6
+                    </div>
+                  </div>
                 </div>
-
-                <div class="sidebar-chat-search" hidden>
-                    <input type="text" class="uk-input" placeholder="Search in Messages">
-                    <span class="btn-close"
-                        uk-toggle="target: .sidebar-chat-search; animation: uk-animation-slide-top-small"> <i
-                            class="icon-feather-x"></i> </span>
-                </div>
-
-                <ul class="uk-child-width-expand sidebar-chat-tabs" uk-tab>
-                    <li class="uk-active"><a href="#">Users</a></li>
-                    <li><a href="#">Groups</a></li>
-                </ul>
-
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                            <span class="online-dot"></span> </div>
-                        <h5> Dennis Han</h5>
-                    </div>
-                </a>
-
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
-                            <span class="online-dot"></span> </div>
-                        <h5> Erica Jones </h5>
-                    </div>
-                </a>
-
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-7.jpg" alt="">
-                            <span class="offline-dot"></span> </div>
-                        <h5> Stella Johnson </h5>
-                    </div>
-                </a>
-
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                            <span class="offline-dot"></span> </div>
-                        <h5> Alex Dolgove </h5>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                            <span class="online-dot"></span> </div>
-                        <h5> Dennis Han</h5>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                            <span class="online-dot"></span> </div>
-                        <h5> Erica Jones </h5>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                            <span class="offline-dot"></span> </div>
-                        <h5> Stella Johnson </h5>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                            <span class="offline-dot"></span> </div>
-                        <h5> Alex Dolgove </h5>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                            <span class="online-dot"></span> </div>
-                        <h5> Dennis Han</h5>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                            <span class="online-dot"></span> </div>
-                        <h5> Erica Jones </h5>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                            <span class="offline-dot"></span> </div>
-                        <h5> Stella Johnson </h5>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="contact-list">
-                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                            <span class="offline-dot"></span> </div>
-                        <h5> Alex Dolgove </h5>
-                    </div>
-                </a>
-
-
-
+              </div>
             </div>
-        </div> -->
-
+          </div> -->
     </div>
+   
   
     <%- include('main/footer'); %>
