@@ -15,8 +15,9 @@ router.get('/logout', auth.logout);
 
 // Dashboard
 router.get('/',auth.ensureAuthenticated,mypages.posts);
-router.get('/feeds',auth.ensureAuthenticated,mypages.feeds);
+router.get('/feeds',auth.ensureAuthenticated,mypages.realfeeds);
 router.get('/mypage',auth.ensureAuthenticated,mypages.mypage);
+router.get('/mypagefriends',auth.ensureAuthenticated,mypages.mypagefriends);
 router.get('/explore',auth.ensureAuthenticated,mypages.explore);
 router.get('/chat',auth.ensureAuthenticated,mypages.chat);
 

@@ -7245,7 +7245,8 @@ header .opts_icon_link:hover {
 }
 @media (max-width: 1260px) {
   .main_content {
-    /* margin-left: 0px !important;  */
+    /* margin-left: 0px !important; 
+     */
   }
 
   .main_content_inner {

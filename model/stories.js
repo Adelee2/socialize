@@ -1,6 +1,6 @@
 const mongoose = require ('mongoose');
 
-const FeedSchema = new mongoose.Schema(
+const StorySchema = new mongoose.Schema(
     {
       objtext: {
         type: String,
@@ -8,8 +8,9 @@ const FeedSchema = new mongoose.Schema(
       description:{
         type:String,
       },
-      isdownload:{
-        type:Boolean
+      softdelete:{
+        type:Boolean,
+        default:false
       },
       user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       likes:[
@@ -26,6 +27,6 @@ const FeedSchema = new mongoose.Schema(
     { timestamps: true },
   );
    
-  const Feed = mongoose.model('Feed', FeedSchema);
+  const Story = mongoose.model('Story', StorySchema);
 
-module.exports= Feed;
+module.exports= Story;

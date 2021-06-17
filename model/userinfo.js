@@ -14,9 +14,9 @@ const userinfoSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,ref:'Post'
         }
     ],
-    feeds:[
+    stories:[
         {
-            type: mongoose.Schema.Types.ObjectId,ref:'Feed'
+            type: mongoose.Schema.Types.ObjectId,ref:'Story'
         }
     ],
     

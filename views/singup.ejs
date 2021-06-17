@@ -135,6 +135,7 @@
     <script src="assets/js/simplebar.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
+  
         document.getElementById("signup").addEventListener("click", function(event){
             event.preventDefault()
             $('#signup').val("Please wait..")
@@ -150,27 +151,34 @@
                 alert('password does not match')
                 return
             }
-            let body = {name,email,password}
-            $.ajax({
-                url:'/sessionregister',
-                method:'post',
-                data: body,
-                success:(result)=>{
-                    if(result.status==true){
-                        alert("Successful!.An email will be sent to you");
-                        window.location.href='/login'
-                        $('#signup').val("Please wait..")
-                    }
-                    else{
-                        alert(result.message)
-                        $('#signup').val("Please wait..")
-                    }
-                },
-                error:(err)=>{
-                    console.log(err)
-                }
-                
-            })
+
+            
+            $.getJSON('https://geolocation-db.com/json/')
+                .done (function(location) {
+                    let body = {name,email,password,location:location.country_name}
+
+                    $.ajax({
+                        url:'/sessionregister',
+                        method:'post',
+                        data: body,
+                        success:(result)=>{
+                            if(result.status==true){
+                                alert("Successful!.An email will be sent to you");
+                                window.location.href='/login'
+                                $('#signup').val("Please wait..")
+                            }
+                            else{
+                                alert(result.message)
+                                $('#signup').val("Please wait..")
+                            }
+                        },
+                        error:(err)=>{
+                            console.log(err)
+                        }
+                        
+                    })
+                });
+           
         });
        
     </script>
