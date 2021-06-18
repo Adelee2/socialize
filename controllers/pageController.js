@@ -81,7 +81,7 @@ class Pages{
     //     res.render('blog',{user: req.user});
     // }
 
-    chat = function(req,res){
+    chat = async function(req,res){
         let friends= []
          await UserInfo.findById(req.user.userinfo).then(async userinfo=>{
             if(userinfo){
