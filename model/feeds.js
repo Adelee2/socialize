@@ -1,9 +1,12 @@
 const mongoose = require ('mongoose');
 
-const feedSchema = new mongoose.Schema(
+const FeedSchema = new mongoose.Schema(
     {
       objtext: {
         type: String,
+      },
+      description:{
+        type:String,
       },
       isdownload:{
         type:Boolean
@@ -23,6 +26,6 @@ const feedSchema = new mongoose.Schema(
     { timestamps: true },
   );
    
-  const Feed = mongoose.model('Feed', feedSchema);
+  const Feed = mongoose.model('Feed', FeedSchema);
 
 module.exports= Feed;
