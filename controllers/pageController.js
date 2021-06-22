@@ -1,74 +1,64 @@
-const Posts = require('../model/posts')
-const Stories = require('../model/stories')
+
 const User = require('../model/users')
-// const Feed
-const Notification = require('../model/notification')
-const UserInfo = require('../model/userinfo')
-const Feed = require('../model/feeds')
+const Postutil = require('./utils/Posts')
+const Feedutil = require('./utils/Feeds')
+const Storyutil = require('./utils/Stories')
+const Userutil = require('./utils/Users')
+
 
 class Pages{
    
-    realfeeds = async function(req,res){
-        let feeds=[];
-        await Feed.find({},function(result){
-            feeds= result
-        })
-        res.render('feeds',{user: req.user,feeds});
-    }
-    posts = async function(req,res){
-        let posts = []
-        let stories=[]
-
-        let firstfunct = async ()=>{
-                return await UserInfo.findById(req.user.userinfo).then( async userinfo=>{
-                var friendids = userinfo.friends.map(function(doc) { return doc._id; });
-                    console.log(friendids)
-                    await Posts.find({"user":{"$in":[...friendids, req.user._id] }},function(post){
-                        return post
-                    })
-            })
-        }
-        let secondfunct = async () =>{
-            return await Stories.find({"user":req.user._id},function(story){
-                return story
-            })
-        }
-        posts = firstfunct
-        stories= secondfunct
-       
-        console.log("posts:",posts)
-        console.log("stories:",stories)
+    realfeeds = function(req,res){
         
-        res.render('posts',{user: req.user,posts,stories});
+        let feeds = new Feedutil(req,res)
+        res.render('feeds',{user: req.user,feeds:feeds.index });
+    }
+    posts = function(req,res){
+        
+        let posts = new Postutil(req,res);
+        let stories = new Storyutil(req,res);
+        console.log("posts:",posts.index)
+        console.log("stories:",stories.index)
+
+        // Promise.all([posts,stories]).then(([result1,result2])=>{
+
+        // })
+        
+        res.render('posts',{user: req.user,posts:posts.index,stories:stories.index});
     }
     mypage = async function(req,res){
         // console.log(req.user);
-        let userinfos={}
-         await UserInfo.findById(req.user.userinfo).then(userinfo=>{
-            if(userinfo){
-                userinfos = userinfo
-                console.log("userinfo: ",userinfo)
-            }
-        }).catch(err=>{
-            console.log("err userinfo: ",err)
+        let userinfo = new Userutil(req,res)
+        let myposts = new Postutil(req,res)
+        let result1,result2,result3;
+        userinfo.show().then(ress=>{
+            result1=ress;
+            console.log("result1",ress)
         });
-        // console.log(result.userinfo);
-        res.render('mypage',{user: req.user, userinfos});
+         myposts.show().then(ress1=>{
+            result2=ress1
+            console.log('result2',ress1)
+        });
+        userinfo.friends().then(ress3=>{
+            result3=ress3
+            console.log("result3",ress3)
+        });
+        
+        
+        // Promise.all([userinfo.friends,myposts.show]).then(([res1,res2])=>{
+        //     console.log("friends",res1);
+        //     console.log("posts",res2)
+        // })
+
+        res.render('mypage',{user: req.user, userinfos:result1, posts:result2,friends:result3});
     }
     
     mypagefriends = async function(req,res){
         // console.log(req.user);
-        let userinfos={}
-         await UserInfo.findById(req.user.userinfo).then(userinfo=>{
-            if(userinfo){
-                userinfos = userinfo
-                console.log("userinfo: ",userinfo)
-            }
-        }).catch(err=>{
-            console.log("err userinfo: ",err)
-        });
+        let userinfo = new Userutil(req,res)
+        
         // console.log(result.userinfo);
-        res.render('mypagefriends',{user: req.user, userinfos});
+        res.render('mypagefriends',{user: req.user, userinfos:userinfo.show,friends:userinfo.friends});
     }
     explore = async function(req,res){
         let users=[]
@@ -82,20 +72,9 @@ class Pages{
     // }
 
     chat = async function(req,res){
-        let friends= []
-         await UserInfo.findById(req.user.userinfo).then(async userinfo=>{
-            if(userinfo){
-                
-                await User.find({"_id":{"$in":userinfo.friends}},function(myfriends){
-                    friends =myfriends
-                })
-                // console.log("userinfo: ",userinfo)
-            }
-        }).catch(err=>{
-            console.log("err userinfo: ",err)
-        });
+        let userinfo = new Userutil(req,res)
 
-        res.render('chat',{user: req.user,friends});
+        res.render('chat',{user: req.user,friends:userinfo.friends});
     }
     error = (req,res)=>{
         res.render('error')
