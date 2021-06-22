@@ -5,11 +5,11 @@
 
     <!-- Basic Page Needs
     ================================================== -->
-    <title>Simplest Social Network HTML Template</title>
+    <title>Socialize</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Simplest is - Professional A unique and beautiful collection of UI elements">
-    <link rel="icon" href="assets/images/favicon.png">
+    <link rel="icon" href="assets/images/internet.png">
 
     <!-- CSS 
     ================================================== -->
@@ -40,18 +40,22 @@
 
                 <!-- column one -->
                 <div class="uk-margin-auto-vertical uk-text-center uk-animation-scale-up p-3 uk-light">
-                    <img src="assets/images/logo-light-icon.png" alt="">
-                    <h3 class="mb-3 mt-lg-4"> Simplest</h3>
+                    <img src="assets/images/internet.png" alt="" width="100">
+                    <h3 class="mb-3 mt-lg-4"> Socialize</h3>
                     <p>Share what's new and life moments with <br> your friends. </p>
                 </div>
 
                 <!-- column two -->
                 <div class="uk-card-default px-5 py-8">
                     <div class="mb-4 uk-text-center">
-                        <h2 class="mb-0"> Welcome back</h3>
+                        <h2 class="mb-0"> Socialize</h3>
                         <p class="my-2">Login to manage your account.</p>
+                        <!-- <% if (user == false) { %>
+                            <p class="alert alert-warning" style="color: red;">Invalid username or password</p>
+                        <% } %> -->
                     </div>
-                    <form>
+                    
+                    <form action="/sessionlogin" method="post">
 
                         <div class="uk-form-group">
                             <label class="uk-form-label"> Email</label>
@@ -60,7 +64,7 @@
                                 <span class="uk-form-icon">
                                     <i class="icon-feather-mail"></i>
                                 </span>
-                                <input class="uk-input" type="email" placeholder="name@example.com">
+                                <input class="uk-input" type="email" name="username" placeholder="name@example.com">
                             </div>
 
                         </div>
@@ -72,11 +76,11 @@
                                 <span class="uk-form-icon">
                                     <i class="icon-feather-lock"></i>
                                 </span>
-                                <input class="uk-input" type="password" placeholder="********">
+                                <input class="uk-input" type="password" name="password" placeholder="********">
                             </div>
 
                         </div>
-
+<!-- 
                         <div class="uk-form-group">
                             <label class="uk-form-label"> Confirm password</label>
 
@@ -87,11 +91,11 @@
                                 <input class="uk-input" type="password" placeholder="********">
                             </div>
 
-                        </div>
+                        </div> -->
 
                         <div class="mt-4 uk-flex-middle uk-grid-small" uk-grid>
                             <div class="uk-width-expand@s">
-                                <p> Don't have account <a href="form-singup.html">Sign up</a></p>
+                                <p> Don't have account <a href="/register">Sign up</a></p>
                             </div>
                             <div class="uk-width-auto@s">
                                 <button type="submit" class="button primary">Get Started</button>
@@ -115,8 +119,16 @@
     ================================================== -->
     <script src="assets/js/uikit.js"></script>
     <script src="assets/js/simplebar.js"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        function login(e){
+            // e.preventDefault()
+            var body = {
 
+            }
+            axios.post()
+        }
+    </script>
 
 </body>
 

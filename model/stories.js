@@ -1,6 +1,6 @@
 const mongoose = require ('mongoose');
 
-const postSchema = new mongoose.Schema(
+const StorySchema = new mongoose.Schema(
     {
       objtext: {
         type: String,
@@ -8,8 +8,9 @@ const postSchema = new mongoose.Schema(
       description:{
         type:String,
       },
-      isdownload:{
-        type:Boolean
+      softdelete:{
+        type:Boolean,
+        default:false
       },
       user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       likes:[
@@ -17,15 +18,15 @@ const postSchema = new mongoose.Schema(
                 type: mongoose.Schema.Types.ObjectId,ref:'Likes'
             }
         ],
-      comments:[
-          {
-            type: mongoose.Schema.Types.ObjectId,ref:'Comment'
-          }
-      ]
+       comments:[
+            {
+                type: mongoose.Schema.Types.ObjectId,ref:'Comment'
+            }
+        ]
     },
     { timestamps: true },
   );
    
-  const Post = mongoose.model('Post', postSchema);
+  const Story = mongoose.model('Story', StorySchema);
 
-  module.exports= Post;
+module.exports= Story;
