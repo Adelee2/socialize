@@ -4,10 +4,70 @@ const Postutil = require('./utils/Posts')
 const Feedutil = require('./utils/Feeds')
 const Storyutil = require('./utils/Stories')
 const Userutil = require('./utils/Users')
-
+const Post = require('../model/posts')
 
 class Pages{
-   
+   constructor(){
+    
+   }
+   postFile= function(req,res){
+       let input = req.body
+    if(!input) throw new Error("Emtpy parameters")
+
+    // console.log("req",req)
+    // console.log('req.body',input)
+    // console.log("req.user",req.user)
+    if(input.option == "video"){
+        let description = input.description
+        let downloadoption = input.downloadable
+        
+        let objtext = req.file.path
+        console.log("postsvideo",objtext)
+        Post.create({
+            description:description,
+            objtext:objtext,
+            isdownload:downloadoption,
+            user:req.user._id
+            }).then(resp=>{
+                res.redirect('/mypage')
+            }).catch(err=>{
+                console.log("err",err)
+            })
+    }
+    else if(input.option=="image"){
+        let description = input.description
+        let myfile = req.file
+        let downloadoption = input.downloadable
+        let objtext = req.file.path
+        console.log("postsimage",objtext)
+        Post.create({
+            description:description,
+            objtext:objtext,
+            isdownload:downloadoption,
+            user:req.user._id
+            }).then(resp=>{
+                res.redirect('/mypage')
+            }).catch(err=>{
+                console.log("err",err)
+            })
+    
+    }
+    else{
+        let description = input.description
+        // let downloadoption = input.downloadable
+        console.log("else")
+        Post.create({
+            description:description,
+            objtext:"",
+            isdownload:false,
+            user:req.user._id
+        }).then(resp=>{
+            res.redirect('/mypage')
+        }).catch(err=>{
+            console.log("err",err)
+        })
+    } 
+   }
     realfeeds = function(req,res){
         
         let feeds = new Feedutil(req,res)
@@ -30,27 +90,24 @@ class Pages{
         // console.log(req.user);
         let userinfo = new Userutil(req,res)
         let myposts = new Postutil(req,res)
-        let result1,result2,result3;
+        let result1={},result2=[],result3=[];
         userinfo.show().then(ress=>{
-            result1=ress;
-            console.log("result1",ress)
-        });
-         myposts.show().then(ress1=>{
-            result2=ress1
-            console.log('result2',ress1)
-        });
-        userinfo.friends().then(ress3=>{
-            result3=ress3
-            console.log("result3",ress3)
-        });
-        
-        
-        // Promise.all([userinfo.friends,myposts.show]).then(([res1,res2])=>{
-        //     console.log("friends",res1);
-        //     console.log("posts",res2)
-        // })
+            // result1=ress;
+            // console.log("result1",ress)
+            myposts.show().then(ress1=>{
+                // result2=ress1
+                // console.log('result2',ress1)
+                userinfo.friends().then(ress3=>{
+                    // result3=ress3
+                    // console.log("result3",ress3)
 
-        res.render('mypage',{user: req.user, userinfos:result1, posts:result2,friends:result3});
+                    
+                    res.render('mypage',{user: req.user, userinfos:ress, posts:ress1,friends:ress3});
+                });
+            });
+        });
+         
+
     }
     
     mypagefriends = async function(req,res){
