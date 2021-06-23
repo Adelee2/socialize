@@ -44,7 +44,7 @@
                     <div class="profile-cover">
 
                         <!-- profile cover -->
-                        <img src="assets/images/avatars/profile-cover.jpg" alt="">
+                        <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
 
                         <a href="#"> <i class="uil-camera"></i> Edit </a>
 
@@ -52,14 +52,35 @@
 
                     <div class="profile-details">
                         <div class="profile-image">
-                            <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                            <a href="#"> </a>
+                            <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
+                            <a href="#avatarmodal" uk-toggle> </a>
                         </div>
                         <div class="profile-details-info">
                             <h1><%= (user) ? user.name:"" %></h1>
                             <!-- <p> Family , Food , Fashion , Fourever <a href="#">Edit </a></p> -->
                         </div>
 
+                    </div>
+                    <!-- avatar modal -->
+                    <div id='avatarmodal' class="sidebar-chat"  uk-offcanvas="flip: true; overlay: true">
+                        <div class="">
+                            <span class="btn-close"
+                            uk-toggle="target: #avatarmodal; animation: uk-animation-slide-top-small"> <i
+                                class="icon-feather-x"></i> </span>
+                            <form action="/avatar/add" method="POST" enctype="multipart/form-data">
+                                <h5>Upload Profile Picture</h5>
+                                    <div class="post-new" style="margin-top: 2%;">
+                                        <label for="video">Picture</label>
+                                        <div class="fileupload fileupload-new" data-provides="fileupload">
+                                            <span class="btn btn-primary btn-file"><span class="fileupload-new">Select video</span>
+                                            <span class="fileupload-exists">Change</span>         <input type="file" id="avatar" name="avatar" /></span>
+                                            <span class="fileupload-preview"></span>
+                                            <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="button primary px-6" style="float: right;"> Upload </button>
+                            </form>
+                        </div>
                     </div>
 
                     <div class="nav-profile" uk-sticky="media : @s">
@@ -144,6 +165,7 @@
     
                                     </div>
                                 </div> -->
+                                
                                  <!-- modal -->
                                     <div class="post-pop" id="postmodal">
                         
@@ -164,7 +186,7 @@
                                             <form action="/post/add" method="post" enctype="multipart/form-data">
                                                 <div class="post-new-media">
                                                     <div class="post-new-media-user">
-                                                        <img src="assets/images/avatars/avatar-2.jpg" alt="">
+                                                        <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
                                                     </div>
                                                     <div class="post-new-media-input">
                                                         <input type="text" class="uk-input" name="description"
@@ -359,7 +381,7 @@
                                             <%}%>
                                             <div class="post-add-comment">
                                                 <div class="post-add-comment-avature">
-                                                    <img src="assets/images/avatars/avatar-2.jpg" alt="">
+                                                    <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
                                                 </div>
                                                 <div class="post-add-comment-text-area">
                                                     <input type="text" placeholder="Write your comment...">

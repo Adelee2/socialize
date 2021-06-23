@@ -6,6 +6,7 @@ const Storyutil = require('./utils/Stories')
 const Userutil = require('./utils/Users')
 const Post = require('../model/posts')
 const moment = require('moment')
+const UserInfo = require('../model/userinfo')
 class Pages{
    constructor(){
     
@@ -86,6 +87,15 @@ class Pages{
         
         res.render('posts',{user: req.user,posts:posts.index,stories:stories.index,moment:moment});
     }
+    updateAvatar = async function(req,res) {
+        console.log(req.file)
+        UserInfo.updateOne({_id:req.user.userinfo},{$set:{avatar:req.file.filename}}, {upsert: true}, function(err,doc){
+            if(err) throw new Error('could not update')
+            // console.log(req.header)
+            // console.log("doc",doc)
+            res.redirect(req.header('Referer'))
+        })
+    }
     mypage = async function(req,res){
         // console.log(req.user);
         let userinfo = new Userutil(req,res)
@@ -99,9 +109,9 @@ class Pages{
                 
                 userinfo.friends().then(ress3=>{
                     // result3=ress3
-                    console.log("result1",ress)
-                    console.log('result2',ress1)
-                    console.log("result3",ress3)
+                    // console.log("result1",ress)
+                    // console.log('result2',ress1)
+                    // console.log("result3",ress3)
 
                     
                     res.render('mypage',{user: req.user, userinfos:ress, posts:ress1,friends:ress3,moment:moment});
