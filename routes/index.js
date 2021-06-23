@@ -10,7 +10,14 @@ var path = require('path')
 var auth = new Auth();
 var storage = multer.diskStorage({
     destination:"./Uploads",
-    limits:{ fileSize: 20000 },
+    filename: function (req, file, cb) {
+    const uniqueSuffix = file.fieldname+"-"+Date.now() + '-' + Math.round(Math.random() * 1E5)
+    //   console.log(uniqueSuffix+'-'+path.extname(file.originalname))
+    cb(null, uniqueSuffix+path.extname(file.originalname))
+    }
+})
+var storageavatar = multer.diskStorage({
+    destination:"./Uploads/Avatar",
     filename: function (req, file, cb) {
     const uniqueSuffix = file.fieldname+"-"+Date.now() + '-' + Math.round(Math.random() * 1E5)
     //   console.log(uniqueSuffix+'-'+path.extname(file.originalname))
@@ -18,8 +25,9 @@ var storage = multer.diskStorage({
     }
 })
 
-let upload = multer({ storage: storage }).single('posts')
-
+let upload = multer({ storage: storage, limits:{ fileSize: 50000 } }).single('posts')
+let uploadfeed = multer({storage:storage, limits:{ fileSize: 50000 }}).single('feeds')
+let uploadavatar = multer({storage:storageavatar,limits:{ fileSize: 5000 }}).single('avatar')
 
 // var postutils = new Posts()
 /* Auth. */

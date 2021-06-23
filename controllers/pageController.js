@@ -21,7 +21,7 @@ class Pages{
         let description = input.description
         let downloadoption = input.downloadable
         
-        let objtext = req.file.path
+        let objtext = req.file.filename
         console.log("postsvideo",objtext)
         Post.create({
             description:description,
@@ -38,7 +38,7 @@ class Pages{
         let description = input.description
         let myfile = req.file
         let downloadoption = input.downloadable
-        let objtext = req.file.path
+        let objtext = req.file.filename
         console.log("postsimage",objtext)
         Post.create({
             description:description,
