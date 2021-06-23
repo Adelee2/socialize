@@ -9,7 +9,7 @@ var path = require('path')
 
 var auth = new Auth();
 var storage = multer.diskStorage({
-    destination:"./Uploads",
+    destination:"./public/Uploads",
     filename: function (req, file, cb) {
     const uniqueSuffix = file.fieldname+"-"+Date.now() + '-' + Math.round(Math.random() * 1E5)
     //   console.log(uniqueSuffix+'-'+path.extname(file.originalname))
@@ -17,7 +17,7 @@ var storage = multer.diskStorage({
     }
 })
 var storageavatar = multer.diskStorage({
-    destination:"./Uploads/Avatar",
+    destination:"./public/Uploads/Avatar",
     filename: function (req, file, cb) {
     const uniqueSuffix = file.fieldname+"-"+Date.now() + '-' + Math.round(Math.random() * 1E5)
     //   console.log(uniqueSuffix+'-'+path.extname(file.originalname))

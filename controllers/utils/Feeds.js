@@ -13,7 +13,7 @@ class Feeds{
         let results=[]
         await Feed.find({},function(result){
            results = result
-        })
+        }).populate([ {path:'user'}, {path:'comments'},{path:'likes'} ])
         return results
     }
     create = ()=>{

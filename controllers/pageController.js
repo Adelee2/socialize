@@ -5,7 +5,7 @@ const Feedutil = require('./utils/Feeds')
 const Storyutil = require('./utils/Stories')
 const Userutil = require('./utils/Users')
 const Post = require('../model/posts')
-
+const moment = require('moment')
 class Pages{
    constructor(){
     
@@ -84,7 +84,7 @@ class Pages{
 
         // })
         
-        res.render('posts',{user: req.user,posts:posts.index,stories:stories.index});
+        res.render('posts',{user: req.user,posts:posts.index,stories:stories.index,moment:moment});
     }
     mypage = async function(req,res){
         // console.log(req.user);
@@ -93,16 +93,18 @@ class Pages{
         let result1={},result2=[],result3=[];
         userinfo.show().then(ress=>{
             // result1=ress;
-            // console.log("result1",ress)
+            
             myposts.show().then(ress1=>{
                 // result2=ress1
-                // console.log('result2',ress1)
+                
                 userinfo.friends().then(ress3=>{
                     // result3=ress3
-                    // console.log("result3",ress3)
+                    console.log("result1",ress)
+                    console.log('result2',ress1)
+                    console.log("result3",ress3)
 
                     
-                    res.render('mypage',{user: req.user, userinfos:ress, posts:ress1,friends:ress3});
+                    res.render('mypage',{user: req.user, userinfos:ress, posts:ress1,friends:ress3,moment:moment});
                 });
             });
         });
@@ -115,14 +117,14 @@ class Pages{
         let userinfo = new Userutil(req,res)
         
         // console.log(result.userinfo);
-        res.render('mypagefriends',{user: req.user, userinfos:userinfo.show,friends:userinfo.friends});
+        res.render('mypagefriends',{user: req.user, userinfos:userinfo.show,friends:userinfo.friends,moment:moment});
     }
     explore = async function(req,res){
         let users=[]
         await User.find({},function(result1){
             users = result1
         })
-        res.render('explore',{user: req.user,users});
+        res.render('explore',{user: req.user,users,moment:moment});
     }
     // blog = function(req,res){
     //     res.render('blog',{user: req.user});

@@ -16,7 +16,8 @@ class Posts{
          let userinfo = await UserInfo.findById(this.req.user.userinfo)
         var friendids = userinfo.friends.map(function(doc) { return doc._id; });
         console.log(friendids)
-        let post = await Post.find({"user":{"$in":[...friendids, this.req.user._id] }},null)
+        let post = await Post.find({"user":{"$in":[...friendids, this.req.user._id] }},null).populate([{path:'user'}]).sort([['createdAt', -1]])
+        //.populate([ {path:'user'}, {path:'comments'},{path:'likes'} ])
         
         return post
        
@@ -37,7 +38,8 @@ class Posts{
     //get only my posts
     show= async()=>{
         // console.log("mypost",this.req.user)
-        let post = await Post.find({"user":this.req.user._id },null)
+        let post = await Post.find({"user":this.req.user._id },null).populate([{path:'user'}]).sort([['createdAt', -1]])
+        //.populate([ {path:'user'}, {path:'comments'},{path:'likes'} ])
         
         return post
     }
