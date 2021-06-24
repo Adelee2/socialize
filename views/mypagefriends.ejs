@@ -17,7 +17,7 @@
                     <div class="profile-cover">
 
                         <!-- profile cover -->
-                        <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
+                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimg.jpg%>" alt="">
 
                         <a href="#"> <i class="uil-camera"></i> Edit </a>
 
@@ -25,7 +25,7 @@
 
                     <div class="profile-details">
                         <div class="profile-image">
-                            <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
+                            <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimg.jpg%>" alt="">
                             <a href="#"> </a>
                         </div>
                         <div class="profile-details-info">

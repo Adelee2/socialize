@@ -65,6 +65,10 @@ router.get('/post/one/:postid',auth.ensureAuthenticated,(req,res)=>new Posts(req
 router.get('/feed/one/:feedid',auth.ensureAuthenticated,(req,res)=>new Feeds(req,res).showOne)
 router.get('/story/one/:storyid',auth.ensureAuthenticated,(req,res)=>new Stories(req,res).showOne)
 
+router.get('/comment/post/one/:id',auth.ensureAuthenticated,(req,res)=>new commentutil(req,res).show)
+router.get('/comment/feed/one/:id',auth.ensureAuthenticated,(req,res)=>new commentutil(req,res).show)
+
+
 router.get('/error',mypages.error)
 
 module.exports = router;

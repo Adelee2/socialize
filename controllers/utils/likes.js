@@ -25,7 +25,7 @@ class Like{
                 post.likes.push(like._id);
                 post.save();
 
-                return res.json({status:true,message:"successful"})
+                return this.res.json({status:true,message:"successful"})
             }).catch(err=>{
                 console.log("post save failed",err)
             })
@@ -48,7 +48,7 @@ class Like{
                 feed.likes.push(like._id);
                 feed.save();
 
-                return res.json({status:true,message:"successful"})
+                return this.res.json({status:true,message:"successful"})
             }).catch(err=>{
                 console.log("feed save failed",err)
             })
@@ -71,7 +71,7 @@ class Like{
                 story.likes.push(like._id);
                 story.save();
 
-                return res.json({status:true,message:"successful"})
+                return this.res.json({status:true,message:"successful"})
             }).catch(err=>{
                 console.log("story save failed",err)
             })

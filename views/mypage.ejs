@@ -44,7 +44,7 @@
                     <div class="profile-cover">
 
                         <!-- profile cover -->
-                        <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
+                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimg.jpg%>" alt="">
 
                         <a href="#"> <i class="uil-camera"></i> Edit </a>
 
@@ -52,7 +52,7 @@
 
                     <div class="profile-details">
                         <div class="profile-image">
-                            <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
+                            <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimg.jpg%>" alt="">
                             <a href="#avatarmodal" uk-toggle> </a>
                         </div>
                         <div class="profile-details-info">
@@ -186,7 +186,7 @@
                                             <form action="/post/add" method="post" enctype="multipart/form-data">
                                                 <div class="post-new-media">
                                                     <div class="post-new-media-user">
-                                                        <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
+                                                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimg.jpg%>" alt="">
                                                     </div>
                                                     <div class="post-new-media-input">
                                                         <input type="text" class="uk-input" name="description"
@@ -315,73 +315,16 @@
                                         <!-- post comments -->
                                         
                                         <div class="post-comments">
-                                                <%if(key.comments.length>0){%>
-                                            <!-- <a href="#" class="view-more-comment"> Veiw 8 more Comments</a> -->
-                                            <div class="post-comments-single">
-                                                <div class="post-comment-avatar">
-                                                    <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                                </div>
-                                                <div class="post-comment-text">
-                                                    <div class="post-comment-text-inner">
-                                                        <h6> Alex Dolgove</h6>
-                                                        <p> Ut wisi enim ad minim laoreet dolore magna aliquam erat </p>
-                                                    </div>
-                                                    <div class="uk-text-small">
-                                                        <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
-                                                        </a>
-                                                        <a href="#" class=" mr-1"> Replay </a>
-                                                        <span> 1d</span>
-                                                    </div>
-                                                </div>
-                                                <a href="#" class="post-comment-opt"></a>
-                                            </div>
-                                            <div class="post-comments-single">
-                                                <div class="post-comment-avatar">
-                                                    <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                                </div>
-                                                <div class="post-comment-text">
-                                                    <div class="post-comment-text-inner">
-                                                        <h6>Stella Johnson</h6>
-                                                        <p> Ut wisi enim ad minim laoreet dolore <strong> David !</strong> </p>
-                                                    </div>
-                                                    <div class="uk-text-small">
-                                                        <a href="#" class="text-primary mr-1"> <i class="uil-thumbs-up"></i>
-                                                            Like
-                                                        </a>
-                                                        <a href="#" class=" mr-1"> Replay </a>
-                                                        <span> 2d</span>
-                                                    </div>
-                                                </div>
-                                                <a href="#" class="post-comment-opt"></a>
-                                            </div>
-                                            <div class="post-comments-single">
-                                                <div class="post-comment-avatar">
-                                                    <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                                                </div>
-                                                <div class="post-comment-text">
-                                                    <div class="post-comment-text-inner">
-                                                        <h6> Jonathan Madano </h6>
-                                                        <p> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                                                            aliquam
-                                                            erat
-                                                            volutpat.<strong> David !</strong> </p>
-                                                    </div>
-                                                    <div class="uk-text-small">
-                                                        <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
-                                                        </a>
-                                                        <a href="#" class=" mr-1"> Replay </a>
-                                                        <span> 3d</span>
-                                                    </div>
-                                                </div>
-                                                <a href="#" class="post-comment-opt"></a>
-                                            </div>
-            
-            
-                                            <a href="#" class="view-more-comment"> View 8 more Comments</a>
+                                            
+                                            <%if(key.comments.length>0){%>
+                                            <a href="javascript:;" onclick="getComments('<%=key._id%>')" class="view-more-comment"> View Comments</a>
                                             <%}%>
+                                            <div id="commentsection"></div>
+            
+        
                                             <div class="post-add-comment">
                                                 <div class="post-add-comment-avature">
-                                                    <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
+                                                    <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimg.jpg%>" alt="">
                                                 </div>
                                                 <div class="post-add-comment-text-area">
                                                     <input type="text" placeholder="Write your comment...">
@@ -391,7 +334,7 @@
                                                         <span class="uil-image"></span>
                                                     </div>
                                                 </div>
-            
+                                                
                                             </div>
             
                                         </div>
@@ -786,5 +729,56 @@
           </div> -->
     </div>
    
-  
+  <script>
+      $(document).ready(function(){
+          
+      })
+
+      function getComments(postid){
+          
+        $.ajax({
+            url:`/post/one/${postid}`,
+            method:"GET",
+            success: (resp)=>{
+                
+            let divhtml=``;
+                
+                if(resp.data.data.comments && resp.data.data.comments.length>0){
+                    resp.data.data.comments.map((key,val)=>{
+                        $.ajax({
+                            url:`/comment/post/one/${val._id}`,
+                            method:"GET",
+                            success: (resp2)=>{
+
+                                divhtml+=`<div class="post-comments-single">
+                                            <div class="post-comment-avatar">
+                                                <img src="/Uploads/Avatar/${resp2.data.data.user.avatar}" alt="">
+                                        </div>
+                                        <div class="post-comment-text">
+                                            <div class="post-comment-text-inner">
+                                                <h6> ${resp2.data.data.user.name}</h6>
+                                                <p> ${resp2.data.data.text}</p>
+                                            </div>
+                                            <--<div class="uk-text-small">
+                                                <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
+                                                </a>
+                                                <a href="#" class=" mr-1"> Replay </a>
+                                                <span> 1d</span>
+                                            </div>-->
+                                        </div>
+                                    </div>
+                                        `
+                            }
+                        })
+                        divhtml +=    `
+                            
+                            `
+                        
+                        })
+                }
+                
+                }
+            })
+      }
+  </script>
     <%- include('main/footer'); %>

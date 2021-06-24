@@ -25,7 +25,7 @@ class Comment{
                 post.comments.push(comment._id);
                 post.save();
 
-                return res.json({status:true,message:"successful"})
+                return this.res.json({status:true,message:"successful"})
             }).catch(err=>{
                 console.log("post save failed",err)
             })
@@ -48,7 +48,7 @@ class Comment{
                 feed.comments.push(comment._id);
                 feed.save();
 
-                return res.json({status:true,message:"successful"})
+                return this.res.json({status:true,message:"successful"})
             }).catch(err=>{
                 console.log("feed save failed",err)
             })
@@ -71,7 +71,7 @@ class Comment{
                 story.comments.push(comment._id);
                 story.save();
 
-                return res.json({status:true,message:"successful"})
+                return this.res.json({status:true,message:"successful"})
             }).catch(err=>{
                 console.log("story save failed",err)
             })
@@ -79,6 +79,13 @@ class Comment{
             console.log("story comment save failed",err1)
         })
     }
+
+    show=()=>{
+        CommentModel.findById(this.req.query.id).populate([ {path:'user'}]).then(resp=>{
+            return this.res.json({status:true,data:resp})
+        })
+    }
+    
 }
 
 module.exports =Comment

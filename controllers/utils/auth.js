@@ -20,7 +20,6 @@ exports.localReg = function (name,email,password,location) {
 
           console.log("CREATING USER:", name);
           UserInfo.create({
-            avatar:"noimage.jpg",
             location:location
           }).
           then(userinfo=>{
@@ -29,6 +28,7 @@ exports.localReg = function (name,email,password,location) {
               email: email,
               password: hash,
               token: uuid(),
+              avatar:"noimage.jpg",
               userinfo:userinfo._id
               
             }

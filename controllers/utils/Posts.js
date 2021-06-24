@@ -38,7 +38,7 @@ class Posts{
     // get all info for one post
     showOne = async()=>{
         Post.findById(this.req.query.postid).populate([ {path:'user'}, {path:'comments'},{path:'likes'} ]).sort({'comments.createdAt':-1}).then(resp=>{
-            return this.res.json({status:true,message:resp})
+            return this.res.json({status:true,data:resp})
         })
     }
     //get only my posts

@@ -25,7 +25,7 @@ class Stories{
     // get all info for one Story
     showOne = async()=>{
         Story.findById(this.req.query.storyid).populate([ {path:'user'}, {path:'comments'},{path:'likes'} ]).sort({'comments.createdAt':-1}).then(resp=>{
-            return this.res.json({status:true,message:resp})
+            return this.res.json({status:true,data:resp})
         })
     }
     //get your stories only 
