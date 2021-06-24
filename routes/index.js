@@ -67,6 +67,7 @@ router.get('/story/one/:storyid',auth.ensureAuthenticated,(req,res)=>new Stories
 
 router.get('/comment/post/one/:id',auth.ensureAuthenticated,(req,res)=>new commentutil(req,res).show)
 router.get('/comment/feed/one/:id',auth.ensureAuthenticated,(req,res)=>new commentutil(req,res).show)
+router.get('/comment/story/one/:id',auth.ensureAuthenticated,(req,res)=>new commentutil(req,res).show)
 
 
 router.get('/error',mypages.error)
