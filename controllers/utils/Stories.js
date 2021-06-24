@@ -10,7 +10,7 @@ class Stories{
     }
     //get both all your friends stories plus yours
     index = async()=>{
-        
+
         let userinfo = await UserInfo.findById(this.req.user.userinfo)
         var friendids = userinfo.friends.map(function(doc) { return doc._id; });
             console.log(friendids)
@@ -22,6 +22,12 @@ class Stories{
     create = ()=>{
 
     } 
+    // get all info for one Story
+    showOne = async()=>{
+        Story.findById(this.req.query.storyid).populate([ {path:'user'}, {path:'comments'},{path:'likes'} ]).sort({'comments.createdAt':-1}).then(resp=>{
+            return this.res.json({status:true,message:resp})
+        })
+    }
     //get your stories only 
     show=async ()=>{
         let result =[]
