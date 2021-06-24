@@ -639,21 +639,25 @@
   <script>
       
       function addComment(postid){
-        let text = $('#commentinput').val
+        let text = $('#commentinput').val()
         let body={
             text:text,
             userid:"<%= user._id%>",
             postid:postid
         }
+        console.log("body",body)
         $.ajax({
             url:`/post/comment/add`,
             method:"POST",
             data:body,
             success: (resp)=>{
                 if(resp.data.status==true){
-                    getComments(resp.data.postid)
+                    getComments(postid)
                 }
                 
+            },
+            error:(err)=>{
+                console.log(err)
             }
         })
       }
@@ -686,7 +690,7 @@
                                                 <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
                                                 </a>
                                                 <a href="#" class=" mr-1"> Replay </a>
-                                                <span> 1d</span>
+                                                <span> ${moment(resp2.data.data.createdAt).fromNow()}</span>
                                             </div>-->
                                         </div>
                                     </div>
