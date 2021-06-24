@@ -10,14 +10,12 @@ class Stories{
     }
     //get both all your friends stories plus yours
     index = async()=>{
-        let result = []
-        await UserInfo.findById(this.req.user.userinfo).then( async userinfo=>{
-            var friendids = userinfo.friends.map(function(doc) { return doc._id; });
-                console.log(friendids)
-                await Story.find({"user":{"$in":[...friendids, this.req.user._id] }},function(post){
-                    result = post
-                })
-        })
+        
+        let userinfo = await UserInfo.findById(this.req.user.userinfo)
+        var friendids = userinfo.friends.map(function(doc) { return doc._id; });
+            console.log(friendids)
+        let result = await Story.find({"user":{"$in":[...friendids, this.req.user._id] }},null)
+        
 
         return result
     }

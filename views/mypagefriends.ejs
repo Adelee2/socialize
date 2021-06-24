@@ -17,7 +17,7 @@
                     <div class="profile-cover">
 
                         <!-- profile cover -->
-                        <img src="assets/images/avatars/profile-cover.jpg" alt="">
+                        <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
 
                         <a href="#"> <i class="uil-camera"></i> Edit </a>
 
@@ -25,7 +25,7 @@
 
                     <div class="profile-details">
                         <div class="profile-image">
-                            <img src="assets/images/avatars/avatar-2.jpg" alt="">
+                            <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
                             <a href="#"> </a>
                         </div>
                         <div class="profile-details-info">
@@ -83,7 +83,7 @@
 
                         <div class="uk-width-2-3@m fead-area">
 
-                            <% if(userinfos && friends ) {%>
+                            <% if(userinfos && friends.length >0 ) {%>
                                 <div class="uk-child-width-1-4@m uk-child-width-1-2@s uk-grid-small" uk-grid>
                                     <div>
             

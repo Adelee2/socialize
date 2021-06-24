@@ -184,7 +184,7 @@
                     </div>
 
                     <!-- profile -image -->
-                    <a class="opts_account" href="#"> <img src="/assets/images/avatars/avatar-2.jpg" alt=""></a>
+                    <a class="opts_account" href="#"> <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt=""></a>
 
                     <!-- profile dropdown-->
                     <div uk-dropdown="mode:click ; animation: uk-animation-slide-bottom-small"
@@ -197,10 +197,10 @@
                             <div class="dropdown-user-details">
 
                                 <div class="dropdown-user-cover">
-                                    <img src="/assets/images/avatars/profile-cover.jpg" alt="">
+                                    <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
                                 </div>
                                 <div class="dropdown-user-avatar">
-                                    <img src="/assets/images/avatars/avatar-1.jpg" alt="">
+                                    <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
                                 </div>
                                 <div class="dropdown-user-name"><%=(user)? user.name:"" %></div>
                             </div>
