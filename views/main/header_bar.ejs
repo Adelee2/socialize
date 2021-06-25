@@ -183,6 +183,7 @@
             getNotification()
         })
         function addtoFriend(requestid){
+            console.log("addfriend",requestid)
             $.ajax({
                 url:`/friend/add/${requestid}`,
                 method:"GET",
@@ -199,19 +200,22 @@
                 method:"GET",
                 success: (resp)=>{
                     let nothtml=""
+                    console.log(resp)
                     $('#notify').html(resp.friendrequests.length)
                     resp.friendrequests.map((key,val)=>{
                         nothtml +=`<li>
+                                <span style="display:inline-flex;">
                                     <a href="#">
                                         <span class="notification-avatar">
-                                            <img src="/Upload/Avatar/${key.friendrequestfrom.avatar}" alt="">
+                                            <img src="/Uploads/Avatar/${key.friendrequestfrom.avatar}" alt="">
                                         </span>
                                         <span class="notification-text">
-                                            <strong>${key.friendrequestfrom.name}</strong>wants to be your friend
+                                            <strong>${key.friendrequestfrom.name}</strong> wants to be your friend
                                             <br> <span class="time-ago"> ${moment(key.createdAt).fromNow()} </span>
                                         </span>
                                     </a>
-                                    <span><a href="javascript:;" class="btn btn-primary" onclick="addtoFriend(${key._id})">Add friend</a></span>
+                                    <a href="javascript:;" class="button small" style="background-color: #377DFF; margin-top:25px" onclick="addtoFriend('${key._id}')"><i class="uil-plus" style="color:#fff;padding-top:5px"></i></a>
+                                </span>
                                 </li>`
                     })
 

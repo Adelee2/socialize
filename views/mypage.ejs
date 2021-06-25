@@ -509,64 +509,24 @@
                                                         d="M22,16V4A2,2 0 0,0 20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16M11,12L13.03,14.71L16,11L20,16H8M2,6V20A2,2 0 0,0 4,22H18V20H4V6">
                                                     </path>
                                                 </svg></span> 
-                                                <a href="#">Friends</a>&nbsp;<div style="font-weight: 600">124</div>
+                                                <a href="#">Friends</a>&nbsp;<div style="font-weight: 600"><%=friends.length%></div>
                                         </div>
                                         <div class="sl_user-widget-wrap-right"> <a href="/chat" class="see-all"> See all</a></div>
                                     </div>
                                 
                                  
                                     <ul class="sidebar-user-data-container">
-                                
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-4.jpg">
-                                                    <div class="sidebar-listed-user-name">Adrian Moh</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-5.jpg">
-                                                    <div class="sidebar-listed-user-name">Alex Dolgo</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-6.jpg">
-                                                    <div class="sidebar-listed-user-name">Stella Joh</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-7.jpg">
-                                                    <div class="sidebar-listed-user-name">Alex Dolgo</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-2.jpg">
-                                                    <div class="sidebar-listed-user-name">Adrian Moh</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-1.jpg">
-                                                    <div class="sidebar-listed-user-name">Alex Dolgo</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                            
-                                        </ul>
+                                        <%friends.forEach(function(key){%>
+                                            <li class="sidebar-user-data">
+                                                <div class="sidebar-listed-user-avatar">
+                                                    <a href="#">
+                                                        <img src="/Uploads/Avatar/<%=key.avatar%>">
+                                                        <div class="sidebar-listed-user-name"><%=key.name%></div>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        <%})%>
+                                    </ul>
                                     <a href="/chat" class="sl_user-widget-see-all button block light small px-0">  See all </a>
                                 
                                 </div>
