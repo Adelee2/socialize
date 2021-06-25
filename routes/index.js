@@ -50,7 +50,7 @@ router.get('/feeds',auth.ensureAuthenticated,mypages.realfeeds);
 router.get('/mypage',auth.ensureAuthenticated,mypages.mypage);
 router.post('/post/add',auth.ensureAuthenticated,upload,mypages.postFile);
 router.post('/avatar/add',auth.ensureAuthenticated,uploadavatar,mypages.updateAvatar);
-router.get('/mypagefriends',auth.ensureAuthenticated,mypages.mypagefriends);
+// router.get('/mypagefriends',auth.ensureAuthenticated,mypages.mypagefriends);
 router.get('/explore',auth.ensureAuthenticated,mypages.explore);
 router.get('/chat',auth.ensureAuthenticated,mypages.message);
 

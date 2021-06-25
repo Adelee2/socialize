@@ -147,11 +147,13 @@ class Pages{
 
         userinfo.show().then(ress=>{
             // result1=ress;
-            
-            userinfo.friends().then(ress2=>{
-                res.render('mypagefriends',{user: req.user, userinfos:ress,friends:ress2,moment:moment});
+            myposts.show().then(ress1=>{
+                 userinfo.friends().then(ress2=>{
+                    res.render('mypagefriends',{user: req.user,posts:ress1,userinfos:ress,friends:ress2,moment:moment});
 
+                })
             })
+           
         })
                     // result3=ress3
         // console.log(result.userinfo);
@@ -161,6 +163,7 @@ class Pages{
         let userinfo = new Userutil(req,res)
         userinfo.index().then(ress=>{
             userinfo.show().then(ress1=>{
+                console.log("users",ress)
                 res.render('explore',{user: req.user,userinfos:ress1,users:ress,moment:moment});
             })
         })

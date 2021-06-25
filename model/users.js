@@ -18,6 +18,12 @@ const userSchema = new mongoose.Schema(
     token:{
       type:String
     },
+    dob:{
+      type:String
+    },
+    gender:{
+      type:String
+    },
     isActive:{
       type:Boolean,
       default:false

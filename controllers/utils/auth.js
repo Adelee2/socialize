@@ -29,8 +29,9 @@ exports.localReg = function (name,email,password,location) {
               password: hash,
               token: uuid(),
               avatar:"noimage.jpg",
-              userinfo:userinfo._id
-              
+              userinfo:userinfo._id,
+              dob:dob,
+              gender:gender
             }
             User.create(user)
             .then(function () {

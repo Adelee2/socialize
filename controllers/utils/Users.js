@@ -10,15 +10,11 @@ class Users{
     }
     //get all users with userinfo
     index = async ()=>{
-         let userinfo = await UserInfo.findById(this.req.user.userinfo)
-            if(userinfo){
-                var friendids = userinfo.friends.map(function(doc) { return doc._id; });
-                    console.log(friendids)
-                let post = await User.find({"user":{"$in":[...friendids, this.req.user._id] }},null)
+         
+                let post = await User.find({},null)
 
                 return post
-            }
-       
+            
     }
     create = ()=>{
 
