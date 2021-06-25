@@ -44,7 +44,7 @@
                     <div class="profile-cover">
 
                         <!-- profile cover -->
-                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimg.jpg%>" alt="">
+                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
 
                         <a href="#"> <i class="uil-camera"></i> Edit </a>
 
@@ -52,7 +52,7 @@
 
                     <div class="profile-details">
                         <div class="profile-image">
-                            <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimg.jpg%>" alt="">
+                            <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
                             <a href="#avatarmodal" uk-toggle> </a>
                         </div>
                         <div class="profile-details-info">
@@ -186,7 +186,7 @@
                                             <form action="/post/add" method="post" enctype="multipart/form-data">
                                                 <div class="post-new-media">
                                                     <div class="post-new-media-user">
-                                                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimg.jpg%>" alt="">
+                                                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
                                                     </div>
                                                     <div class="post-new-media-input">
                                                         <input type="text" class="uk-input" name="description"
@@ -325,7 +325,7 @@
         
                                             <div class="post-add-comment">
                                                 <div class="post-add-comment-avature">
-                                                    <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimg.jpg%>" alt="">
+                                                    <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
                                                 </div>
                                                 <div class="post-add-comment-text-area">
                                                     <input type="text" id="commentinput-<%=key._id%>" placeholder="Write your comment...">
@@ -638,9 +638,32 @@
     </div>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
   <script>
+      function getLikes(postid,userid){
+          $.ajax({
+              url:`/post/likes/${postid}`,
+              method:"GET",
+              success:(resp)=>{
+                  console.log('likes res',resp)
+                  if(resp.post.likes.length>0){
+                      resp.post.likes.map((key,val)=>{
+                        if(key.user==userid){
+                            if(key.togglelike==true){
+                                $('#noflikes-'+postid).html(`<i class="uil-thumbs-up" style="color:red;"></i>${resp.post.likes.length}<span> Like(s) </span>`)
+
+                            }
+                            else{
+                                $('#noflikes-'+postid).html(`<i class="uil-thumbs-up"></i> ${resp.post.likes.length}<span> Like(s) </span>`)
+                            }
+                        }
+                      })
+                  }
+              }
+          })
+      }
       function addLikes(postid){
           let toggle = $('toggleinput-'+postid).val()
           let oldlikes = $('likesinput-'+postid).val()
+        //   console.log("oldlikes",oldlikes)
         let body={
             toggle:(toggle=="false")?true:false,
             userid:"<%= user._id%>",
@@ -655,7 +678,7 @@
             success: (resp)=>{
                 console.log("likes",resp)
                 $('#commentsection-'+postid).html("")
-                $('#noflikes-'+postid).html(`${(resp.likes.user=='<%= user._id%>')? '<i class="uil-thumbs-up" style="color:red;"></i>':'<i class="uil-thumbs-up"></i>'} ${(resp.post)?resp.post.likes.length:oldlikes}<span> Like(s) </span>`)
+                getLikes(postid,'<%=user._id%>')
             },
             error:(err)=>{
                 console.log(err)

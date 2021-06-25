@@ -42,7 +42,7 @@ router.post('/sessionlogin', (req, res) => passport.authenticate('local-signin',
 router.get('/login',auth.login );
 router.get('/register', auth.register );
 router.post('/sessionregister',auth.sessionregister);
-router.get('/logout', auth.logout);
+router.get('/logout', auth.ensureAuthenticated,auth.logout);
 
 // Dashboard
 router.get('/',auth.ensureAuthenticated,mypages.posts);
@@ -61,6 +61,7 @@ router.post('/story/comment/add',auth.ensureAuthenticated,new commentutil().stor
 router.post('/post/likes/add',auth.ensureAuthenticated,new likesutil().postlike)
 router.post('/feed/likes/add',auth.ensureAuthenticated,new likesutil().feedlike)
 router.post('/story/likes/add',auth.ensureAuthenticated,new likesutil().storylike)
+
 router.get('/post/one/:postid',auth.ensureAuthenticated,new Posts().showOne)
 router.get('/feed/one/:feedid',auth.ensureAuthenticated,new Feeds().showOne)
 router.get('/story/one/:storyid',auth.ensureAuthenticated,new Stories().showOne)
@@ -69,6 +70,9 @@ router.get('/comment/post/one/:id',auth.ensureAuthenticated,new commentutil().sh
 router.get('/comment/feed/one/:id',auth.ensureAuthenticated,new commentutil().show)
 router.get('/comment/story/one/:id',auth.ensureAuthenticated,new commentutil().show)
 
+router.get('/post/likes/:id',auth.ensureAuthenticated,new likesutil().getpostlikes)
+router.get('/feed/likes/:id',auth.ensureAuthenticated,new likesutil().getfeedlikes)
+router.get('/story/likes/:id',auth.ensureAuthenticated,new likesutil().getstorylikes)
 
 router.get('/error',mypages.error)
 

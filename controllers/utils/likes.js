@@ -103,6 +103,24 @@ class Like{
     })
         
     }
+    getpostlikes=(req,res)=>{
+        Post.findOne({_id:req.params.id}).populate([ {path:'likes'}]).then(post=>{
+            return res.json({status:true,post:post})
+        })
+
+    }
+    getfeedlikes=(req,res)=>{
+        Feed.findOne({_id:req.params.id}).populate([ {path:'likes'}]).then(post=>{
+            return res.json({status:true,likes:post.likes})
+        })
+
+    }
+    getstorylikes=(req,res)=>{
+        Story.findOne({_id:req.params.id}).populate([ {path:'likes'}]).then(post=>{
+            return res.json({status:true,likes:post.likes})
+        })
+
+    }
 }
 
 module.exports =Like

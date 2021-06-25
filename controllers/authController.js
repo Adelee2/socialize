@@ -77,10 +77,10 @@ class Auth{
                 });
         }
         logout= function(req, res){
-            var name = req.user.name;s
+            var name = req.user.name;
             console.log("LOGGIN OUT " + req.user.name)
             req.logout();
-            res.redirect('/login',{});
+            res.redirect('/login');
             req.session.notice = "You have successfully been logged out " + name + "!";
           }
 

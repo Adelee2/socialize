@@ -25,14 +25,14 @@ class Users{
     } 
     //get only my userinfo
     show= async()=>{
-        let userinfo =  await UserInfo.findById(this.req.user.userinfo)
+        let userinfo =  await UserInfo.findOne({_id:this.req.user.userinfo})
         return userinfo
          
     }
 
     friends= async ()=>{
         
-         let userinfo = await UserInfo.findById(this.req.user.userinfo)
+         let userinfo = await UserInfo.findOne({_id:this.req.user.userinfo})
             if(userinfo){
                 
                let myfriends =  await User.find({"_id":{"$in":userinfo.friends}},null).populate('userinfo')
