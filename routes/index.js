@@ -12,6 +12,7 @@ var path = require('path');
 const Posts = require('../controllers/utils/Posts');
 const Feeds = require('../controllers/utils/Feeds');
 const Stories = require('../controllers/utils/Stories');
+const Notification = require('../controllers/utils/Notification');
 
 var auth = new Auth();
 var storage = multer.diskStorage({
@@ -74,6 +75,10 @@ router.get('/post/likes/:id',auth.ensureAuthenticated,new likesutil().getpostlik
 router.get('/feed/likes/:id',auth.ensureAuthenticated,new likesutil().getfeedlikes)
 router.get('/story/likes/:id',auth.ensureAuthenticated,new likesutil().getstorylikes)
 
+// anything friendship
+router.get('/notification',auth.ensureAuthenticated,new Notification().index)
+router.post('/friendrequest/add',auth.ensureAuthenticated,new Notification().send)
+router.get('/friend/add/:requestid',auth.ensureAuthenticated,new Notification().add)
 router.get('/error',mypages.error)
 
 module.exports = router;

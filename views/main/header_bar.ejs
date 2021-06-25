@@ -101,13 +101,12 @@
                     </a>
 
                     <!-- notificiation icon  -->
-                    <a href="#" class="opts_icon" uk-tooltip="title: Notifications ; pos: bottom ;offset:7" onclick="getActive(this)">
-                        <img src="/assets/images/icons/bell.svg" alt=""> <span>3</span>
+                    <a href="javascript:;" class="opts_icon" uk-tooltip="title: Notifications ; pos: bottom ;offset:7" onclick="getNotification()">
+                        <img src="/assets/images/notify.png" alt=""> <span id="notify">0</span>
                     </a>
                     <!-- notificiation dropdown -->
                     <div uk-dropdown="mode:click ; animation: uk-animation-slide-bottom-small"
                         class="dropdown-notifications display-hidden">
-
                         <!-- notification contents -->
                         <div class="dropdown-notifications-content" data-simplebar>
 
@@ -121,66 +120,13 @@
                             </div>
 
                             <!-- notiviation list -->
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        <span class="notification-avatar">
-                                            <img src="/assets/images/avatars/avatar-2.jpg" alt="">
-                                        </span>
-                                        <span class="notification-icon bg-gradient-primary">
-                                            <i class="icon-feather-thumbs-up"></i></span>
-                                        <span class="notification-text">
-                                            <strong>Adrian Moh.</strong> Like Your Comment On Video
-                                            <span class="text-primary">Learn Prototype Faster</span>
-                                            <br> <span class="time-ago"> 9 hours ago </span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="notification-avatar">
-                                            <img src="/assets/images/avatars/avatar-3.jpg" alt="">
-                                        </span>
-                                        <span class="notification-icon bg-gradient-danger">
-                                            <i class="icon-feather-star"></i></span>
-                                        <span class="notification-text">
-                                            <strong>Alex Dolgove</strong> Added New Review In Video
-                                            <span class="text-primary">Full Stack PHP Developer</span>
-                                            <br> <span class="time-ago"> 19 hours ago </span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="notification-avatar">
-                                            <img src="/assets/images/avatars/avatar-2.jpg" alt="">
-                                        </span>
-                                        <span class="notification-icon bg-gradient-primary">
-                                            <i class="icon-feather-thumbs-up"></i></span>
-                                        <span class="notification-text">
-                                            <strong>Adrian Moh.</strong> Like Your Comment On Video
-                                            <span class="text-primary">Learn Prototype Faster</span>
-                                            <br> <span class="time-ago"> 9 hours ago </span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="notification-avatar">
-                                            <img src="/assets/images/avatars/avatar-3.jpg" alt="">
-                                        </span>
-                                        <span class="notification-icon bg-gradient-warning">
-                                            <i class="icon-feather-star"></i></span>
-                                        <span class="notification-text">
-                                            <strong>Alex Dolgove</strong> Added New Review In Video
-                                            <span class="text-primary">Full Stack PHP Developer</span>
-                                            <br> <span class="time-ago"> 19 hours ago </span>
-                                        </span>
-                                    </a>
-                                </li>
+                            <ul id="notifylist">
+                                
+                                
                             </ul>
 
                         </div>
+                        
                     </div>
 
                     <!-- profile -image -->
@@ -231,3 +177,45 @@
         </header>
 
     </div>
+    <script>
+        $(document).ready(function(){
+            getNotification()
+        })
+        function addFriend(requestid){
+            $.ajax({
+                url:`/friend/add/${requestid}`,
+                method:"GET",
+                success: (resp)=>{
+                    getNotification()
+                }
+            })
+        }
+        function getNotification(){
+
+            $.ajax({
+                url:"/notification",
+                method:"GET",
+                success: (resp)=>{
+                    let nothtml=""
+                    $('#notify').html(resp.friendrequests.length)
+                    resp.friendrequests.map((key,val)=>{
+                        nothtml +=`<li>
+                                    <a href="#">
+                                        <span class="notification-avatar">
+                                            <img src="/assets/images/avatars/avatar-2.jpg" alt="">
+                                        </span>
+                                        <span class="notification-text">
+                                            <strong>Adrian Moh.</strong> Like Your Comment On Video
+                                            <span class="text-primary">Learn Prototype Faster</span>
+                                            <br> <span class="time-ago"> 9 hours ago </span>
+                                        </span>
+                                    </a>
+                                    <span><a href="javascript:;" class="btn btn-primary" onclick="addFriend(${key._id})">Add friend</a></span>
+                                </li>`
+                    })
+
+                    $('#notifylist').html(nothtml)
+                }
+            })
+        }
+    </script>

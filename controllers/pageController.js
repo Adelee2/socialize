@@ -89,12 +89,14 @@ class Pages{
         userinfo.show().then(ress=>{
             // result1=ress;
             
-            posts.show().then(ress1=>{
+            posts.index().then(ress1=>{
                 stories.index().then(ress2=>{
                     if(ress1.length <=0 && ress2.length<=0){
                         res.redirect('/mypage');
                     }
                     else{
+                        console.log("pposts",ress1)
+                        console.log("sstory",ress2)
                         res.render('posts',{user: req.user,userinfos:ress,posts:ress1,stories:ress2,moment:moment});
 
                     }
