@@ -10,13 +10,24 @@ class Notification{
         })
     }
     send = (req,res)=>{
-        FriendRequest.create({
-            friendrequestto:req.body.to,
-            friendrequestfrom:req.user._id,
-            accept:false
-        }).then(resp=>{
-            return res.json({status:true,message:"successful",request:resp})
+        // console.log("notify reqid",req.user._id)
+        User.findOne({id:req.user._id}).populate([{path:'userinfo'}]).then(userinfo=>{
+            console.log("notify userinfo",userinfo)
+            let friends = userinfo.friends
+            if(friends.includes(req.body.to)){
+                return res.json({status:false,message:"You are already friends"})
+            }
+            else{
+                FriendRequest.create({
+                    friendrequestto:req.body.to,
+                    friendrequestfrom:req.user._id,
+                    accept:false
+                }).then(resp=>{
+                    return res.json({status:true,message:"successful",request:resp})
+                })
+            }
         })
+        
     } 
     add= (req,res)=>{
         FriendRequest.findOne({_id:req.params.requestid}).then((ress)=>{
@@ -24,12 +35,12 @@ class Notification{
                 let fromid = ress.friendrequestfrom
                 let toid = ress.friendrequestto
                 ress.remove()
-                UserInfo.findOne({user:fromid}).then(resp1=>{
-                    UserInfo.findOne({user:toid}).then(resp2=>{
-                        resp1.friends.push(toid)
-                        resp2.friends.push(fromid)
+                UserInfo.findOne({user:fromid}).then(me=>{
+                    UserInfo.findOne({user:toid}).then(thefriend=>{
+                        me.friends.push(toid)
+                        thefriend.friends.push(fromid)
 
-                        return res.json({status:true,message:"friend accepted!"})
+                        return res.json({status:true,message:"friend request accepted!"})
                     })
                     
                 })

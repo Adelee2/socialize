@@ -177,15 +177,17 @@
         </header>
 
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script>
         $(document).ready(function(){
             getNotification()
         })
-        function addFriend(requestid){
+        function addtoFriend(requestid){
             $.ajax({
                 url:`/friend/add/${requestid}`,
                 method:"GET",
                 success: (resp)=>{
+                
                     getNotification()
                 }
             })
@@ -202,15 +204,14 @@
                         nothtml +=`<li>
                                     <a href="#">
                                         <span class="notification-avatar">
-                                            <img src="/assets/images/avatars/avatar-2.jpg" alt="">
+                                            <img src="/Upload/Avatar/${key.friendrequestfrom.avatar}" alt="">
                                         </span>
                                         <span class="notification-text">
-                                            <strong>Adrian Moh.</strong> Like Your Comment On Video
-                                            <span class="text-primary">Learn Prototype Faster</span>
-                                            <br> <span class="time-ago"> 9 hours ago </span>
+                                            <strong>${key.friendrequestfrom.name}</strong>wants to be your friend
+                                            <br> <span class="time-ago"> ${moment(key.createdAt).fromNow()} </span>
                                         </span>
                                     </a>
-                                    <span><a href="javascript:;" class="btn btn-primary" onclick="addFriend(${key._id})">Add friend</a></span>
+                                    <span><a href="javascript:;" class="btn btn-primary" onclick="addtoFriend(${key._id})">Add friend</a></span>
                                 </li>`
                     })
 

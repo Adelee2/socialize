@@ -14,9 +14,10 @@ class Posts{
     //get all my friends posts plus mine
     index = async ()=>{
          let userinfo = await UserInfo.findById(this.req.user.userinfo)
-        var friendids = userinfo.friends.map(function(doc) { return doc._id; });
+        var friendids = userinfo.friends;
+        friendids.push(this.req.user._id)
         console.log("friend ids",friendids)
-        let post = await Post.find({"user":{"$in":[...friendids, this.req.user._id] }},null).populate([{path:'user'},{path:'likes'},{path:'comments'}]).sort([['createdAt', -1]])
+        let post = await Post.find({"user":{"$in":friendids }},null).populate([{path:'user'},{path:'likes'},{path:'comments'}]).sort([['createdAt', -1]])
         //.populate([ {path:'user'}, {path:'comments'},{path:'likes'} ])
         
         return post
