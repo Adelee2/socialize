@@ -61,7 +61,7 @@ class Auth{
                 throw new Error("fill in all required fields");
             }
             
-            localReg(inputs.name,inputs.email,inputs.password,inputs.location).then(user=>{
+            localReg(inputs.name,inputs.email,inputs.password,inputs.dob,inputs.gender,inputs.location).then(user=>{
                 console.log("user",user)
                     if (user) {
                         console.log("LOGGED IN AS: " + user.email);

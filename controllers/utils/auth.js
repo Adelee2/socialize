@@ -5,7 +5,7 @@ var bcrypt = require('bcryptjs'),
 const UserInfo = require('../../model/userinfo');
 
 //used in local-signup strategy
-exports.localReg = function (name,email,password,location) {
+exports.localReg = function (name,email,password,dob,gender,location) {
   var deferred = Q.defer();
     //check if username is already assigned in our database
     User.findOne({'email' : email})
