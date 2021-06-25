@@ -304,9 +304,11 @@
                                         </div>
             
                                         <div class="post-state">
-                                            <div class="post-state-btns"> <i class="uil-thumbs-up"></i> <%=key.likes.length%><span> Like(s) </span>
+                                            <input type="hidden" id="toggleinput-<%=key._id%>" value="false">
+                                            <input type="hidden" id="likesinput-<%=key._id%>" value="<%=key.likes.length%>">
+                                            <div class="post-state-btns" onclick="addLikes('<%=key._id%>')" id="noflikes-<%=key._id%>"> <i class="uil-thumbs-up"></i> <%=key.likes.length%><span> Like(s) </span>
                                             </div>
-                                            <div class="post-state-btns"> <i class="uil-heart"></i> <%=key.comments.length%> <span> Comment(s)</span>
+                                            <div class="post-state-btns" id="nofcomment-<%=key._id%>"> <i class="uil-heart"></i> <%=key.comments.length%> <span> Comment(s)</span>
                                             </div>
                                             <!-- <div class="post-state-btns"> <i class="uil-bookmark"></i> 13 <span> Saved </span>
                                             </div> -->
@@ -316,10 +318,9 @@
                                         
                                         <div class="post-comments">
                                             
-                                            <%if(key.comments.length>0){%>
                                             <a href="javascript:;" onclick="getComments('<%=key._id%>')" class="view-more-comment"> View Comments</a>
-                                            <%}%>
-                                            <div id="commentsection"></div>
+                                            
+                                            <div id="commentsection-<%=key._id%>"></div>
             
         
                                             <div class="post-add-comment">
@@ -327,7 +328,7 @@
                                                     <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimg.jpg%>" alt="">
                                                 </div>
                                                 <div class="post-add-comment-text-area">
-                                                    <input type="text" id="commentinput" placeholder="Write your comment...">
+                                                    <input type="text" id="commentinput-<%=key._id%>" placeholder="Write your comment...">
                                                     <div class="icons">
                                                         <span class="uil-grin"></span>
                                                         <span class="uil-image"></span>
@@ -635,11 +636,34 @@
         </div>
 
     </div>
-   
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
   <script>
-      
+      function addLikes(postid){
+          let toggle = $('toggleinput-'+postid).val()
+          let oldlikes = $('likesinput-'+postid).val()
+        let body={
+            toggle:(toggle=="false")?true:false,
+            userid:"<%= user._id%>",
+            postid:postid
+        }
+        $('toggleinput-'+postid).val((toggle=="true")?"false":"true")
+        console.log("body",body)
+        $.ajax({
+            url:`/post/likes/add`,
+            method:"POST",
+            data:body,
+            success: (resp)=>{
+                console.log("likes",resp)
+                $('#commentsection-'+postid).html("")
+                $('#noflikes-'+postid).html(`${(resp.likes.user=='<%= user._id%>')? '<i class="uil-thumbs-up" style="color:red;"></i>':'<i class="uil-thumbs-up"></i>'} ${(resp.post)?resp.post.likes.length:oldlikes}<span> Like(s) </span>`)
+            },
+            error:(err)=>{
+                console.log(err)
+            }
+        })
+      }
       function addComment(postid){
-        let text = $('#commentinput').val()
+        let text = $('#commentinput-'+postid).val()
         let body={
             text:text,
             userid:"<%= user._id%>",
@@ -651,9 +675,9 @@
             method:"POST",
             data:body,
             success: (resp)=>{
-                if(resp.data.status==true){
-                    getComments(postid)
-                }
+                $('#commentsection-'+postid).html("")
+                
+                getComments(postid)
                 
             },
             error:(err)=>{
@@ -662,45 +686,56 @@
         })
       }
       function getComments(postid){
-          
+          console.log("postid",postid)
         $.ajax({
             url:`/post/one/${postid}`,
             method:"GET",
             success: (resp)=>{
-                
-            let divhtml=``;
-                
-                if(resp.data.data.comments && resp.data.data.comments.length>0){
-                    resp.data.data.comments.map((key,val)=>{
-                        $.ajax({
-                            url:`/comment/post/one/${val._id}`,
+                console.log("postinfo",resp.data[0])
+            let divhtml="";
+            $('#nofcomment-'+postid).html(`<i class="uil-heart"></i>${resp.data[0].comments.length} <span> Comment(s)</span>`)
+                if(resp.data[0].comments && resp.data[0].comments.length>0){
+                    resp.data[0].comments.map(async (key,val)=>{
+                        // console.log(key,val)
+                        await $.ajax({
+                            url:`/comment/post/one/${key._id}`,
                             method:"GET",
                             success: (resp2)=>{
-
-                                divhtml+=`<div class="post-comments-single">
+                                // console.log("resp2",resp2.data[0])
+                                let dates = moment(resp2.data[0].createdAt).fromNow()
+                                divhtml+=`
+                                    <div class="post-comments-single">
                                             <div class="post-comment-avatar">
-                                                <img src="/Uploads/Avatar/${resp2.data.data.user.avatar}" alt="">
+                                                <img src="/Uploads/Avatar/${resp2.data[0].user.avatar}" alt="">
                                         </div>
                                         <div class="post-comment-text">
                                             <div class="post-comment-text-inner">
-                                                <h6> ${resp2.data.data.user.name}</h6>
-                                                <p> ${resp2.data.data.text}</p>
+                                                <h6> ${resp2.data[0].user.name}</h6>
+                                                <p> ${resp2.data[0].text}</p>
                                             </div>
-                                            <--<div class="uk-text-small">
-                                                <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
-                                                </a>
-                                                <a href="#" class=" mr-1"> Replay </a>
-                                                <span> ${moment(resp2.data.data.createdAt).fromNow()}</span>
-                                            </div>-->
+                                            <div class="uk-text-small">
+                                                <span> ${dates}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                        `
+                                    </div> `
                             }
                         })
+                        console.log("code got here")
+                        $('#commentsection-'+postid).html(divhtml)
                         })
-                    }
+                        
 
-                    $('#commentsection').html(divhtml)
+                    }
+                    else{
+                        divhtml = `<div class="post-comments-single">
+                                        <div class="post-comment-text">
+                                            <p>no comment</p>
+                                        </div>
+                                    </div>
+                                    `
+                    }
+                    console.log("else")
+                    $('#commentsection-'+postid).html(divhtml)
                 
                 }
             })

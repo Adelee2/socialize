@@ -55,19 +55,19 @@ router.get('/explore',auth.ensureAuthenticated,mypages.explore);
 router.get('/chat',auth.ensureAuthenticated,mypages.message);
 
 // API-like
-router.post('/post/comment/add',auth.ensureAuthenticated,(req,res)=>new commentutil(req,res).postcomment)
-router.post('/feed/comment/add',auth.ensureAuthenticated,(req,res)=>new commentutil(req,res).feedcomment)
-router.post('/story/comment/add',auth.ensureAuthenticated,(req,res)=>new commentutil(req,res).storycomment)
-router.post('/post/likes/add',auth.ensureAuthenticated,(req,res)=>new likesutil(req,res).postlike)
-router.post('/feed/likes/add',auth.ensureAuthenticated,(req,res)=>new likesutil(req,res).feedlike)
-router.post('/story/likes/add',auth.ensureAuthenticated,(req,res)=>new likesutil(req,res).storylike)
-router.get('/post/one/:postid',auth.ensureAuthenticated,(req,res)=>new Posts(req,res).showOne)
-router.get('/feed/one/:feedid',auth.ensureAuthenticated,(req,res)=>new Feeds(req,res).showOne)
-router.get('/story/one/:storyid',auth.ensureAuthenticated,(req,res)=>new Stories(req,res).showOne)
+router.post('/post/comment/add',auth.ensureAuthenticated,new commentutil().postcomment)
+router.post('/feed/comment/add',auth.ensureAuthenticated,new commentutil().feedcomment)
+router.post('/story/comment/add',auth.ensureAuthenticated,new commentutil().storycomment)
+router.post('/post/likes/add',auth.ensureAuthenticated,new likesutil().postlike)
+router.post('/feed/likes/add',auth.ensureAuthenticated,new likesutil().feedlike)
+router.post('/story/likes/add',auth.ensureAuthenticated,new likesutil().storylike)
+router.get('/post/one/:postid',auth.ensureAuthenticated,new Posts().showOne)
+router.get('/feed/one/:feedid',auth.ensureAuthenticated,new Feeds().showOne)
+router.get('/story/one/:storyid',auth.ensureAuthenticated,new Stories().showOne)
 
-router.get('/comment/post/one/:id',auth.ensureAuthenticated,(req,res)=>new commentutil(req,res).show)
-router.get('/comment/feed/one/:id',auth.ensureAuthenticated,(req,res)=>new commentutil(req,res).show)
-router.get('/comment/story/one/:id',auth.ensureAuthenticated,(req,res)=>new commentutil(req,res).show)
+router.get('/comment/post/one/:id',auth.ensureAuthenticated,new commentutil().show)
+router.get('/comment/feed/one/:id',auth.ensureAuthenticated,new commentutil().show)
+router.get('/comment/story/one/:id',auth.ensureAuthenticated,new commentutil().show)
 
 
 router.get('/error',mypages.error)

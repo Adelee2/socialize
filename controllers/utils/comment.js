@@ -4,16 +4,11 @@ const Post = require('../../model/posts');
 const Feed = require('../../model/feeds');
 const Story = require('../../model/stories');
 class Comment{
-    constructor(req,res){
-        this.req = req;
-        this.res = res;
-
-        
-    }
-    postcomment= ()=>{
-        let inputs = this.req.body
+    
+    postcomment= async(req,res)=>{
+        let inputs = req.body
         let postid =inputs.postid;
-        let userid = this.req.user._id
+        let userid = req.user._id
 
         CommentModel.create({
             text:inputs.text,
@@ -25,7 +20,7 @@ class Comment{
                 post.comments.push(comment._id);
                 post.save();
 
-                return this.res.json({status:true,message:"successful",postid:postid})
+                return res.json({status:true,message:"successful",postid:postid})
             }).catch(err=>{
                 console.log("post save failed",err)
             })
@@ -33,10 +28,10 @@ class Comment{
             console.log("post comment save failed",err1)
         })
     }
-    feedcomment= ()=>{
-        let inputs = this.req.body
+    feedcomment= async(req,res)=>{
+        let inputs = req.body
         let feedid =inputs.feedid;
-        let userid = this.req.user._id
+        let userid = req.user._id
 
         CommentModel.create({
             text:inputs.text,
@@ -48,7 +43,7 @@ class Comment{
                 feed.comments.push(comment._id);
                 feed.save();
 
-                return this.res.json({status:true,message:"successful",feedid:feedid})
+                return res.json({status:true,message:"successful",feedid:feedid})
             }).catch(err=>{
                 console.log("feed save failed",err)
             })
@@ -56,10 +51,10 @@ class Comment{
             console.log("feed comment save failed",err1)
         })
     }
-    storycomment= ()=>{
-        let inputs = this.req.body
+    storycomment= async(req,res)=>{
+        let inputs = req.body
         let storyid =inputs.storyid;
-        let userid = this.req.user._id
+        let userid = req.user._id
 
         CommentModel.create({
             text:inputs.text,
@@ -71,7 +66,7 @@ class Comment{
                 story.comments.push(comment._id);
                 story.save();
 
-                return this.res.json({status:true,message:"successful",storyid:storyid})
+                return res.json({status:true,message:"successful",storyid:storyid})
             }).catch(err=>{
                 console.log("story save failed",err)
             })
@@ -80,9 +75,11 @@ class Comment{
         })
     }
 
-    show=()=>{
-        CommentModel.findById(this.req.query.id).populate([ {path:'user'}]).then(resp=>{
-            return this.res.json({status:true,data:resp})
+    show= async (req,res)=>{
+        CommentModel.find({_id:req.params.id}).populate([ {path:'user'}]).then(resp=>{
+            return res.json({status:true,data:resp})
+        }).catch(err=>{
+            console.log(err)
         })
     }
 

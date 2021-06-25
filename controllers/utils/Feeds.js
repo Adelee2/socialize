@@ -23,9 +23,9 @@ class Feeds{
 
     }
     // get all info for one feed
-    showOne = async()=>{
-        Feed.findById(this.req.query.feedid).populate([ {path:'user'}, {path:'comments'},{path:'likes'} ]).sort({'comments.createdAt':-1}).then(resp=>{
-            return this.res.json({status:true,data:resp})
+    showOne = async(req,res)=>{
+        Feed.find({_id:req.params.feedid}).populate([ {path:'user'}, {path:'comments'},{path:'likes'} ]).sort({'comments.createdAt':-1}).then(resp=>{
+            return res.json({status:true,data:resp})
         })
     }
     delete = ()=>{

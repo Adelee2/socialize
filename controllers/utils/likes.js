@@ -4,80 +4,104 @@ const Post = require('../../model/posts');
 const Feed = require('../../model/feeds');
 const Story = require('../../model/stories');
 class Like{
-    constructor(req,res){
-        this.req = req;
-        this.res = res;
-
-        
-    }
-    postlike= ()=>{
-        let inputs = this.req.body
+    
+    postlike= async(req,res)=>{
+        let inputs = req.body
         let postid =inputs.postid;
-        let userid = this.req.user._id
+        let userid = req.user._id
 
-        LikeModel.create({
-            togglelike:true,
-            user:userid,
-            postfeedstoryid:postid
-        }).then(like=>{
-           
-            Post.findById(postid).then(post=>{
-                post.likes.push(like._id);
-                post.save();
-
-                return this.res.json({status:true,message:"successful"})
-            }).catch(err=>{
-                console.log("post save failed",err)
-            })
-        }).catch(err1=>{
-            console.log("post like save failed",err1)
+        LikeModel.findOne({user:userid, postfeedstoryid:postid}).then( (like)=>{
+            if(like){
+                like.save(
+                    {togglelike:req.body.toggle,
+                    user:userid,
+                    postfeedstoryid:postid
+                })
+                return res.json({status:true,message:"successful",likes:like})
+            }
+            else{
+                LikeModel.create(
+                    {togglelike:req.body.toggle,
+                    user:userid,
+                    postfeedstoryid:postid
+                }).then(like1=>{
+                    Post.findById(postid).then(post=>{
+                        post.likes.push(like1._id);
+                        post.save();
+        
+                        return res.json({status:true,message:"successful",likes:like1,post:post})
+                    }).catch(err=>{
+                        console.log("post save failed",err)
+                    })
+                })
+            }
+            
         })
     }
-    feedlike= ()=>{
-        let inputs = this.req.body
+    feedlike= async(req,res)=>{
+        let inputs = req.body
         let feedid =inputs.feedid;
-        let userid = this.req.user._id
+        let userid = req.user._id
 
-        LikeModel.create({
-            togglelike:true,
-            user:userid,
-            postfeedstoryid:feedid
-        }).then(like=>{
-           
-            Feed.findById(feedid).then(feed=>{
-                feed.likes.push(like._id);
-                feed.save();
+        LikeModel.findOne({user:userid, postfeedstoryid:feedid}).then( (like)=>{
+            if(like){
+                like.save(
+                    {togglelike:req.body.toggle,
+                    user:userid,
+                    postfeedstoryid:feedid
+                })
+                return res.json({status:true,message:"successful",likes:like})
+            }
+            else{
+                LikeModel.create(
+                    {togglelike:req.body.toggle,
+                    user:userid,
+                    postfeedstoryid:feedid
+                }).then(like1=>{
+                    Feed.findById(feedid).then(feed=>{
+                        feed.likes.push(like1._id);
+                        feed.save();
 
-                return this.res.json({status:true,message:"successful"})
-            }).catch(err=>{
-                console.log("feed save failed",err)
-            })
-        }).catch(err1=>{
-            console.log("feed like save failed",err1)
+                        return res.json({status:true,message:"successful",likes:like1,feed:feed})
+                    }).catch(err=>{
+                        console.log("feed save failed",err)
+                    })
+                })
+            }
         })
     }
-    storylike= ()=>{
-        let inputs = this.req.body
+    storylike= async(req,res)=>{
+        let inputs = req.body
         let storyid =inputs.storyid;
-        let userid = this.req.user._id
+        let userid = req.user._id
+        
+        LikeModel.findOne({user:userid, postfeedstoryid:storyid}).then( (like)=>{
+            if(like){
+                like.save(
+                    {togglelike:req.body.toggle,
+                    user:userid,
+                    postfeedstoryid:storyid
+                })
+                return res.json({status:true,message:"successful",likes:like})
+            }
+            else{
+                LikeModel.create(
+                    {togglelike:req.body.toggle,
+                    user:userid,
+                    postfeedstoryid:storyid
+                }).then(like1=>{
+                Story.findById(storyid).then(story=>{
+                    story.likes.push(like1._id);
+                    story.save();
 
-        LikeModel.create({
-            togglelike:true,
-            user:userid,
-            postfeedstoryid:storyid
-        }).then(like=>{
-           
-            Story.findById(storyid).then(story=>{
-                story.likes.push(like._id);
-                story.save();
-
-                return this.res.json({status:true,message:"successful"})
-            }).catch(err=>{
-                console.log("story save failed",err)
-            })
-        }).catch(err1=>{
-            console.log("story like save failed",err1)
-        })
+                    return res.json({status:true,message:"successful",likes:like1,story:story})
+                }).catch(err=>{
+                    console.log("story save failed",err)
+                })
+            });
+        }
+    })
+        
     }
 }
 
