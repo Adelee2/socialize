@@ -62,23 +62,23 @@
 
                     </div>
                     <!-- avatar modal -->
-                    <div id='avatarmodal' class="sidebar-chat"  uk-offcanvas="flip: true; overlay: true">
-                        <div class="">
+                    <div id='avatarmodal' class="post-new" style="width: 27%; height: 30%; margin-right: 33%; margin-top: 15%;" uk-offcanvas="flip: true;">
+                        <div class="" style="padding: 0px 50px 0 50px;">
                             <span class="btn-close"
-                            uk-toggle="target: #avatarmodal; animation: uk-animation-slide-top-small"> <i
+                            uk-toggle="target: #avatarmodal; animation: uk-animation-slide-top-small" style="float:right;"> <i
                                 class="icon-feather-x"></i> </span>
                             <form action="/avatar/add" method="POST" enctype="multipart/form-data">
                                 <h5>Upload Profile Picture</h5>
-                                    <div class="post-new" style="margin-top: 2%;">
-                                        <label for="video">Picture</label>
+                                    <div style="margin-top: 2%; margin-top: 7%; margin-left: 12%;" >
                                         <div class="fileupload fileupload-new" data-provides="fileupload">
-                                            <span class="btn btn-primary btn-file"><span class="fileupload-new">Select video</span>
+                                            <span class="btn btn-primary btn-file"><span class="fileupload-new">Select Photo</span>
                                             <span class="fileupload-exists">Change</span>         <input type="file" id="avatar" name="avatar" /></span>
                                             <span class="fileupload-preview"></span>
                                             <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
                                         </div>
+                                        <button type="submit" class="button primary px-6"> Upload </button>
                                     </div>
-                                    <button type="submit" class="button primary px-6" style="float: right;"> Upload </button>
+                                    
                             </form>
                         </div>
                     </div>
@@ -438,66 +438,6 @@
                                 </ul>
                             </div>
 
-                            <!-- Albums -->
-                            <!-- <div class="sl_user-widget">
-                                <div class="sl_user-widget-wrap-header">
-                                    <div class="sl_user-widget-wrap-header-left">
-                                        <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                    d="M22,16V4A2,2 0 0,0 20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16M11,12L13.03,14.71L16,11L20,16H8M2,6V20A2,2 0 0,0 4,22H18V20H4V6">
-                                                </path>
-                                            </svg></span> 
-                                            <a href="#">Albums</a>&nbsp;<div style="font-weight: 600">12</div>
-                                    </div>
-                                    <div class="sl_user-widget-wrap-right"> <a href="#" class="see-all"> See all</a></div>
-                                </div>
-                            
-                                <ul class="sidebar-user-data-container">
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 1">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-1.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 2">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 3">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 4">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 5">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 6">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-6.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                </ul>
-                            
-                            </div> -->
 
                             <!-- friends -->
                             <%if(userinfos && friends.length >0){%>
@@ -519,7 +459,7 @@
                                         <%friends.forEach(function(key){%>
                                             <li class="sidebar-user-data">
                                                 <div class="sidebar-listed-user-avatar">
-                                                    <a href="#">
+                                                    <a href="/profile?userid=<%=key._id%>">
                                                         <img src="/Uploads/Avatar/<%=key.avatar%>">
                                                         <div class="sidebar-listed-user-name"><%=key.name%></div>
                                                     </a>

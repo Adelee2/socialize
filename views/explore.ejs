@@ -438,11 +438,11 @@
                                             </div>
                                             <div class="sl_find_frns_user_info">
                                                 <div class="sl_find_frns_user_avatar"> 
-                                                    <a href="timeline.html">
+                                                    <a href="/profile?userid=<%=key._id%>">
                                                         <img src="/Uploads/Avatar/<%=key.avatar%>" alt="">
                                                     </a>
                                                 </div>
-                                                <h4> <a href="timeline.html"> <%=key.name%> </a> </h4>
+                                                <h4> <a href="/profile?userid=<%=key._id%>"> <%=key.name%> </a> </h4>
                                                 <p> <span class="small-last-seen">Born <%=moment(key.dob).format('YYYY')%></span> </p>
                                                 <p> <span class="small-last-seen"><%=key.gender%></span> </p>
                                             </div>

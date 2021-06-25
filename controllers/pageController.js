@@ -160,6 +160,23 @@ class Pages{
                     // result3=ress3
         // console.log(result.userinfo);
     }
+    viewProfile = async function(req,res){
+        let userinfo = new Userutil(req,res)
+        let myposts = new Postutil(req,res)
+        userinfo.showProfile().then(ress=>{
+            // result1=ress;
+            myposts.showProfile().then(ress1=>{
+                 userinfo.profileFriends().then(ress2=>{
+                    //  console.log("profile",{user:ress,posts:ress1,friends:ress2})
+                    res.render('viewpersonpage',{user:req.user,newuser:ress, posts:ress1,friends:ress2,moment:moment});
+
+                })
+            })
+           
+        })
+
+    }
+
     explore = async function(req,res){
         
         let userinfo = new Userutil(req,res)
@@ -190,6 +207,8 @@ class Pages{
         })
         
     }
+
+    
     error = (req,res)=>{
         res.render('error')
     }

@@ -54,7 +54,7 @@ router.post('/avatar/add',auth.ensureAuthenticated,uploadavatar,mypages.updateAv
 // router.get('/mypagefriends',auth.ensureAuthenticated,mypages.mypagefriends);
 router.get('/explore',auth.ensureAuthenticated,mypages.explore);
 router.get('/chat',auth.ensureAuthenticated,mypages.message);
-
+router.get('/profile',auth.ensureAuthenticated,mypages.viewProfile)
 // API-like
 router.post('/post/comment/add',auth.ensureAuthenticated,new commentutil().postcomment)
 router.post('/feed/comment/add',auth.ensureAuthenticated,new commentutil().feedcomment)

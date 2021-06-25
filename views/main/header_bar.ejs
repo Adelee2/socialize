@@ -197,7 +197,7 @@
                     resp.friendrequests.map((key,val)=>{
                         nothtml +=`<li>
                                 <span style="display:inline-flex;">
-                                    <a href="#">
+                                    <a href="/profile?userid=${key.friendrequestfrom._id}">
                                         <span class="notification-avatar">
                                             <img src="/Uploads/Avatar/${key.friendrequestfrom.avatar}" alt="">
                                         </span>

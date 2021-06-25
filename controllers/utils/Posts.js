@@ -16,7 +16,7 @@ class Posts{
          let userinfo = await UserInfo.findById(this.req.user.userinfo)
         var friendids = userinfo.friends;
         friendids.push(this.req.user._id)
-        console.log("friend ids",friendids)
+        // console.log("friend ids",friendids)
         let post = await Post.find({"user":{"$in":friendids }},null).populate([{path:'user'},{path:'likes'},{path:'comments'}]).sort([['createdAt', -1]])
         //.populate([ {path:'user'}, {path:'comments'},{path:'likes'} ])
         
@@ -48,6 +48,14 @@ class Posts{
     show= async()=>{
         // console.log("mypost",this.req.user)
         let post = await Post.find({"user":this.req.user._id },null).populate([{path:'user'}]).sort([['createdAt', -1]])
+        //.populate([ {path:'user'}, {path:'comments'},{path:'likes'} ])
+        
+        return post
+    }
+    //get only posts of a Person
+    showProfile= async()=>{
+        // console.log("mypost",this.req.user)
+        let post = await Post.find({"user":this.req.query.userid },null).populate([{path:'user'}]).sort([['createdAt', -1]])
         //.populate([ {path:'user'}, {path:'comments'},{path:'likes'} ])
         
         return post
