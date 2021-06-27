@@ -12,9 +12,9 @@ class Stories{
     index = async()=>{
 
         let userinfo = await UserInfo.findById(this.req.user.userinfo)
-        var friendids = userinfo.friends.map(function(doc) { return doc._id; });
-            console.log(friendids)
-        let result = await Story.find({"user":{"$in":[...friendids, this.req.user._id] }},null)
+        var friendids = userinfo.friends;
+        friendids.push(this.req.user._id)
+        let result = await Story.find({"user":{"$in":friendids }},null).populate([{path:'user'},{path:'likes'}])
         
 
         return result

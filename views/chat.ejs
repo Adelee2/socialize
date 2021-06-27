@@ -287,6 +287,31 @@
         
 
     </div>
+    <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+        <script>
+            var socket = io();
+
+            socket.on('newChatMessage', function(data) {
+                addMessage(data.message);
+
+                // Respond with a message including this clients' id sent from the server
+                socket.emit('newChatMessage', {data: 'foo!', id: data.id});
+            });
+            // socket.on('time', function(data) {
+            //     addMessage(data.time);
+            // });
+            socket.on('error', console.error.bind(console));
+            socket.on('message', console.log.bind(console));
+
+            function addMessage(message) {
+                var text = document.createTextNode(message),
+                    el = document.createElement('li'),
+                    messages = document.getElementById('messages');
+
+                el.appendChild(text);
+                messages.appendChild(el);
+            }
+        </script>
 
      
     <%- include('main/footer'); %>

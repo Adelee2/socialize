@@ -476,7 +476,7 @@
                             <!-- Footer menus-->
                             <div class="footer-wrapper-sidebar">
                                 <div class="footer-powered">
-                                    <p>  © 2021 Socialize</p>
+                                    <p> © <%= moment().format('YYYY')%> Socialize</p>
                                 </div>
                                 
                                 <hr>
@@ -583,7 +583,7 @@
             data:body,
             success: (resp)=>{
                 $('#commentsection-'+postid).html("")
-                
+                $('#commentinput-'+postid).val("")
                 getComments(postid)
                 
             },

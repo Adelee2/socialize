@@ -8849,15 +8849,16 @@ header .opts_icon_link:hover {
 .story-pop {
   position: fixed;
   z-index: 10000;
-  width: calc(100% - 40px );
+  width: 65%;
+  margin-left: 18%;
   height: calc(100% - 40px );
   display: flex;
-  border-top: 1px solid #f1f3f4;
+  border-top: 1px solid #224a96;
   visibility: hidden;
   display: none;
   top: 0;
   left: 0;
-  border: 20px solid #1c3faa;
+  border: 20px solid rgba(255, 255, 255, 0.753);
 }
 @media (min-width: 760px) {
 body.is-open .story-pop {

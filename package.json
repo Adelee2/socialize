@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www && nodemon socket"
   },
   "dependencies": {
     "@google-cloud/storage": "^5.8.5",
@@ -29,6 +29,8 @@
     "passport-google": "^0.3.0",
     "passport-local": "^1.0.0",
     "q": "^1.5.1",
+    "socket.io": "^4.1.2",
+    "sync-request": "^6.1.0",
     "uuidv4": "^6.2.10"
   }
 }
