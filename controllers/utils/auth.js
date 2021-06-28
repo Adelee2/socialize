@@ -5,7 +5,7 @@ var bcrypt = require('bcryptjs'),
 const UserInfo = require('../../model/userinfo');
 
 //used in local-signup strategy
-exports.localReg = function (name,email,password,location) {
+exports.localReg = function (name,email,password,dob,gender,location) {
   var deferred = Q.defer();
     //check if username is already assigned in our database
     User.findOne({'email' : email})
@@ -20,7 +20,6 @@ exports.localReg = function (name,email,password,location) {
 
           console.log("CREATING USER:", name);
           UserInfo.create({
-            avatar:"noimage.jpg",
             location:location
           }).
           then(userinfo=>{
@@ -29,8 +28,10 @@ exports.localReg = function (name,email,password,location) {
               email: email,
               password: hash,
               token: uuid(),
-              userinfo:userinfo._id
-              
+              avatar:"noimage.jpg",
+              userinfo:userinfo._id,
+              dob:dob,
+              gender:gender
             }
             User.create(user)
             .then(function () {

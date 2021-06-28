@@ -72,20 +72,42 @@ class Pages{
     realfeeds = function(req,res){
         
         let feeds = new Feedutil(req,res)
-        res.render('feeds',{user: req.user,feeds:feeds.index });
+        let userinfo = new Userutil(req,res)
+        userinfo.show().then(ress=>{
+            feeds.index().then(ress1=>{
+                
+                res.render('feeds',{user: req.user,userinfos:ress,feeds:ress1 });
+            })
+        })
+        
     }
     posts = function(req,res){
         
         let posts = new Postutil(req,res);
         let stories = new Storyutil(req,res);
-        console.log("posts:",posts.index)
-        console.log("stories:",stories.index)
+        let userinfo = new Userutil(req,res)
+        userinfo.show().then(ress=>{
+            // result1=ress;
+            
+            posts.index().then(ress1=>{
+                stories.index().then(ress2=>{
+                    if(ress1.length <=0 && ress2.length<=0){
+                        res.redirect('/mypage');
+                    }
+                    else{
+                        console.log("pposts",ress1)
+                        console.log("sstory",ress2)
+                        res.render('posts',{user: req.user,userinfos:ress,posts:ress1,stories:ress2,moment:moment});
+
+                    }
+                })
+            })
+        })
 
         // Promise.all([posts,stories]).then(([result1,result2])=>{
 
         // })
         
-        res.render('posts',{user: req.user,posts:posts.index,stories:stories.index,moment:moment});
     }
     updateAvatar = async function(req,res) {
         console.log(req.file)
@@ -100,7 +122,7 @@ class Pages{
         // console.log(req.user);
         let userinfo = new Userutil(req,res)
         let myposts = new Postutil(req,res)
-        let result1={},result2=[],result3=[];
+
         userinfo.show().then(ress=>{
             // result1=ress;
             
@@ -111,9 +133,7 @@ class Pages{
                     // result3=ress3
                     // console.log("result1",ress)
                     // console.log('result2',ress1)
-                    // console.log("result3",ress3)
-
-                    
+                    console.log("friends",ress3)
                     res.render('mypage',{user: req.user, userinfos:ress, posts:ress1,friends:ress3,moment:moment});
                 });
             });
@@ -125,26 +145,71 @@ class Pages{
     mypagefriends = async function(req,res){
         // console.log(req.user);
         let userinfo = new Userutil(req,res)
-        
-        // console.log(result.userinfo);
-        res.render('mypagefriends',{user: req.user, userinfos:userinfo.show,friends:userinfo.friends,moment:moment});
-    }
-    explore = async function(req,res){
-        let users=[]
-        await User.find({},function(result1){
-            users = result1
+        let myposts = new Postutil(req,res)
+
+        userinfo.show().then(ress=>{
+            // result1=ress;
+            myposts.show().then(ress1=>{
+                 userinfo.friends().then(ress2=>{
+                    res.render('mypagefriends',{user: req.user,posts:ress1,userinfos:ress,friends:ress2,moment:moment});
+
+                })
+            })
+           
         })
-        res.render('explore',{user: req.user,users,moment:moment});
+                    // result3=ress3
+        // console.log(result.userinfo);
+    }
+    viewProfile = async function(req,res){
+        let userinfo = new Userutil(req,res)
+        let myposts = new Postutil(req,res)
+        userinfo.showProfile().then(ress=>{
+            // result1=ress;
+            myposts.showProfile().then(ress1=>{
+                 userinfo.profileFriends().then(ress2=>{
+                    //  console.log("profile",{user:ress,posts:ress1,friends:ress2})
+                    res.render('viewpersonpage',{user:req.user,newuser:ress, posts:ress1,friends:ress2,moment:moment});
+
+                })
+            })
+           
+        })
+
+    }
+
+    explore = async function(req,res){
+        
+        let userinfo = new Userutil(req,res)
+        userinfo.index().then(ress=>{
+            userinfo.show().then(ress1=>{
+                console.log("users",ress)
+                res.render('explore',{user: req.user,userinfos:ress1,users:ress,moment:moment});
+            })
+        })
+        
+        
     }
     // blog = function(req,res){
     //     res.render('blog',{user: req.user});
     // }
 
-    chat = async function(req,res){
+    message = async function(req,res){
+      
         let userinfo = new Userutil(req,res)
+        userinfo.show().then(ress=>{
+            userinfo.friends().then(ress1=>{
+                // if(ress1.length<=0){
+                //     res.redirect('/explore')
+                // }
+                console.log('friends',ress1)
+                res.render('chat',{user: req.user,userinfos:ress,friends:ress1});
 
-        res.render('chat',{user: req.user,friends:userinfo.friends});
+            })
+        })
+        
     }
+
+    
     error = (req,res)=>{
         res.render('error')
     }

@@ -2,7 +2,10 @@ const mongoose = require ('mongoose');
 
 const notifySchema = new mongoose.Schema(
   {
-    
+      notify:{
+        type:Boolean,
+        default:true
+      },
     friendrequest:[
         {
             type: mongoose.Schema.Types.ObjectId,ref:'FriendRequest'

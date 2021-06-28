@@ -7,6 +7,7 @@ const likeSchema = new mongoose.Schema(
         default: true,
       },
       user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      postfeedstoryid:{type:mongoose.Schema.Types.ObjectId,ref:'Post'}
     },
     { timestamps: true },
   );
