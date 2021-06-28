@@ -33,7 +33,7 @@ var storageavatar = multer.diskStorage({
     }
 })
 
-let upload = multer({ storage: storage, limits:{ fileSize: 100000 } }).single('posts')
+let upload = multer({ storage: storage, limits:{ fileSize: 104857600 } }).single('posts')
 let uploadfeed = multer({storage:storage, limits:{ fileSize: 100000 }}).single('feeds')
 let uploadavatar = multer({storage:storageavatar,limits:{ fileSize: 5000 }}).single('avatar')
 

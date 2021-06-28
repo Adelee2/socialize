@@ -24,7 +24,7 @@
                                 class="uk-slider-items uk-child-width-1-5@m uk-child-width-1-3@s uk-child-width-1-3 story-slider uk-grid">
                                 <li>
                                     <a href="#" uk-toggle="target: body ; cls: is-open">
-                                        <div class="story-card" data-src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>"
+                                        <div class="story-card"  style="height: 15vh;" data-src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>"
                                             uk-img>
                                             <i class="uil-plus"></i>
                                             <div class="story-card-content">
@@ -38,9 +38,9 @@
                                     <%stories.forEach(function(key){%>
                                         <li>
                                             <a href="#" uk-toggle="target: body ; cls: is-open">
-                                                <div class="story-card" data-src="/Uploads/Avatar/<%=key.user.avatar%>"
+                                                <div class="story-card" style="height: 15vh;" data-src="/Uploads/Avatar/<%=key.user.avatar%>"
                                                     uk-img>
-                                                    <% if(key.objtext.substr(key.objtext.length-4,key.objtext) ==".mp4"){%>
+                                                    <% if(key.objtext.substring(key.objtext.length-4,key.objtext.length) ==".mp4"){%>
                                                         <video controls autoplay loop>  
                                                             <source src="/Uploads/<%=key.objtext%>" type="video/mp4">  
                                                             Your browser does not support the html video tag.  
@@ -129,8 +129,8 @@
                                 </div>
                                 <div class="post-description">
                                     <div class="fullsizeimg">
-                                        <% if(key.objtext.substr(key.objtext.length-4,key.objtext) ==".mp4"){%>
-                                            <video style="width: 100%; height: 85vh;" controls autoplay loop>  
+                                        <% if(key.objtext.substring(key.objtext.length-4,key.objtext.length) ==".mp4"){%>
+                                            <video style="width: 100%; height: 65vh;" controls autoplay loop>  
                                                 <source src="/Uploads/<%=key.objtext%>" type="video/mp4">  
                                                 Your browser does not support the html video tag.  
                                               </video>  
