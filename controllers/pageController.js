@@ -194,13 +194,14 @@ class Pages{
     // }
 
     message = async function(req,res){
-        console.log('chat',req.user)
+      
         let userinfo = new Userutil(req,res)
         userinfo.show().then(ress=>{
             userinfo.friends().then(ress1=>{
                 // if(ress1.length<=0){
                 //     res.redirect('/explore')
                 // }
+                console.log('friends',ress1)
                 res.render('chat',{user: req.user,userinfos:ress,friends:ress1});
 
             })

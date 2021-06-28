@@ -12,11 +12,11 @@
                 <div id="spinneroverlay"> </div>
 
 
-                <div class="uk-grid-large" uk-grid>
+                <div class="uk-grid-small" uk-grid>
                     <div class="uk-width-expand">
 
                         <div id="sidebar-chat" class="sidebar-chat px-3 mt-4">
-                            <div class="uk-offcanvas-bar1">
+                            <div class="uk-offcanvas-bar1" style="max-height: 70vh;">
                 
                                 <div class="sidebar-chat-head mb-2">
                 
@@ -44,158 +44,42 @@
                                     <li class="uk-active"><a href="#">Users</a></li>
                                     <li><a href="#">Groups</a></li>
                                 </ul>
-                
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                            <span class="online-dot"></span> </div>
-                                        <h5> Dennis Han</h5>
-                                    </div>
-                                </a>
-                
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
-                                            <span class="online-dot"></span> </div>
-                                        <h5> Erica Jones </h5>
-                                    </div>
-                                </a>
-                
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-7.jpg" alt="">
-                                            <span class="offline-dot"></span> </div>
-                                        <h5> Stella Johnson </h5>
-                                    </div>
-                                </a>
-                
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                            <span class="offline-dot"></span> </div>
-                                        <h5> Alex Dolgove </h5>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                            <span class="online-dot"></span> </div>
-                                        <h5> Dennis Han</h5>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                                            <span class="online-dot"></span> </div>
-                                        <h5> Erica Jones </h5>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                                            <span class="offline-dot"></span> </div>
-                                        <h5> Stella Johnson </h5>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                            <span class="offline-dot"></span> </div>
-                                        <h5> Alex Dolgove </h5>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                            <span class="online-dot"></span> </div>
-                                        <h5> Dennis Han</h5>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                                            <span class="online-dot"></span> </div>
-                                        <h5> Erica Jones </h5>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                                            <span class="offline-dot"></span> </div>
-                                        <h5> Stella Johnson </h5>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="contact-list">
-                                        <div class="contact-list-media"> <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                            <span class="offline-dot"></span> </div>
-                                        <h5> Alex Dolgove </h5>
-                                    </div>
-                                </a>
-                
-                
-                
+                                <%if(userinfos && friends.length>0){%>
+                                    <%friends.forEach(function(key){%>
+                                        <a href="#" onclick="getMessages('<%=user._id%>','<%=key._id%>')">
+                                            <div class="contact-list">
+                                                <div class="contact-list-media"> <img src="/Uploads/Avatar/<%=key.avatar%>" alt="">
+                                                    <span class="online-dot"></span> </div>
+                                                <h5> <%=key.name%></h5>
+                                            </div>
+                                        </a>
+                                <%})%>
+                                <%}else{%>
+                                    <a href="/explore">
+                                        <div class="contact-list">
+                                            <h5> Click to Find Friends</h5>
+                                        </div>
+                                    </a>
+                                <%}%>
                             </div>
                         </div>
                     </div>
 
-                    <div class="uk-width-2-3@m">
-
-                            <div class="post">
-                                <div class="post-heading">
-                                    <div class="post-avature">
-                                        <img src="assets/images/avatars/avatar-6.jpg" alt="">
-                                    </div>
+                    <div class="uk-width-2-3@m "  id="messages" >
+                        <!-- <div class="uk-width-expand"> -->
+                            <div class="post"  >
+                                <!-- <div class="post-heading">
                                     <div class="post-title">
-                                        <h4> Mariah Ali </h4>
-                                        <p> 5 <span> hrs</span> <i class="uil-users-alt"></i> </p>
+                                        <h4> Click to start a Conversation</h4>
                                     </div>
-                                    <div class="post-btn-action">
-                                        <span class="icon-more uil-ellipsis-h"></span>
-                                        <div class="mt-0 p-2" uk-dropdown="pos: bottom-right;mode:hover ">
-                                            <ul class="uk-nav uk-dropdown-nav">
-                                                <li><a href="#"> <i class="uil-share-alt mr-1"></i> Share</a> </li>
-                                                <li><a href="#"> <i class="uil-edit-alt mr-1"></i> Edit Post </a></li>
-                                                <li><a href="#"> <i class="uil-comment-slash mr-1"></i> Disable comments
-                                                    </a></li>
-                                                <li><a href="#"> <i class="uil-favorite mr-1"></i> Add favorites </a></li>
-                                                <li><a href="#" class="text-danger"> <i class="uil-trash-alt mr-1"></i>
-                                                        Delete </a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="post-description">
-                                    <div class="fullsizeimg">
-                                        <img src="assets/images/post/img-1.jpg" alt="">
-                                    </div>
-    
-                                    <div class="post-state-details">
-                                        <div>
-                                            <img src="assets/images/icons/reactions_like.png" alt="">
-                                            <img src="assets/images/icons/reactions_love.png" alt="">
-                                            <p> 13 </p>
-                                        </div>
-                                        <p> 24 Comments</p>
-                                    </div>
-    
-                                </div>
-    
-                                <div class="post-state">
-                                    <div class="post-state-btns"> <i class="uil-thumbs-up"></i> 126<span> Liked </span>
-                                    </div>
-                                    <div class="post-state-btns"> <i class="uil-heart"></i> 18 <span> Coments</span>
-                                    </div>
-                                    <div class="post-state-btns"> <i class="uil-share-alt"></i> 193 <span> Shared </span>
-                                    </div>
-                                    <div class="post-state-btns"> <i class="uil-bookmark"></i> 13 <span> Saved </span>
-                                    </div>
-                                </div>
+                                </div> -->
     
                                 <!-- post comments -->
-                                <div class="post-comments">
-                                    <a href="#" class="view-more-comment"> Veiw 8 more Comments</a>
-                                    <div class="post-comments-single">
+                                <div class="post-comments" style="min-height: 70vh;">
+                                    <div class="post-title" style="margin-top: 30%; margin-left: 23%;">
+                                        <h4> Click on a Friend start a Conversation</h4>
+                                    </div>
+                                    <!-- <div class="post-comments-single">
                                         <div class="post-comment-avatar">
                                             <img src="assets/images/avatars/avatar-5.jpg" alt="">
                                         </div>
@@ -248,12 +132,9 @@
                                             </div>
                                         </div>
                                         <a href="#" class="post-comment-opt"></a>
-                                    </div>
+                                    </div> -->
     
-    
-                                    <a href="#" class="view-more-comment"> Veiw 8 more Comments</a>
-    
-                                    <div class="post-add-comment">
+                                    <!-- <div class="post-add-comment">
                                         <div class="post-add-comment-avature">
                                             <img src="assets/images/avatars/avatar-2.jpg" alt="">
                                         </div>
@@ -266,15 +147,13 @@
                                             </div>
                                         </div>
     
-                                    </div>
+                                    </div> -->
     
                                 </div>
     
-    
-    
                             </div>
                          
-
+                        <!-- </div> -->
                     </div>
                     
                 </div>
@@ -290,26 +169,133 @@
     <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
         <script>
             var socket = io();
+            document.getElementById('buttonadd').addEventListener('click',function(){
+                socket.on('newChatMessage', function(data) {
+                    addMessage();
 
-            socket.on('newChatMessage', function(data) {
-                addMessage(data.message);
+                    // Respond with a message including this clients' id sent from the server
+                    socket.emit('newChatMessage', {data: 'foo!', id: data.id});
+                });
+                // socket.on('time', function(data) {
+                //     addMessage(data.time);
+                // });
+                socket.on('error', console.error.bind(console));
+                socket.on('message', console.log.bind(console));
 
-                // Respond with a message including this clients' id sent from the server
-                socket.emit('newChatMessage', {data: 'foo!', id: data.id});
-            });
-            // socket.on('time', function(data) {
-            //     addMessage(data.time);
-            // });
-            socket.on('error', console.error.bind(console));
-            socket.on('message', console.log.bind(console));
+            })
+                
+            function addMessage() {
 
-            function addMessage(message) {
-                var text = document.createTextNode(message),
-                    el = document.createElement('li'),
-                    messages = document.getElementById('messages');
+                var messages = document.getElementById('messageinput').value;
+                var toid = document.getElementById('toid').value
+                let userid = '<%=user._id%>'
+                let body = {
+                    text:messages,
+                    from:userid,
+                    to:toid
+                }
+                console.log(body)
+                $.ajax({
+                    url:'/message/add',
+                    method:"POST",
+                    data:body,
+                    success:(resp)=>{
+                        getMessages(userid,toid)
+                    }
+                })
+            }
 
-                el.appendChild(text);
-                messages.appendChild(el);
+            function getMessages(userid,toid){
+                let uid = userid+'-'+toid
+
+                $.ajax({
+                    url:'/message/'+uid,
+                    method:"GET",
+                    success:(resp)=>{
+                        var divhtml="";
+                        console.log("message",resp)
+                        if(resp.status== true){
+                            
+                            if(resp.message.length>0){
+                                divhtml = `<div class="post" >
+                                <div class="post-heading">
+                                    <div class="post-avature">
+                                        <img src="/Uploads/Avatar/${resp.message[0].to.avatar}" alt="">
+                                    </div>
+                                    <div class="post-title">
+                                        <h4>${resp.message[0].to.name}</h4>
+                                    </div>
+                                </div>
+                                <!-- post comments -->
+                                <div class="post-comments" style="min-height: 63vh">`
+                                resp.message.filter((key)=>key.message!=="").map((key,val)=>{
+                                    
+                                    if(key.to._id == toid){
+                                    divhtml += `
+        
+                                        <div class="post-comments-single">
+                                            <div class="post-comment-text">
+                                                <div class="post-comment-text-inner">
+                                                    <h6>${key.to.name}</h6>
+                                                    <p> ${key.message}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        `
+                                    }
+                                    else{
+                                        divhtml += `
+        
+                                        <div class="post-comments-single" style="float:right;">
+                                            <div class="post-comment-text">
+                                                <div class="post-comment-text-inner">
+                                                    <h6>${key.from.name}</h6>
+                                                    <p>${key.message}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        `
+                                    }
+                                })
+                            divhtml +=`
+                                <div class="post-add-comment">
+                                        <div class="post-add-comment-text-area" style="margin-top:60%">
+                                            <input type="text" placeholder="Send Message" id="messageinput-${toid}">
+                                            <input type="hidden" id ="toid" value="${toid}"/>
+                                            <div class="icons">
+                                                <span class="uil-link-alt"></span>
+                                                <span class="uil-image"></span>
+                                                <a href="javascript:;" id="buttonadd">Enter</a>
+                                            </div>
+                                        </div>
+    
+                                    </div>
+                                </div>
+                            </div>`
+                        }
+                        else{
+                            divhtml =`<div class="post" >
+                                <!-- <div class="post-heading">
+                                    <div class="post-title">
+                                        <h4> Click to start a Conversation</h4>
+                                    </div>
+                                </div> -->
+    
+                                <!-- post comments -->
+                                <div class="post-comments" style="height: 50vh;">
+                                    <div class="post-title" style="margin-top: 30%; margin-left: 23%;">
+                                        <h4> Click on a Friend start a Conversation</h4>
+                                    </div>
+                                   
+                                </div>
+    
+                            </div>`
+                        }
+                        }
+
+                        $('#messages').html(divhtml)
+                    }
+                })
             }
         </script>
 

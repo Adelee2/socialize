@@ -83,7 +83,7 @@ router.get('/friend/add/:requestid',auth.ensureAuthenticated,new Notification().
 
 //chat
 router.post('/message/add',auth.ensureAuthenticated,new Chat().add)
-router.get('/message/:uid',auth.ensureAuthenticated.apply, new Chat().show)
+router.get('/message/:uid',auth.ensureAuthenticated, new Chat().show)
 
 router.get('/error',mypages.error)
 
