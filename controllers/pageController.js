@@ -95,7 +95,7 @@ class Pages{
                         res.redirect('/mypage');
                     }
                     else{
-                        console.log("pposts",ress1)
+                        // console.log("pposts",ress1)
                         console.log("sstory",ress2)
                         res.render('posts',{user: req.user,userinfos:ress,posts:ress1,stories:ress2,moment:moment});
 

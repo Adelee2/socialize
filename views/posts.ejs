@@ -65,16 +65,10 @@
                                     <%stories.forEach(function(key){%>
                                         <li>
                                             <a href="#" uk-toggle="target: body ; cls: is-open">
-                                                <div class="story-card" style="height: 15vh;" data-src="/Uploads/Avatar/<%=key.user.avatar%>"
+                                                <div class="story-card" style="height: 15vh;" data-src="/Uploads/<%=key.objtext%>"
                                                     uk-img>
-                                                    <% if(key.objtext.substring(key.objtext.length-4,key.objtext.length) ==".mp4"){%>
-                                                        <video controls>  
-                                                            <source src="/Uploads/<%=key.objtext%>" type="video/mp4">  
-                                                            Your browser does not support the html video tag.  
-                                                          </video>  
-                                                    <%}else{%>
-                                                         <img src="/Uploads/<%=key.objtext%>" alt="">
-                                                    <%}%>
+                                                         <img src="/Uploads/Avatar/<%=key.user.avatar%>" alt="">
+                                                    
                                                     <div class="story-card-content">
                                                         <h4> <%=key.user.name%> </h4>
                                                     </div>
@@ -604,10 +598,10 @@
                             </div>
                         </a>
                         <!-- story modal -->
-                        <div id='storymodal' class="post-new" style="margin-right: 30%; float:left; height: 30%;" uk-offcanvas="flip: true;">
+                        <div id='storymodal' class="post-new storymodal" style="margin-right: 30%; float:left; height: 30%;" uk-offcanvas="flip: true;">
                             <div class="" style="padding: 0px 50px 0 50px;">
                                 <span class="btn-close"
-                                uk-toggle="target: #avatarmodal; animation: uk-animation-slide-top-small" style="float:right;"> <i
+                                uk-toggle="target: .storymodal ; cls: is-open" style="float:right;"> <i
                                     class="icon-feather-x"></i> </span>
                                 <form action="/story/add" method="POST" enctype="multipart/form-data">
                                     <input type="hidden" name="userid" value="<%=user._id%>"/>
@@ -662,11 +656,25 @@
 
             <div class="story-content-innr">
 
-                <ul id="story-slider-switcher" class="uk-switcher" id="storyid">
-                    
+                <ul >
+                    <li>
+                        <a href="#" uk-switcher-item="previous"
+                            class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
+                        <a href="#" uk-switcher-item="next"
+                            class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
+
+                        <div class="uk-position-relative uk-visible-toggle" uk-slider>
+
+                            <!-- navigation -->
+                            <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
+
+                            <!-- Story posted image -->
+                            <ul class="uk-slider-items uk-child-width-1-1 story-slider uk-switcher " id="story-slider-switcher" class=""  id="storyid">
                     
         
-
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
 
 
@@ -816,46 +824,29 @@
             method:"GET",
             success:(resp)=>{
                 var divhtml = ""
+                console.log("viewonestory",resp)
                 if(resp.status==true && resp.story.length>0){
-                    resp.story.map((key,val)=>{
-                        divhtml+=`<li>
+                    if(resp.story[0].objtext.length >0){
+                        
+                        resp.story[0].objtext.map((key,val)=>{
+                            console.log(key,val)
+                            
+                                       divhtml+= `
+                                        <li>
+                                            <div
+                                                class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
+                                                <img src="/Uploads/${key}" alt="">
+                                            </div>
+                                        </li>
+                                    `
 
-                            <a href="#" uk-switcher-item="previous"
-                                class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
-                            <a href="#" uk-switcher-item="next"
-                                class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
-
-                            <div class="uk-position-relative uk-visible-toggle" uk-slider>
-
-                                <!-- navigation -->
-                                <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
-
-                                <!-- Story posted image -->
-                                <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                    <li>
-                                        <div
-                                            class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                            <img src="assets/images/post/img-1.jpg" alt="">
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div
-                                            class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                            <img src="assets/images/avatars/avatar-lg-1.jpg" alt="">
-                                        </div>
-                                    </li>
-                                </ul>
-
-
-                            </div>
-
-
-                            </li>`
-                    })
+                    
+                        })
+                        
+                        $('#storyid').html(divhtml)
+                    }
                 }
                 
-
-                $('#storyid').html(divhtml)
             }
         })
     }

@@ -62,10 +62,10 @@
 
                     </div>
                     <!-- avatar modal -->
-                    <div id='avatarmodal' class="post-new" style="width: 27%; height: 30%; margin-right: 33%; margin-top: 15%;" uk-offcanvas="flip: true;">
+                    <div id='avatarmodal' class="post-new avatarmodal" style="width: 27%; height: 30%; margin-right: 33%; margin-top: 15%;" uk-offcanvas="flip: true;">
                         <div class="" style="padding: 0px 50px 0 50px;">
                             <span class="btn-close"
-                            uk-toggle="target: #avatarmodal; animation: uk-animation-slide-top-small" style="float:right;"> <i
+                            uk-toggle="target: .avatarmodal;  cls: is-open" style="float:right;"> <i
                                 class="icon-feather-x"></i> </span>
                             <form action="/avatar/add" method="POST" enctype="multipart/form-data">
                                 <h5>Upload Profile Picture</h5>
@@ -287,7 +287,7 @@
                                         <div class="post-description">
                                             <div class="fullsizeimg">
                                                 <% if(key.objtext.substring(key.objtext.length-4,key.objtext.length) ==".mp4"){%>
-                                                    <video style="width: 100%; height: 65vh;" controls autoplay loop>  
+                                                    <video style="width: 100%; height: auto;" controls autoplay loop>  
                                                         <source src="/Uploads/<%=key.objtext%>" type="video/mp4">  
                                                         Your browser does not support the html video tag.  
                                                       </video>  

@@ -2,9 +2,10 @@ const mongoose = require ('mongoose');
 
 const StorySchema = new mongoose.Schema(
     {
-      objtext: {
+      objtext: [
+        {
         type: String,
-      },
+      }],
       description:{
         type:String,
       },
