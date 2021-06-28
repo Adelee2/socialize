@@ -12,11 +12,11 @@
                 <div id="spinneroverlay"> </div>
 
 
-                <div class="uk-grid-small" uk-grid>
-                    <div class="uk-width-expand">
+                <div class="uk-grid-large" uk-grid>
+                    <div class="uk-width-1-3@m ">
 
                         <div id="sidebar-chat" class="sidebar-chat px-3 mt-4">
-                            <div class="uk-offcanvas-bar1" style="max-height: 70vh;">
+                            <div class="uk-offcanvas-bar1" style="max-height: 90vh;">
                 
                                 <div class="sidebar-chat-head mb-2">
                 
@@ -170,11 +170,18 @@
         <script>
             var socket = io();
             document.getElementById('buttonadd').addEventListener('click',function(){
-                socket.on('newChatMessage', function(data) {
-                    addMessage();
-
+                var messages = document.getElementById('messageinput').value;
+                var toid = document.getElementById('toid').value
+                let userid = '<%=user._id%>'
+                let body = {
+                    text:messages,
+                    from:userid,
+                    to:toid
+                }
+                socket.on('newChatMessage', function(body) {
                     // Respond with a message including this clients' id sent from the server
-                    socket.emit('newChatMessage', {data: 'foo!', id: data.id});
+                    socket.emit('newChatMessage', body);
+                    getMessages(body.from,body.to)
                 });
                 // socket.on('time', function(data) {
                 //     addMessage(data.time);
@@ -184,28 +191,22 @@
 
             })
                 
-            function addMessage() {
+            // function addMessage() {
 
-                var messages = document.getElementById('messageinput').value;
-                var toid = document.getElementById('toid').value
-                let userid = '<%=user._id%>'
-                let body = {
-                    text:messages,
-                    from:userid,
-                    to:toid
-                }
-                console.log(body)
-                $.ajax({
-                    url:'/message/add',
-                    method:"POST",
-                    data:body,
-                    success:(resp)=>{
-                        getMessages(userid,toid)
-                    }
-                })
-            }
+                
+            //     console.log(body)
+            //     $.ajax({
+            //         url:'/message/add',
+            //         method:"POST",
+            //         data:body,
+            //         success:(resp)=>{
+            //             getMessages(userid,toid)
+            //         }
+            //     })
+            // }
 
             function getMessages(userid,toid){
+                $('#messages').html(`<div class='post'></div>`)
                 let uid = userid+'-'+toid
 
                 $.ajax({
@@ -227,7 +228,7 @@
                                     </div>
                                 </div>
                                 <!-- post comments -->
-                                <div class="post-comments" style="min-height: 63vh">`
+                                <div class="post-comments" style="min-height: 60vh">`
                                 resp.message.filter((key)=>key.message!=="").map((key,val)=>{
                                     
                                     if(key.to._id == toid){

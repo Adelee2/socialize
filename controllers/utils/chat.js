@@ -5,7 +5,7 @@ class Chat{
         let uid = req.params.uid
         let id = uid.split('-')
         chat.find({conversationid: uid}).populate([{path:'to'},{path:'from'}]).then(resp=>{
-            console.log("chat find",resp)
+            // console.log("chat find",resp)
             if(resp.length ==0){
                 chat.create({
                     message:"",
@@ -13,7 +13,7 @@ class Chat{
                     from:id[0],
                     to:id[1]
                 }).then(resp1=>{
-                    console.log("chat not found,creating..",resp1)
+                    // console.log("chat not found,creating..",resp1)
                     return res.json({status:true,message:resp1})
                 })
             }
