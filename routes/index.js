@@ -32,9 +32,18 @@ var storageavatar = multer.diskStorage({
     cb(null, uniqueSuffix+path.extname(file.originalname))
     }
 })
+var storagestories = multer.diskStorage({
+    destination:"./public/Uploads",
+    filename: function (req, file, cb) {
+    const uniqueSuffix = file.fieldname+"-"+Date.now() + '-' + Math.round(Math.random() * 1E5)
+    //   console.log(uniqueSuffix+'-'+path.extname(file.originalname))
+    cb(null, uniqueSuffix+path.extname(file.originalname))
+    }
+})
 
 let upload = multer({ storage: storage, limits:{ fileSize: 104857600 } }).single('posts')
 let uploadfeed = multer({storage:storage, limits:{ fileSize: 100000 }}).single('feeds')
+let uploadstories = multer({storage:storagestories,limits:{fileSize:52428800}}).array('stories', 3)
 let uploadavatar = multer({storage:storageavatar,limits:{ fileSize: 5000 }}).single('avatar')
 
 // var postutils = new Posts()
@@ -52,6 +61,8 @@ router.get('/feeds',auth.ensureAuthenticated,mypages.realfeeds);
 router.get('/mypage',auth.ensureAuthenticated,mypages.mypage);
 router.post('/post/add',auth.ensureAuthenticated,upload,mypages.postFile);
 router.post('/avatar/add',auth.ensureAuthenticated,uploadavatar,mypages.updateAvatar);
+router.post('/story/add',auth.ensureAuthenticated,uploadstories,new Stories().add);
+
 // router.get('/mypagefriends',auth.ensureAuthenticated,mypages.mypagefriends);
 router.get('/explore',auth.ensureAuthenticated,mypages.explore);
 router.get('/chat',auth.ensureAuthenticated,mypages.message);
@@ -67,6 +78,7 @@ router.post('/story/likes/add',auth.ensureAuthenticated,new likesutil().storylik
 router.get('/post/one/:postid',auth.ensureAuthenticated,new Posts().showOne)
 router.get('/feed/one/:feedid',auth.ensureAuthenticated,new Feeds().showOne)
 router.get('/story/one/:storyid',auth.ensureAuthenticated,new Stories().showOne)
+router.get('/story/user/:userid',auth.ensureAuthenticated,new Stories().show)
 
 router.get('/comment/post/one/:id',auth.ensureAuthenticated,new commentutil().show)
 router.get('/comment/feed/one/:id',auth.ensureAuthenticated,new commentutil().show)

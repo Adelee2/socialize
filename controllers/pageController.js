@@ -84,13 +84,13 @@ class Pages{
     posts = function(req,res){
         
         let posts = new Postutil(req,res);
-        let stories = new Storyutil(req,res);
+        let stories = new Storyutil();
         let userinfo = new Userutil(req,res)
         userinfo.show().then(ress=>{
             // result1=ress;
             
             posts.index().then(ress1=>{
-                stories.index().then(ress2=>{
+                stories.index(req,res).then(ress2=>{
                     if(ress1.length <=0 && ress2.length<=0){
                         res.redirect('/mypage');
                     }
