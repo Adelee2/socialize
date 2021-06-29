@@ -45,7 +45,8 @@ const sendMessage = (message) => {
     `http://localhost:${PORT}/message/add`,
     { json: {
         message:message.text,
-        to:message.toid
+        to:message.to,
+        from:message.from
       }});
 }
 const getMessage = (message, conversationId) => {

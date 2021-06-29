@@ -239,13 +239,13 @@
                                 <div class="post-comments" style="min-height: 60vh;overflow-y:scroll">`
                                 resp.message.filter((key)=>key.message!=="").map((key,val)=>{
                                     
-                                    if(key.to._id == toid){
+                                    if(key.to._id == userid){
                                     divhtml += `
         
                                         <div class="post-comments-single">
                                             <div class="post-comment-text">
                                                 <div class="post-comment-text-inner">
-                                                    <h6>${key.to.name}</h6>
+                                                    <h6>${key.from.name}</h6>
                                                     <p> ${key.message}</p>
                                                 </div>
                                             </div>

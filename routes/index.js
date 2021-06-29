@@ -94,7 +94,7 @@ router.post('/friendrequest/add',auth.ensureAuthenticated,new Notification().sen
 router.get('/friend/add/:requestid',auth.ensureAuthenticated,new Notification().add)
 
 //chat
-router.post('/message/add',auth.ensureAuthenticated,new Chat().add)
+router.post('/message/add',new Chat().add)
 router.get('/message/:uid',auth.ensureAuthenticated, new Chat().show)
 
 router.get('/error',mypages.error)
