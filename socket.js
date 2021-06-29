@@ -4,16 +4,13 @@ const request = require('sync-request');
 const server = require("http").createServer();
 // const io = require("socket.io")(server,{ origins: '*:*'});
 const io = require("socket.io")(server, {
-    handlePreflightRequest: (req, res) => {
-        const headers = {
-            "Access-Control-Allow-Headers": "Content-Type",
-            "Access-Control-Allow-Origin": "http://127.0.0.1:3000", //or the specific origin you want to give access to,
-            "Access-Control-Allow-Credentials": true
-        };
-        res.writeHead(200, headers);
-        res.end();
+    cors: {
+      origin: "http://127.0.0.1:3000",
+      methods: ["GET", "POST"],
+      allowedHeaders: ["my-custom-header"],
+      credentials: true
     }
-});
+  });
 // app.use(cors())
 const SOCKETPORT = process.env.SOCKETPORT || 3032;
 // const baseUrl = process.env.BASE_URL || '/api/v1/';

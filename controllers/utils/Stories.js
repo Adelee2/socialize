@@ -16,7 +16,8 @@ class Stories{
         let result = await Story.find({ 
                     user:{$in:friendids },
                     createdAt:{
-                        $lte:moment().add(1, 'days').format()
+                        $gt:moment().subtract(1, "days").format(),
+                        $lt:moment().add(1, 'days').format()
                     } 
                 }).populate([{path:'user'},{path:'likes'}])
         
@@ -30,7 +31,7 @@ class Stories{
         await files.map(async(key,val)=>{
            filearr.push(key.filename)
         })
-        Story.findOne({user:req.body.userid, "createdAt":{$lte:moment().add(1, 'days').format()}}).then(story=>{
+        Story.findOne({user:req.body.userid, "createdAt":{$gt:moment().subtract(1, "days").format(),$lt:moment().add(1, 'days').format()}}).then(story=>{
             console.log("story found?",story)
             if(story){
                 // let newfilearr = [...filearr,...story.objtext]
@@ -61,14 +62,14 @@ class Stories{
     } 
     // get all info for one Story
     showOne = async(req,res)=>{
-        Story.find({"createdAt":{$lte:moment().add(1, 'days').format()},_id:req.params.storyid}).populate([ {path:'user'}, {path:'comments'},{path:'likes'} ]).sort({'comments.createdAt':-1}).then(resp=>{
+        Story.find({"createdAt":{$gt:moment().subtract(1, "days").format(),$lt:moment().add(1, 'days').format()},_id:req.params.storyid}).populate([ {path:'user'}, {path:'comments'},{path:'likes'} ]).sort({'comments.createdAt':-1}).then(resp=>{
             return res.json({status:true,data:resp})
         })
     }
     //get all stories for a user 
     show=async (req,res)=>{
 
-        Story.find({"user":req.params.userid, "createdAt":{$lte:moment().add(1, 'days').format()} }).then((resp)=>{
+        Story.find({"user":req.params.userid, "createdAt":{$gt:moment().subtract(1, "days").format(),$lt:moment().add(1, 'days').format()} }).then((resp)=>{
             return res.json({status:true,story:resp})
         }).catch(err=>{
             console.log("fetch story err",err)
