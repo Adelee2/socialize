@@ -27,7 +27,7 @@ class Chat{
     }
     //send message
     add =async(req,res)=>{
-        console.log("add message to db data",req)
+        // console.log("add message to db data",req)
         let uid = req.body.from+"-"+req.body.to
         await chat.create({
             message:req.body.message,

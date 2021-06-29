@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
   socket.join(conversationId);
   socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
     sendMessage(data)
-    console.log("socket data",data)
+    // console.log("socket data",data)
     io.in(conversationId).emit(NEW_CHAT_MESSAGE_EVENT, data);
   });
 
