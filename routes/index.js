@@ -68,6 +68,7 @@ router.get('/explore',auth.ensureAuthenticated,mypages.explore);
 router.get('/chat',auth.ensureAuthenticated,mypages.message);
 router.get('/profile',auth.ensureAuthenticated,mypages.viewProfile)
 // API-like
+router.get('/user/one',auth.ensureAuthenticated,mypages.getProfile)
 router.post('/post/comment/add',auth.ensureAuthenticated,new commentutil().postcomment)
 router.post('/feed/comment/add',auth.ensureAuthenticated,new commentutil().feedcomment)
 router.post('/story/comment/add',auth.ensureAuthenticated,new commentutil().storycomment)

@@ -7,6 +7,7 @@ const Userutil = require('./utils/Users')
 const Post = require('../model/posts')
 const moment = require('moment')
 const UserInfo = require('../model/userinfo')
+
 class Pages{
    constructor(){
     
@@ -209,6 +210,13 @@ class Pages{
         
     }
 
+
+    //special
+    getProfile = (req,res)=>{
+        User.findOne({_id:req.query.userid}).populate('userprofile').then(resp=>{
+            return res.json({status:true,profile:resp})
+        })
+    }
     
     error = (req,res)=>{
         res.render('error')
