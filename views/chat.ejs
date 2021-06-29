@@ -119,8 +119,6 @@
     socket.on('newChatMessage',function(msg){
         console.log("emitting",msg)
         getMessages(msg.from,msg.to)
-        var objDiv = document.getElementsByClassName("post-comments");
-        objDiv.scrollTop = objDiv.scrollHeight;
     })
     function addMessage(){
         var messages = document.getElementById('messageinput').value;
@@ -166,7 +164,7 @@ function runMessages(userid,toid){
 }
     function getMessages(userid,toid){
         let uid = userid+'-'+toid
-        
+        $("#messages").scrollTop($("#messages")[0].scrollHeight);
         var divhtml="";
         
         $.ajax({

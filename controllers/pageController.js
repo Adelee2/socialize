@@ -134,7 +134,7 @@ class Pages{
                     // result3=ress3
                     // console.log("result1",ress)
                     // console.log('result2',ress1)
-                    console.log("friends",ress3)
+                    // console.log("friends",ress3)
                     res.render('mypage',{user: req.user, userinfos:ress, posts:ress1,friends:ress3,moment:moment});
                 });
             });
