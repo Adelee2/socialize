@@ -7,6 +7,7 @@ const Userutil = require('./utils/Users')
 const Post = require('../model/posts')
 const moment = require('moment')
 const UserInfo = require('../model/userinfo')
+
 class Pages{
    constructor(){
     
@@ -84,18 +85,18 @@ class Pages{
     posts = function(req,res){
         
         let posts = new Postutil(req,res);
-        let stories = new Storyutil(req,res);
+        let stories = new Storyutil();
         let userinfo = new Userutil(req,res)
         userinfo.show().then(ress=>{
             // result1=ress;
             
             posts.index().then(ress1=>{
-                stories.index().then(ress2=>{
+                stories.index(req,res).then(ress2=>{
                     if(ress1.length <=0 && ress2.length<=0){
                         res.redirect('/mypage');
                     }
                     else{
-                        console.log("pposts",ress1)
+                        // console.log("pposts",ress1)
                         console.log("sstory",ress2)
                         res.render('posts',{user: req.user,userinfos:ress,posts:ress1,stories:ress2,moment:moment});
 
@@ -133,7 +134,7 @@ class Pages{
                     // result3=ress3
                     // console.log("result1",ress)
                     // console.log('result2',ress1)
-                    console.log("friends",ress3)
+                    // console.log("friends",ress3)
                     res.render('mypage',{user: req.user, userinfos:ress, posts:ress1,friends:ress3,moment:moment});
                 });
             });
@@ -209,6 +210,13 @@ class Pages{
         
     }
 
+
+    //special
+    getProfile = (req,res)=>{
+        User.findOne({_id:req.query.userid}).populate('userprofile').then(resp=>{
+            return res.json({status:true,profile:resp})
+        })
+    }
     
     error = (req,res)=>{
         res.render('error')

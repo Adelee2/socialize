@@ -1,33 +1,89 @@
+// const app = require('express')();
 const request = require('sync-request');
+// var cors = require('cors')
 const server = require("http").createServer();
+// const io = require("socket.io")(server,{ origins: '*:*'});
 const io = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-  },
-});
-
+    cors: {
+      origin: "http://127.0.0.1:3000",
+      methods: ["GET", "POST"],
+      allowedHeaders: ["my-custom-header"],
+      credentials: true
+    }
+  });
+// app.use(cors())
 const SOCKETPORT = process.env.SOCKETPORT || 3032;
 // const baseUrl = process.env.BASE_URL || '/api/v1/';
 
 const PORT = process.env.PORT || 3000;
 const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
+var connectedUsers = {0:[0,0],1:[0,0]};
+let numUsers = 0;
+let new_chat = "";
+io.on("connection", socket => {
+    // let addedUser = false;
+    console.log(`Client ${socket.id} connected`);
+   
+    // let conversationId = socket.handshake.issued
+    socket.on('newuser',(data)=>{
 
-io.on("connection", (socket) => {
-  console.log(`Client ${socket.id} connected`);
-  const { conversationId } = socket.handshake.query;
-  socket.join(conversationId);
-  socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
-    // sendMessage(data)
-    console.log("socket data",data)
-    data.authorization = null
-    io.in(conversationId).emit(NEW_CHAT_MESSAGE_EVENT, data);
-  });
+        
+        // sendMessage(data)
+        let resa=0;
+        for(let i=0;i < data.from.length;i++){
+          /* console.log("a,",{i,j}) */
+            resa+=data.from[i].charCodeAt(0)
+        }
+        let resb=0;
+        for(let p=0;p < data.to.length;p++){
+            /* console.log("b,",{p,q}) */
+            resb+=data.to[p].charCodeAt(0)
+        }
+        let result = resa | resb;
+        let result2 = resb | resa;
+        if(connectedUsers[result]){
+            connectedUsers[result].push(socket.id)
+        }
+        else{
+            connectedUsers[result]=[];
+            connectedUsers[result].push(socket.id)
+        }
+        
 
-  socket.on("disconnect", () => {
-    console.log(`Client ${socket.id} diconnected`);
-    socket.leave(conversationId);
+        // new_chat = result
+        // new_chat=data
+        io.emit('newuser',{conversationId:result})
+    })
+
+    socket.on("sendmessage", (data) => {
+        
+        let socketid = connectedUsers[data.conversationId]
+        // console.log(data.conversationId,socketid)
+        sendMessage(data)
+        // console.log("connectedusers",socket.rooms)
+        // if(connectedUsers.includes(data.userid) && connectedUsers.includes(data.toid)){
+        //     io.in().emit(NEW_CHAT_MESSAGE_EVENT, data);  
+        // }
+        io.in(socketid).emit("newmessage", data);  
+        
+    });
+    
+    // socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
+    //     console.log("rooms",socket.rooms)
+        // for (const room of socket.rooms) {
+        //   if (room == socket.id) {
+        //       console.log('room found',room)
+        //     socket.emit(NEW_CHAT_MESSAGE_EVENT, data);
+        //   }
+        // }
+    //     // io.in(socket.rooms).emit(NEW_CHAT_MESSAGE_EVENT, data);
+    // })
+    // when the user disconnects.. perform this
+    socket.on('disconnect', () => {
+        
+       
+    });
   });
-});
 
 server.listen(SOCKETPORT, () => {
   console.log(`Socialize socket is listening on port ${SOCKETPORT}`);
@@ -38,11 +94,10 @@ const sendMessage = (message) => {
     'POST',
     `http://localhost:${PORT}/message/add`,
     { json: {
-        messageListId: message.conversationId,
-        sentBy: message.sentBy,
-        message: message.message,
-      },
-      headers:{'Authorization':message.authorization}});
+        message:message.text,
+        to:message.to,
+        from:message.from
+      }});
 }
 const getMessage = (message, conversationId) => {
   var res = request(

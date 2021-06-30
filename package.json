@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www && nodemon socket"
+    "start": "concurrently \"nodemon socket\" \"nodemon ./bin/www\""
+    
   },
   "dependencies": {
     "@google-cloud/storage": "^5.8.5",

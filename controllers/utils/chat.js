@@ -4,8 +4,9 @@ class Chat{
     show = async(req,res) =>{
         let uid = req.params.uid
         let id = uid.split('-')
-        chat.find({conversationid: uid}).populate([{path:'to'},{path:'from'}]).then(resp=>{
-            console.log("chat find",resp)
+        let uid1 = id[1]+'-'+id[0]
+        chat.find({$or: [{ conversationid: uid }, { conversationid: uid1 }]}).populate([{path:'to'},{path:'from'}]).then(resp=>{
+            // console.log("chat find",resp)
             if(resp.length ==0){
                 chat.create({
                     message:"",
@@ -13,7 +14,7 @@ class Chat{
                     from:id[0],
                     to:id[1]
                 }).then(resp1=>{
-                    console.log("chat not found,creating..",resp1)
+                    // console.log("chat not found,creating..",resp1)
                     return res.json({status:true,message:resp1})
                 })
             }
@@ -26,13 +27,13 @@ class Chat{
     }
     //send message
     add =async(req,res)=>{
-
-        let uid = req.user._id+"-"+req.body.toid
-        chat.create({
+        // console.log("add message to db data",req)
+        let uid = req.body.from+"-"+req.body.to
+        await chat.create({
             message:req.body.message,
             conversationid:uid,
-            from:req.user._id,
-            to:req.body.toid
+            from:req.body.from,
+            to:req.body.to
         }).then(resp=>{
             return res.json({status:true,message:"successful"})
         })
