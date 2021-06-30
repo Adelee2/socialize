@@ -116,55 +116,132 @@
                         "my-custom-header": "abcd"
                     }
                 })
-    socket.on('newChatMessage',function(msg){
-        console.log("emitting",msg)
-        getMessages(msg.from,msg.to)
+    let converseid = ""       
+    socket.on('newuser',function(msg){
+        // console.log("emitting newuserid",msg)
+        converseid = msg.conversationId
+              
+        // socket.disconnect()
+        $("#messages").scrollTop($("#messages")[0].scrollHeight);
+        // getMessages(msg.from,msg.to)
     })
+    socket.on('sendmessage',function(msg1){
+            // console.log('emitting final',msg1)
+        })
+   socket.on('newmessage',function(msg1){
+        // console.log('emitting newmessage',msg1)
+        attachMessage(msg1.from,msg1.to,msg1.text)
+   })
+
+    socket.on('error', console.error.bind(console));
+    socket.on('message', console.log.bind(console));
+
+
     function addMessage(){
         var messages = document.getElementById('messageinput').value;
         var toid = document.getElementById('toid').value
         let userid = '<%=user._id%>'
+        let resa=0;
+        for(let i=0;i < userid.length;i++){
+          /* console.log("a,",{i,j}) */
+            resa+=userid[i].charCodeAt(0)
+        }
+        let resb=0;
+        for(let p=0;p < toid.length;p++){
+            /* console.log("b,",{p,q}) */
+            resb+=toid[p].charCodeAt(0)
+        }
+        let result = resa | resb;
+        let result2 = resb | resa;
+
         let body = {
             text:messages,
             from:userid,
-            to:toid
+            to:toid,
+            conversationId:result
         }
-        console.log("emiter body",body)
+        $('#messageinput').val('')
+        // console.log("emiter body",body)
         // Respond with a message including this clients' id sent from the server
-        socket.emit('newChatMessage', body);
+        socket.emit("sendmessage", body);
         
-        socket.on('error', console.error.bind(console));
-        socket.on('message', console.log.bind(console));
+        
 
     }
 
     
 function runMessages(userid,toid){
+    socket.emit('newuser',{from:userid,to:toid})
     $.ajax({
-                url:`/user/one?userid=${toid}`,
-                method:'GET',
-                success:async(resp1)=>{
-                    $('#changeskin').html(`<div class="post" >
-                            <div class="post-heading">
-                            <div class="post-avature">
-                                <img src="/Uploads/Avatar/${resp1.profile.avatar}" alt="">
-                            </div>
-                            <div class="post-title">
-                                <h4>${resp1.profile.name}</h4>
+        url:`/user/one?userid=${toid}`,
+        method:'GET',
+        success:async(resp1)=>{
+            $('#changeskin').html(`<div class="post" >
+                    <div class="post-heading">
+                    <div class="post-avature">
+                        <img src="/Uploads/Avatar/${resp1.profile.avatar}" alt="">
+                    </div>
+                    <div class="post-title">
+                        <h4>${resp1.profile.name}</h4>
+                    </div>
+                </div>
+                
+                <!-- post comments -->
+                <div class="post-comments" style="max-height: 70vh; min-height:65vh;overflow-y:scroll">
+                <div id="messages">
+                
+                </div>
+
+                <div class="post-add-comment">
+                        <div class="post-add-comment-text-area">
+                            <input type="text" placeholder="Send Message" id="messageinput">
+                            <input type="hidden" id ="toid" value="${toid}"/>
+                            <div class="icons">
+                                <span class="uil-link-alt"></span>
+                                <span class="uil-image"></span>
+                                <a href="#" id="buttonadd"onclick="addMessage()">Enter</a>
                             </div>
                         </div>
-                        
-                        <div id="messages"></div>
-                    
-                    </div>`)
-                    getMessages(userid,toid)
-                }
-            })
+
+                    </div>
+                </div>
+            </div>`)
+            getMessages(userid,toid)
+        }
+    })
     
+}
+function attachMessage(fromid,toid,message){
+    var divhtml=""
+    if(fromid==ownerid){
+        divhtml += `
+
+        <div class="post-comments-single" style="margin-left:70%">
+            <div class="post-comment-text">
+                <div class="post-comment-text-inner">
+                    <p>${message}</p>
+                </div>
+            </div>
+        </div>
+        `
+    }
+    else{
+        divhtml += `
+
+            <div class="post-comments-single" style="">
+                <div class="post-comment-text">
+                    <div class="post-comment-text-inner">
+                        <p> ${message}</p>
+                    </div>
+                </div>
+            </div>
+            `
+    }
+    $("#messages").append(divhtml)
 }
     function getMessages(userid,toid){
         let uid = userid+'-'+toid
-        $("#messages").scrollTop($("#messages")[0].scrollHeight);
+        
         var divhtml="";
         
         $.ajax({
@@ -176,9 +253,7 @@ function runMessages(userid,toid){
                 if(resp.status== true){
                     
                     if(resp.message.length>0){
-                        divhtml += `
-                        <!-- post comments -->
-                        <div class="post-comments" style="max-height: 70vh; min-height:65vh;overflow-y:scroll">`
+                
                         resp.message.filter((key)=>key.message!=="").map((key,val)=>{
                             
                             if(key.from._id==ownerid){
@@ -187,7 +262,6 @@ function runMessages(userid,toid){
                                 <div class="post-comments-single" style="margin-left:70%">
                                     <div class="post-comment-text">
                                         <div class="post-comment-text-inner">
-                                            <h6>${key.from.name}</h6>
                                             <p>${key.message}</p>
                                         </div>
                                     </div>
@@ -200,7 +274,6 @@ function runMessages(userid,toid){
                                     <div class="post-comments-single" style="">
                                         <div class="post-comment-text">
                                             <div class="post-comment-text-inner">
-                                                <h6>${key.from.name}</h6>
                                                 <p> ${key.message}</p>
                                             </div>
                                         </div>
@@ -208,20 +281,7 @@ function runMessages(userid,toid){
                                     `
                             }
                         })
-                    divhtml +=`
-                            <div class="post-add-comment">
-                                <div class="post-add-comment-text-area">
-                                    <input type="text" placeholder="Send Message" id="messageinput">
-                                    <input type="hidden" id ="toid" value="${toid}"/>
-                                    <div class="icons">
-                                        <span class="uil-link-alt"></span>
-                                        <span class="uil-image"></span>
-                                        <a href="#" id="buttonadd"onclick="addMessage()">Enter</a>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>`
+                    $('#messages').html(divhtml)
                 }
                 else{
                     divhtml =`<div class="post" >
@@ -235,10 +295,11 @@ function runMessages(userid,toid){
                             </div>
 
                         </div>`
+                    $('#changeskin').html(divhtml)
                 }
                 }
 
-                $('#messages').html(divhtml)
+                
             }
         })
             
