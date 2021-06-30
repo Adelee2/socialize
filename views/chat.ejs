@@ -110,7 +110,7 @@
     <script>
     
     let ownerid ="<%=user._id%>";
-    var socket = io.connect('http://127.0.0.1:3032', {
+    var socket = io.connect('https://socialize--socket.herokuapp.com', {
                     withCredentials: true,
                     extraHeaders: {
                         "my-custom-header": "abcd"
