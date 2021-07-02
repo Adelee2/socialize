@@ -7,6 +7,7 @@ const Userutil = require('./utils/Users')
 const Post = require('../model/posts')
 const moment = require('moment')
 const UserInfo = require('../model/userinfo')
+const Notification = require('./utils/Notification')
 
 class Pages{
    constructor(){
@@ -181,10 +182,15 @@ class Pages{
     explore = async function(req,res){
         
         let userinfo = new Userutil(req,res)
+        let friendreq = new Notification()
         userinfo.index().then(ress=>{
             userinfo.show().then(ress1=>{
-                console.log("users",ress)
-                res.render('explore',{user: req.user,userinfos:ress1,users:ress,moment:moment});
+                friendreq.all(req,res).then(ress2=>{
+                    console.log("users",ress)
+                
+                    res.render('explore',{user: req.user,userinfos:ress1,users:ress,friendrequest:ress2,moment:moment});
+                })
+                
             })
         })
         

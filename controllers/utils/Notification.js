@@ -10,6 +10,11 @@ class Notification{
             return res.json({status:true,friendrequests:ress})
         })
     }
+    all = (req,res)=>{
+       let result= FriendRequest.find({}).populate([{path:'friendrequestfrom'},{path:'friendrequestto'}])
+
+       return result;
+    }
     send = (req,res)=>{
         // console.log("notify reqid",req.user._id)
         User.findOne({_id:req.user._id}).populate([{path:'userinfo'}]).then(userinfo=>{

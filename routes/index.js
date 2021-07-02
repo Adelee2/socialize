@@ -93,7 +93,7 @@ router.get('/story/likes/:id',auth.ensureAuthenticated,new likesutil().getstoryl
 router.get('/notification',auth.ensureAuthenticated,new Notification().index)
 router.post('/friendrequest/add',auth.ensureAuthenticated,new Notification().send)
 router.get('/friend/add/:requestid',auth.ensureAuthenticated,new Notification().add)
-
+// router.get('/friendrequest',auth.ensureAuthenticated,new)
 //chat
 router.post('/message/add',new Chat().add)
 router.get('/message/:uid',auth.ensureAuthenticated, new Chat().show)
