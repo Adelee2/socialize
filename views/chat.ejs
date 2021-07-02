@@ -110,7 +110,12 @@
     <script>
     
     let ownerid ="<%=user._id%>";
-    var socket = io.connect('https://socialize--socket.herokuapp.com')
+    var socket = io.connect('https://socialize--socket.herokuapp.com', {
+            "force new connection" : true,
+            "reconnectionAttempts": "Infinity", //avoid having user reconnect manually in order to prevent dead clients after a server restart
+            "timeout" : 10000, //before connect_error and connect_timeout are emitted.
+            "transports" : ["websocket"]
+        })
     let converseid = ""       
     socket.on('newuser',function(msg){
         // console.log("emitting newuserid",msg)
