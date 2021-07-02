@@ -110,12 +110,12 @@
     <script>
     
     let ownerid ="<%=user._id%>";
-    var socket = io.connect('https://socialize--socket.herokuapp.com', {
-            "force new connection" : true,
-            "reconnectionAttempts": "Infinity", //avoid having user reconnect manually in order to prevent dead clients after a server restart
-            "timeout" : 10000, //before connect_error and connect_timeout are emitted.
-            "transports" : ["websocket"]
-        })
+    var socket = io.connect('http://socialize--socket.herokuapp.com', {
+                    withCredentials: true,
+                    extraHeaders: {
+                        "my-custom-header": "abcd"
+                    }
+                })
     let converseid = ""       
     socket.on('newuser',function(msg){
         // console.log("emitting newuserid",msg)
@@ -241,7 +241,7 @@ function attachMessage(fromid,toid,message){
 }
     function getMessages(userid,toid){
         let uid = userid+'-'+toid
-        
+        $("#messages").scrollTop($("#messages")[0].scrollHeight);
         var divhtml="";
         
         $.ajax({
