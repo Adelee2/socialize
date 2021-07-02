@@ -17,7 +17,7 @@
                     <div class="profile-cover">
 
                         <!-- profile cover -->
-                        <img src="assets/images/avatars/profile-cover.jpg" alt="">
+                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
 
                         <a href="#"> <i class="uil-camera"></i> Edit </a>
 
@@ -25,7 +25,7 @@
 
                     <div class="profile-details">
                         <div class="profile-image">
-                            <img src="assets/images/avatars/avatar-2.jpg" alt="">
+                            <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
                             <a href="#"> </a>
                         </div>
                         <div class="profile-details-info">
@@ -52,7 +52,7 @@
                             <nav class="responsive-tab ml-lg-3">
                                 <ul>
                                     <li ><a class="active" href="/mypage">Your Posts</a></li>
-                                    <li class="uk-active"><a href="/mypagefriends">Friends</a></li>
+                                    <!-- <li class="uk-active"><a href="/chat">Friends</a></li> -->
                                     <li><a href="timeline-friends.html">About</a></li>
                                     <!-- <li><a href="timeline-friends.html">Videos</a></li> -->
                                 </ul>
@@ -83,7 +83,7 @@
 
                         <div class="uk-width-2-3@m fead-area">
 
-                            <% if(userinfos && friends ) {%>
+                            <% if(userinfos && friends.length >0 ) {%>
                                 <div class="uk-child-width-1-4@m uk-child-width-1-2@s uk-grid-small" uk-grid>
                                     <div>
             
@@ -340,7 +340,7 @@
                                                 d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zm-1-2V4H5v16h14zM7 6h4v4H7V6zm0 6h10v2H7v-2zm0 4h10v2H7v-2zm6-9h4v2h-4V7z">
                                             </path>
                                         </svg>
-                                        <span id="user_post_count">27</span> posts </li>
+                                        <span id="user_post_count"><%= posts.length%></span> posts </li>
                             
                                     <li class="list-group-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
@@ -357,7 +357,7 @@
                                                 d="M9,11.75A1.25,1.25 0 0,0 7.75,13A1.25,1.25 0 0,0 9,14.25A1.25,1.25 0 0,0 10.25,13A1.25,1.25 0 0,0 9,11.75M15,11.75A1.25,1.25 0 0,0 13.75,13A1.25,1.25 0 0,0 15,14.25A1.25,1.25 0 0,0 16.25,13A1.25,1.25 0 0,0 15,11.75M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,11.71 4,11.42 4.05,11.14C6.41,10.09 8.28,8.16 9.26,5.77C11.07,8.33 14.05,10 17.42,10C18.2,10 18.95,9.91 19.67,9.74C19.88,10.45 20,11.21 20,12C20,16.41 16.41,20 12,20Z">
                                             </path>
                                         </svg>
-                                        Male </li>
+                                        <%=user.gender%></li>
                             
                                     <li class="list-group-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
@@ -368,106 +368,31 @@
                                         Single </li>
                                     <hr class="my-2">
                                     </li>
-                                    <li class="list-group-item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                            <path fill="currentColor"
-                                                d="M10,2H14A2,2 0 0,1 16,4V6H20A2,2 0 0,1 22,8V19A2,2 0 0,1 20,21H4C2.89,21 2,20.1 2,19V8C2,6.89 2.89,6 4,6H8V4C8,2.89 8.89,2 10,2M14,6V4H10V6H14Z">
-                                            </path>
-                                        </svg>
-                                        <span>Working at Envanto Market</span>
-                                    </li>
-                                    <li class="list-group-item">
+                                    <!-- <li class="list-group-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
                                             <path fill="currentColor"
                                                 d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"></path>
                                         </svg>
                                         <span>Studied at Albahrain schools</span>
-                                    </li>
+                                    </li> -->
                             
-                                    <li class="list-group-item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                            <path fill="currentColor"
-                                                d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z">
-                                            </path>
-                                        </svg>
-                                        Living in Turkey </li>
                                     <li class="list-group-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
                                             <path fill="currentColor"
                                                 d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z">
                                             </path>
                                         </svg>
-                                        <span>Located in Turkey</span>
+                                        <span>Lives in <%=userinfos.location%></span>
                                         <iframe width="100%" class="user-location-frame" frameborder="0" style="border:0;margin-top: 10px;"
-                                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBOfpaMO_tMMsuvS2T4zx4llbtsFqMuT9Y&amp;q=Turkey&amp;language=en"></iframe>
+                                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBOfpaMO_tMMsuvS2T4zx4llbtsFqMuT9Y&amp;q=<%=userinfos.location%>&amp;language=en"></iframe>
                                     </li>
                             
                                 </ul>
                             </div>
-
-                            <!-- Albums -->
-                            <!-- <div class="sl_user-widget">
-                                <div class="sl_user-widget-wrap-header">
-                                    <div class="sl_user-widget-wrap-header-left">
-                                        <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                    d="M22,16V4A2,2 0 0,0 20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16M11,12L13.03,14.71L16,11L20,16H8M2,6V20A2,2 0 0,0 4,22H18V20H4V6">
-                                                </path>
-                                            </svg></span> 
-                                            <a href="#">Albums</a>&nbsp;<div style="font-weight: 600">12</div>
-                                    </div>
-                                    <div class="sl_user-widget-wrap-right"> <a href="#" class="see-all"> See all</a></div>
-                                </div>
-                            
-                                <ul class="sidebar-user-data-container">
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 1">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-1.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 2">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 3">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 4">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 5">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 6">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-6.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                </ul>
-                            
-                            </div> -->
+                        
 
                             <!-- friends -->
-                            <%if(userinfos && friends){%>
+                            <%if(userinfos && friends.length>0){%>
                             <div class="sl_user-widget">
                                 <div class="sl_user-widget-wrap-header">
                                     <div class="sl_user-widget-wrap-header-left">
@@ -534,7 +459,7 @@
                                     </li>
                                         
                                     </ul>
-                                <a href="/mypagefriends" class="sl_user-widget-see-all button block light small px-0">  See all </a>
+                                <a href="/chat" class="sl_user-widget-see-all button block light small px-0">  See all </a>
                             
                             </div>
                             <%}%>

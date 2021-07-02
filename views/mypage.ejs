@@ -44,7 +44,7 @@
                     <div class="profile-cover">
 
                         <!-- profile cover -->
-                        <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
+                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
 
                         <a href="#"> <i class="uil-camera"></i> Edit </a>
 
@@ -52,7 +52,7 @@
 
                     <div class="profile-details">
                         <div class="profile-image">
-                            <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
+                            <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
                             <a href="#avatarmodal" uk-toggle> </a>
                         </div>
                         <div class="profile-details-info">
@@ -62,23 +62,23 @@
 
                     </div>
                     <!-- avatar modal -->
-                    <div id='avatarmodal' class="sidebar-chat"  uk-offcanvas="flip: true; overlay: true">
-                        <div class="">
+                    <div id='avatarmodal' class="post-new avatarmodal" style="width: 27%; height: 30%; margin-right: 33%; margin-top: 15%;" uk-offcanvas="flip: true;">
+                        <div class="" style="padding: 0px 50px 0 50px;">
                             <span class="btn-close"
-                            uk-toggle="target: #avatarmodal; animation: uk-animation-slide-top-small"> <i
+                            uk-toggle="target: .avatarmodal;  cls: is-open" style="float:right;"> <i
                                 class="icon-feather-x"></i> </span>
                             <form action="/avatar/add" method="POST" enctype="multipart/form-data">
                                 <h5>Upload Profile Picture</h5>
-                                    <div class="post-new" style="margin-top: 2%;">
-                                        <label for="video">Picture</label>
+                                    <div style="margin-top: 2%; margin-top: 7%; margin-left: 12%;" >
                                         <div class="fileupload fileupload-new" data-provides="fileupload">
-                                            <span class="btn btn-primary btn-file"><span class="fileupload-new">Select video</span>
+                                            <span class="btn btn-primary btn-file"><span class="fileupload-new">Select Photo</span>
                                             <span class="fileupload-exists">Change</span>         <input type="file" id="avatar" name="avatar" /></span>
                                             <span class="fileupload-preview"></span>
                                             <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
                                         </div>
+                                        <button type="submit" class="button primary px-6"> Upload </button>
                                     </div>
-                                    <button type="submit" class="button primary px-6" style="float: right;"> Upload </button>
+                                    
                             </form>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                             <nav class="responsive-tab ml-lg-3">
                                 <ul>
                                     <li class="uk-active"><a class="active" href="/mypage">Your Posts</a></li>
-                                    <li><a href="/mypagefriends">Friends</a></li>
+                                    <!-- <li><a href="/chat">Friends</a></li> -->
                                     <li><a href="timeline-friends.html">About</a></li>                                    
                                     <!-- <li><a href="timeline-friends.html">Videos</a></li> -->
                                 </ul>
@@ -186,7 +186,7 @@
                                             <form action="/post/add" method="post" enctype="multipart/form-data">
                                                 <div class="post-new-media">
                                                     <div class="post-new-media-user">
-                                                        <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
+                                                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
                                                     </div>
                                                     <div class="post-new-media-input">
                                                         <input type="text" class="uk-input" name="description"
@@ -286,8 +286,8 @@
                                         </div>
                                         <div class="post-description">
                                             <div class="fullsizeimg">
-                                                <% if(key.objtext.substr(key.objtext.length-4,key.objtext) ==".mp4"){%>
-                                                    <video width="500" height="340" controls autoplay loop>  
+                                                <% if(key.objtext.substring(key.objtext.length-4,key.objtext.length) ==".mp4"){%>
+                                                    <video style="width: 100%; height: auto;" controls autoplay loop>  
                                                         <source src="/Uploads/<%=key.objtext%>" type="video/mp4">  
                                                         Your browser does not support the html video tag.  
                                                       </video>  
@@ -304,9 +304,11 @@
                                         </div>
             
                                         <div class="post-state">
-                                            <div class="post-state-btns"> <i class="uil-thumbs-up"></i> <%=key.likes.length%><span> Like(s) </span>
+                                            <input type="hidden" id="toggleinput-<%=key._id%>" value="false">
+                                            <input type="hidden" id="likesinput-<%=key._id%>" value="<%=key.likes.length%>">
+                                            <div class="post-state-btns" onclick="addLikes('<%=key._id%>')" id="noflikes-<%=key._id%>"> <i class="uil-thumbs-up"></i> <%=key.likes.length%><span> Like(s) </span>
                                             </div>
-                                            <div class="post-state-btns"> <i class="uil-heart"></i> <%=key.comments.length%> <span> Comment(s)</span>
+                                            <div class="post-state-btns" id="nofcomment-<%=key._id%>"> <i class="uil-heart"></i> <%=key.comments.length%> <span> Comment(s)</span>
                                             </div>
                                             <!-- <div class="post-state-btns"> <i class="uil-bookmark"></i> 13 <span> Saved </span>
                                             </div> -->
@@ -315,83 +317,25 @@
                                         <!-- post comments -->
                                         
                                         <div class="post-comments">
-                                                <%if(key.comments.length>0){%>
-                                            <!-- <a href="#" class="view-more-comment"> Veiw 8 more Comments</a> -->
-                                            <div class="post-comments-single">
-                                                <div class="post-comment-avatar">
-                                                    <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                                </div>
-                                                <div class="post-comment-text">
-                                                    <div class="post-comment-text-inner">
-                                                        <h6> Alex Dolgove</h6>
-                                                        <p> Ut wisi enim ad minim laoreet dolore magna aliquam erat </p>
-                                                    </div>
-                                                    <div class="uk-text-small">
-                                                        <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
-                                                        </a>
-                                                        <a href="#" class=" mr-1"> Replay </a>
-                                                        <span> 1d</span>
-                                                    </div>
-                                                </div>
-                                                <a href="#" class="post-comment-opt"></a>
-                                            </div>
-                                            <div class="post-comments-single">
-                                                <div class="post-comment-avatar">
-                                                    <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                                </div>
-                                                <div class="post-comment-text">
-                                                    <div class="post-comment-text-inner">
-                                                        <h6>Stella Johnson</h6>
-                                                        <p> Ut wisi enim ad minim laoreet dolore <strong> David !</strong> </p>
-                                                    </div>
-                                                    <div class="uk-text-small">
-                                                        <a href="#" class="text-primary mr-1"> <i class="uil-thumbs-up"></i>
-                                                            Like
-                                                        </a>
-                                                        <a href="#" class=" mr-1"> Replay </a>
-                                                        <span> 2d</span>
-                                                    </div>
-                                                </div>
-                                                <a href="#" class="post-comment-opt"></a>
-                                            </div>
-                                            <div class="post-comments-single">
-                                                <div class="post-comment-avatar">
-                                                    <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                                                </div>
-                                                <div class="post-comment-text">
-                                                    <div class="post-comment-text-inner">
-                                                        <h6> Jonathan Madano </h6>
-                                                        <p> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                                                            aliquam
-                                                            erat
-                                                            volutpat.<strong> David !</strong> </p>
-                                                    </div>
-                                                    <div class="uk-text-small">
-                                                        <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
-                                                        </a>
-                                                        <a href="#" class=" mr-1"> Replay </a>
-                                                        <span> 3d</span>
-                                                    </div>
-                                                </div>
-                                                <a href="#" class="post-comment-opt"></a>
-                                            </div>
+                                            
+                                            <a href="javascript:;" onclick="getComments('<%=key._id%>')" class="view-more-comment"> View Comments</a>
+                                            
+                                            <div id="commentsection-<%=key._id%>"></div>
             
-            
-                                            <a href="#" class="view-more-comment"> View 8 more Comments</a>
-                                            <%}%>
+        
                                             <div class="post-add-comment">
                                                 <div class="post-add-comment-avature">
-                                                    <img src="/Uploads/Avatar/<%=(userinfos)?userinfos.avatar:noimg.jpg%>" alt="">
+                                                    <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
                                                 </div>
                                                 <div class="post-add-comment-text-area">
-                                                    <input type="text" placeholder="Write your comment...">
+                                                    <input type="text" id="commentinput-<%=key._id%>" placeholder="Write your comment...">
                                                     <div class="icons">
-                                                        <span class="uil-link-alt"></span>
                                                         <span class="uil-grin"></span>
                                                         <span class="uil-image"></span>
+                                                        <a href="javascript:;" onclick="addComment('<%=key._id%>')">Enter</a>
                                                     </div>
                                                 </div>
-            
+                                                
                                             </div>
             
                                         </div>
@@ -444,7 +388,7 @@
                                                 d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zm-1-2V4H5v16h14zM7 6h4v4H7V6zm0 6h10v2H7v-2zm0 4h10v2H7v-2zm6-9h4v2h-4V7z">
                                             </path>
                                         </svg>
-                                        <span id="user_post_count">27</span> posts </li>
+                                        <span id="user_post_count"><%= posts.length%></span> posts </li>
                             
                                     <li class="list-group-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
@@ -461,7 +405,7 @@
                                                 d="M9,11.75A1.25,1.25 0 0,0 7.75,13A1.25,1.25 0 0,0 9,14.25A1.25,1.25 0 0,0 10.25,13A1.25,1.25 0 0,0 9,11.75M15,11.75A1.25,1.25 0 0,0 13.75,13A1.25,1.25 0 0,0 15,14.25A1.25,1.25 0 0,0 16.25,13A1.25,1.25 0 0,0 15,11.75M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,11.71 4,11.42 4.05,11.14C6.41,10.09 8.28,8.16 9.26,5.77C11.07,8.33 14.05,10 17.42,10C18.2,10 18.95,9.91 19.67,9.74C19.88,10.45 20,11.21 20,12C20,16.41 16.41,20 12,20Z">
                                             </path>
                                         </svg>
-                                        Male </li>
+                                        <%=user.gender%></li>
                             
                                     <li class="list-group-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
@@ -472,103 +416,28 @@
                                         Single </li>
                                     <hr class="my-2">
                                     </li>
-                                    <li class="list-group-item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                            <path fill="currentColor"
-                                                d="M10,2H14A2,2 0 0,1 16,4V6H20A2,2 0 0,1 22,8V19A2,2 0 0,1 20,21H4C2.89,21 2,20.1 2,19V8C2,6.89 2.89,6 4,6H8V4C8,2.89 8.89,2 10,2M14,6V4H10V6H14Z">
-                                            </path>
-                                        </svg>
-                                        <span>Working at Envanto Market</span>
-                                    </li>
-                                    <li class="list-group-item">
+                                    <!-- <li class="list-group-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
                                             <path fill="currentColor"
                                                 d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"></path>
                                         </svg>
                                         <span>Studied at Albahrain schools</span>
-                                    </li>
+                                    </li> -->
                             
-                                    <li class="list-group-item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                            <path fill="currentColor"
-                                                d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z">
-                                            </path>
-                                        </svg>
-                                        Living in Turkey </li>
                                     <li class="list-group-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
                                             <path fill="currentColor"
                                                 d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z">
                                             </path>
                                         </svg>
-                                        <span>Located in Turkey</span>
+                                        <span>Located in <%=userinfos.location%></span>
                                         <iframe width="100%" class="user-location-frame" frameborder="0" style="border:0;margin-top: 10px;"
-                                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBOfpaMO_tMMsuvS2T4zx4llbtsFqMuT9Y&amp;q=Turkey&amp;language=en"></iframe>
+                                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBOfpaMO_tMMsuvS2T4zx4llbtsFqMuT9Y&amp;q=<%=userinfos.location%>&amp;language=en"></iframe>
                                     </li>
                             
                                 </ul>
                             </div>
 
-                            <!-- Albums -->
-                            <!-- <div class="sl_user-widget">
-                                <div class="sl_user-widget-wrap-header">
-                                    <div class="sl_user-widget-wrap-header-left">
-                                        <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                    d="M22,16V4A2,2 0 0,0 20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16M11,12L13.03,14.71L16,11L20,16H8M2,6V20A2,2 0 0,0 4,22H18V20H4V6">
-                                                </path>
-                                            </svg></span> 
-                                            <a href="#">Albums</a>&nbsp;<div style="font-weight: 600">12</div>
-                                    </div>
-                                    <div class="sl_user-widget-wrap-right"> <a href="#" class="see-all"> See all</a></div>
-                                </div>
-                            
-                                <ul class="sidebar-user-data-container">
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 1">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-1.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 2">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 3">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 4">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 5">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="sidebar-user-data">
-                                        <a href="#" title="" uk-tooltip="My album 6">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <img src="assets/images/avatars/avatar-6.jpg" alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                </ul>
-                            
-                            </div> -->
 
                             <!-- friends -->
                             <%if(userinfos && friends.length >0){%>
@@ -580,65 +449,25 @@
                                                         d="M22,16V4A2,2 0 0,0 20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16M11,12L13.03,14.71L16,11L20,16H8M2,6V20A2,2 0 0,0 4,22H18V20H4V6">
                                                     </path>
                                                 </svg></span> 
-                                                <a href="#">Friends</a>&nbsp;<div style="font-weight: 600">124</div>
+                                                <a href="#">Friends</a>&nbsp;<div style="font-weight: 600"><%=friends.length%></div>
                                         </div>
-                                        <div class="sl_user-widget-wrap-right"> <a href="#" class="see-all"> See all</a></div>
+                                        <div class="sl_user-widget-wrap-right"> <a href="/chat" class="see-all"> See all</a></div>
                                     </div>
                                 
                                  
                                     <ul class="sidebar-user-data-container">
-                                
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-4.jpg">
-                                                    <div class="sidebar-listed-user-name">Adrian Moh</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-5.jpg">
-                                                    <div class="sidebar-listed-user-name">Alex Dolgo</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-6.jpg">
-                                                    <div class="sidebar-listed-user-name">Stella Joh</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-7.jpg">
-                                                    <div class="sidebar-listed-user-name">Alex Dolgo</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-2.jpg">
-                                                    <div class="sidebar-listed-user-name">Adrian Moh</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="sidebar-user-data">
-                                            <div class="sidebar-listed-user-avatar">
-                                                <a href="#">
-                                                    <img src="assets/images/avatars/avatar-1.jpg">
-                                                    <div class="sidebar-listed-user-name">Alex Dolgo</div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                            
-                                        </ul>
-                                    <a href="/mypagefriends" class="sl_user-widget-see-all button block light small px-0">  See all </a>
+                                        <%friends.forEach(function(key){%>
+                                            <li class="sidebar-user-data">
+                                                <div class="sidebar-listed-user-avatar">
+                                                    <a href="/profile?userid=<%=key._id%>">
+                                                        <img src="/Uploads/Avatar/<%=key.avatar%>">
+                                                        <div class="sidebar-listed-user-name"><%=key.name%></div>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        <%})%>
+                                    </ul>
+                                    <a href="/chat" class="sl_user-widget-see-all button block light small px-0">  See all </a>
                                 
                                 </div>
                                 <%}%>
@@ -647,7 +476,7 @@
                             <!-- Footer menus-->
                             <div class="footer-wrapper-sidebar">
                                 <div class="footer-powered">
-                                    <p>  © 2021 Socialize</p>
+                                    <p> © <%= moment().format('YYYY')%> Socialize</p>
                                 </div>
                                 
                                 <hr>
@@ -690,101 +519,133 @@
             </div>
 
         </div>
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<!-- <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script> -->
 
-<!-- TODO: Add SDKs for Firebase products that you want to use -->
-<!-- <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script> -->
-
-<!-- <script>
-    function getFileUrl(filename) {
-        //create a storage reference
-        var storage = firebase.storage().ref(filename);
-
-        //get file url
-        storage
-        .getDownloadURL()
-        .then(function(url) {
-            console.log(url);
-        })
-        .catch(function(error) {
-            console.log("error encountered");
-        });
-    }
-    function createPost(){
-        // Your web app's Firebase configuration
-        // var firebaseConfig = {
-        //     apiKey: "AIzaSyCd_rU4ft1CCdYZJCAjM8OyAVVfZ8I14LQ",
-        //     authDomain: "file-upload-deae7.firebaseapp.com",
-        //     databaseURL: "https://file-upload-deae7.firebaseio.com",
-        //     projectId: "file-upload-deae7",
-        //     storageBucket: "file-upload-deae7.appspot.com",
-        //     messagingSenderId: "772980880174",
-        //     appId: "1:772980880174:web:273969e0f628410853c0bf"
-        // };
-        var firebaseConfig = {
-            apiKey: 'AIzaSyBfertyvlc944FRk1k0xnZ4irbGiRXuimM',
-            authDomain: 'socializer-69de0.firebaseapp.com',
-            databaseURL: 'https://socializer-69de0-default-rtdb.firebaseio.com',
-            projectId: "socializer-69de0",
-            storageBucket: 'socializer-69de0.appspot.com'
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-
-        var files = [];
-        if(document.getElementsByClassName('options').value =="video"){
-            var fileButton =         document.getElementById('videofile');
-            fileButton.addEventListener('change', function(e){
-                var file = e.target.files[0];
-                var storageRef = firebase.storage().ref('videos/'+new Date()+file.name);
-                var task = storageRef.put(file);
-            })
-        }
-        else if(document.getElementsByClassName('options').value =="image"){
-            var fileButton =         document.getElementById('picturefile');
-            fileButton.addEventListener('change', function(e){
-                var file = e.target.files[0];
-                var storageRef = firebase.storage().ref('images/'+new Date()+file.name);
-                var task = storageRef.put(file);
-            })
-        }
-        else{
-
-        }
-        
-    }
-
-</script> -->
-        <!-- <div class="modal-body" id="postmodal" tabindex="-1" role="dialog" aria-labelledby="postmodalTitle" aria-hidden="true">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-4">.col-md-4</div>
-                <div class="col-md-4 ml-auto">.col-md-4 .ml-auto</div>
-              </div>
-              <div class="row">
-                <div class="col-md-3 ml-auto">.col-md-3 .ml-auto</div>
-                <div class="col-md-2 ml-auto">.col-md-2 .ml-auto</div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 ml-auto">.col-md-6 .ml-auto</div>
-              </div>
-              <div class="row">
-                <div class="col-sm-9">
-                  Level 1: .col-sm-9
-                  <div class="row">
-                    <div class="col-8 col-sm-6">
-                      Level 2: .col-8 .col-sm-6
-                    </div>
-                    <div class="col-4 col-sm-6">
-                      Level 2: .col-4 .col-sm-6
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
     </div>
-   
-  
+  <script>
+      function getLikes(postid,userid){
+          $.ajax({
+              url:`/post/likes/${postid}`,
+              method:"GET",
+              success:(resp)=>{
+                  console.log('likes res',resp)
+                  if(resp.post.likes.length>0){
+                      resp.post.likes.map((key,val)=>{
+                        if(key.user==userid){
+                            if(key.togglelike==true){
+                                $('#noflikes-'+postid).html(`<i class="uil-thumbs-up" style="color:red;"></i>${resp.post.likes.length}<span> Like(s) </span>`)
+
+                            }
+                            else{
+                                $('#noflikes-'+postid).html(`<i class="uil-thumbs-up"></i> ${resp.post.likes.length}<span> Like(s) </span>`)
+                            }
+                        }
+                      })
+                  }
+              }
+          })
+      }
+      function addLikes(postid){
+          let toggle = $('toggleinput-'+postid).val()
+          let oldlikes = $('likesinput-'+postid).val()
+        //   console.log("oldlikes",oldlikes)
+        let body={
+            toggle:(toggle=="false")?true:false,
+            userid:"<%= user._id%>",
+            postid:postid
+        }
+        $('toggleinput-'+postid).val((toggle=="true")?"false":"true")
+        console.log("body",body)
+        $.ajax({
+            url:`/post/likes/add`,
+            method:"POST",
+            data:body,
+            success: (resp)=>{
+                console.log("likes",resp)
+                $('#commentsection-'+postid).html("")
+                getLikes(postid,'<%=user._id%>')
+            },
+            error:(err)=>{
+                console.log(err)
+            }
+        })
+      }
+      function addComment(postid){
+        let text = $('#commentinput-'+postid).val()
+        let body={
+            text:text,
+            userid:"<%= user._id%>",
+            postid:postid
+        }
+        console.log("body",body)
+        $.ajax({
+            url:`/post/comment/add`,
+            method:"POST",
+            data:body,
+            success: (resp)=>{
+                $('#commentsection-'+postid).html("")
+                $('#commentinput-'+postid).val("")
+                getComments(postid)
+                
+            },
+            error:(err)=>{
+                console.log(err)
+            }
+        })
+      }
+      function getComments(postid){
+          console.log("postid",postid)
+        $.ajax({
+            url:`/post/one/${postid}`,
+            method:"GET",
+            success: (resp)=>{
+                console.log("postinfo",resp.data[0])
+            let divhtml="";
+            $('#nofcomment-'+postid).html(`<i class="uil-heart"></i>${resp.data[0].comments.length} <span> Comment(s)</span>`)
+                if(resp.data[0].comments && resp.data[0].comments.length>0){
+                    resp.data[0].comments.map(async (key,val)=>{
+                        // console.log(key,val)
+                        await $.ajax({
+                            url:`/comment/post/one/${key._id}`,
+                            method:"GET",
+                            success: (resp2)=>{
+                                // console.log("resp2",resp2.data[0])
+                                let dates = moment(resp2.data[0].createdAt).fromNow()
+                                divhtml+=`
+                                    <div class="post-comments-single">
+                                            <div class="post-comment-avatar">
+                                                <img src="/Uploads/Avatar/${resp2.data[0].user.avatar}" alt="">
+                                        </div>
+                                        <div class="post-comment-text">
+                                            <div class="post-comment-text-inner">
+                                                <h6> ${resp2.data[0].user.name}</h6>
+                                                <p> ${resp2.data[0].text}</p>
+                                            </div>
+                                            <div class="uk-text-small">
+                                                <span> ${dates}</span>
+                                            </div>
+                                        </div>
+                                    </div> `
+                            }
+                        })
+                        console.log("code got here")
+                        $('#commentsection-'+postid).html(divhtml)
+                        })
+                        
+
+                    }
+                    else{
+                        divhtml = `<div class="post-comments-single">
+                                        <div class="post-comment-text">
+                                            <p>no comment</p>
+                                        </div>
+                                    </div>
+                                    `
+                    }
+                    console.log("else")
+                    $('#commentsection-'+postid).html(divhtml)
+                
+                }
+            })
+      }
+  </script>
     <%- include('main/footer'); %>

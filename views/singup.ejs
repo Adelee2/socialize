@@ -80,6 +80,37 @@
 
                             </div>
                         </div>
+                        <div class="uk-width-1-2@s">
+                            <div class="uk-form-group">
+                                <label class="uk-form-label"> Date of Birth</label>
+
+                                <div class="uk-position-relative w-100">
+                                    <span class="uk-form-icon">
+                                        <i class="icon-feather-user"></i>
+                                    </span>
+                                    <input class="uk-input" type="date" id="dob" name="dob"  required/>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="uk-width-1-2@s">
+                            <div class="uk-form-group">
+                                <label class="uk-form-label"> Gender</label>
+
+                                <div class="uk-position-relative w-100">
+                                    <span class="uk-form-icon">
+                                        <i class="icon-feather-user"></i>
+                                    </span>
+                                    <select class="uk-input" type="text" id="gender" name="gender"  required>
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
 
                         <div class="uk-width-1-2@s">
                             <div class="uk-form-group">
@@ -141,6 +172,8 @@
             $('#signup').val("Please wait..")
             let name = $('#name').val()
             let email = $('#email').val()
+            let gender = $('#gender').val()
+            let dob = $('#dob').val()
             let password = $('#password').val()
             let confirmpassword = $('#confirmpassword').val()
             if(name =="" || email=="" || password ==""){
@@ -151,11 +184,14 @@
                 alert('password does not match')
                 return
             }
-
+            if(dob == ""){
+                alert('Please select your gender')
+                return
+            }
             
             $.getJSON('https://geolocation-db.com/json/')
                 .done (function(location) {
-                    let body = {name,email,password,location:location.country_name}
+                    let body = {name,email,password,dob:dob,gender:gender,location:location.country_name}
 
                     $.ajax({
                         url:'/sessionregister',

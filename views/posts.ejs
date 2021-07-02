@@ -1,5 +1,32 @@
 
     <%- include('main/header'); %>
+    <style>
+        .clearfix{*zoom:1;}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0;}
+        .clearfix:after{clear:both;}
+        .hide-text{font:0/0 a;color:transparent;text-shadow:none;background-color:transparent;border:0;}
+        .input-block-level{display:block;width:100%;min-height:30px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+        .btn-file{overflow:hidden;position:relative;vertical-align:middle;}.btn-file>input{position:absolute;top:0;right:0;margin:0;opacity:0;filter:alpha(opacity=0);transform:translate(-300px, 0) scale(4);font-size:23px;direction:ltr;cursor:pointer;}
+        .fileupload{margin-bottom:9px;}.fileupload .uneditable-input{display:inline-block;margin-bottom:0px;vertical-align:middle;cursor:text;}
+        .fileupload .thumbnail{overflow:hidden;display:inline-block;margin-bottom:5px;vertical-align:middle;text-align:center;}.fileupload .thumbnail>img{display:inline-block;vertical-align:middle;max-height:100%;}
+        .fileupload .btn{vertical-align:middle;}
+        .fileupload-exists .fileupload-new,.fileupload-new .fileupload-exists{display:none;}
+        .fileupload-inline .fileupload-controls{display:inline;}
+        .fileupload-new .input-append .btn-file{-webkit-border-radius:0 3px 3px 0;-moz-border-radius:0 3px 3px 0;border-radius:0 3px 3px 0;}
+        .thumbnail-borderless .thumbnail{border:none;padding:0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
+        .fileupload-new.thumbnail-borderless .thumbnail{border:1px solid rgb(5, 6, 8);}
+        .control-group.warning .fileupload .uneditable-input{color:#a47e3c;border-color:#a47e3c;}
+        .control-group.warning .fileupload .fileupload-preview{color:#a47e3c;}
+        .control-group.warning .fileupload .thumbnail{border-color:#a47e3c;}
+        .control-group.error .fileupload .uneditable-input{color:#b94a48;border-color:#b94a48;}
+        .control-group.error .fileupload .fileupload-preview{color:#b94a48;}
+        .control-group.error .fileupload .thumbnail{border-color:#b94a48;}
+        .control-group.success .fileupload .uneditable-input{color:#468847;border-color:#468847;}
+        .control-group.success .fileupload .fileupload-preview{color:#468847;}
+        .control-group.success .fileupload .thumbnail{border-color:#468847;}
+    </style>
+    <script>
+        !function(e){var t=function(t,n){this.$element=e(t),this.type=this.$element.data("uploadtype")||(this.$element.find(".thumbnail").length>0?"image":"file"),this.$input=this.$element.find(":file");if(this.$input.length===0)return;this.name=this.$input.attr("name")||n.name,this.$hidden=this.$element.find('input[type=hidden][name="'+this.name+'"]'),this.$hidden.length===0&&(this.$hidden=e('<input type="hidden" />'),this.$element.prepend(this.$hidden)),this.$preview=this.$element.find(".fileupload-preview");var r=this.$preview.css("height");this.$preview.css("display")!="inline"&&r!="0px"&&r!="none"&&this.$preview.css("line-height",r),this.original={exists:this.$element.hasClass("fileupload-exists"),preview:this.$preview.html(),hiddenVal:this.$hidden.val()},this.$remove=this.$element.find('[data-dismiss="fileupload"]'),this.$element.find('[data-trigger="fileupload"]').on("click.fileupload",e.proxy(this.trigger,this)),this.listen()};t.prototype={listen:function(){this.$input.on("change.fileupload",e.proxy(this.change,this)),e(this.$input[0].form).on("reset.fileupload",e.proxy(this.reset,this)),this.$remove&&this.$remove.on("click.fileupload",e.proxy(this.clear,this))},change:function(e,t){if(t==="clear")return;var n=e.target.files!==undefined?e.target.files[0]:e.target.value?{name:e.target.value.replace(/^.+\\/,"")}:null;if(!n){this.clear();return}this.$hidden.val(""),this.$hidden.attr("name",""),this.$input.attr("name",this.name);if(this.type==="image"&&this.$preview.length>0&&(typeof n.type!="undefined"?n.type.match("image.*"):n.name.match(/\.(gif|png|jpe?g)$/i))&&typeof FileReader!="undefined"){var r=new FileReader,i=this.$preview,s=this.$element;r.onload=function(e){i.html('<img src="'+e.target.result+'" '+(i.css("max-height")!="none"?'style="max-height: '+i.css("max-height")+';"':"")+" />"),s.addClass("fileupload-exists").removeClass("fileupload-new")},r.readAsDataURL(n)}else this.$preview.text(n.name),this.$element.addClass("fileupload-exists").removeClass("fileupload-new")},clear:function(e){this.$hidden.val(""),this.$hidden.attr("name",this.name),this.$input.attr("name","");if(navigator.userAgent.match(/msie/i)){var t=this.$input.clone(!0);this.$input.after(t),this.$input.remove(),this.$input=t}else this.$input.val("");this.$preview.html(""),this.$element.addClass("fileupload-new").removeClass("fileupload-exists"),e&&(this.$input.trigger("change",["clear"]),e.preventDefault())},reset:function(e){this.clear(),this.$hidden.val(this.original.hiddenVal),this.$preview.html(this.original.preview),this.original.exists?this.$element.addClass("fileupload-exists").removeClass("fileupload-new"):this.$element.addClass("fileupload-new").removeClass("fileupload-exists")},trigger:function(e){this.$input.trigger("click"),e.preventDefault()}},e.fn.fileupload=function(n){return this.each(function(){var r=e(this),i=r.data("fileupload");i||r.data("fileupload",i=new t(this,n)),typeof n=="string"&&i[n]()})},e.fn.fileupload.Constructor=t,e(document).on("click.fileupload.data-api",'[data-provides="fileupload"]',function(t){var n=e(this);if(n.data("fileupload"))return;n.fileupload(n.data());var r=e(t.target).closest('[data-dismiss="fileupload"],[data-trigger="fileupload"]');r.length>0&&(r.trigger("click.fileupload"),t.preventDefault())})}(window.jQuery)
+    </script>
     <!-- Wrapper -->
 <div id="wrapper">
 
@@ -24,17 +51,34 @@
                                 class="uk-slider-items uk-child-width-1-5@m uk-child-width-1-3@s uk-child-width-1-3 story-slider uk-grid">
                                 <li>
                                     <a href="#" uk-toggle="target: body ; cls: is-open">
-                                        <div class="story-card" data-src="assets/images/avatars/avatar-lg-1.jpg"
+                                        <div class="story-card"  style="height: 10vh;" data-src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>"
                                             uk-img>
                                             <i class="uil-plus"></i>
                                             <div class="story-card-content">
-                                                <h4> Dennis </h4>
+                                                <h4><%=user.name%></h4>
                                             </div>
                                         </div>
                                     </a>
 
                                 </li>
-                                <li>
+                                <%if(userinfos && stories.length>0){%>
+                                    <%stories.forEach(function(key){%>
+                                        <li>
+                                            <a href="#" uk-toggle="target: body ; cls: is-open">
+                                                <div class="story-card" style="height: 10vh;" data-src="/Uploads/<%=key.objtext%>"
+                                                    uk-img>
+                                                         <img src="/Uploads/Avatar/<%=key.user.avatar%>" alt="">
+                                                    
+                                                    <div class="story-card-content">
+                                                        <h4> <%=key.user.name%> </h4>
+                                                    </div>
+                                                </div>
+                                            </a>
+        
+                                        </li>
+                                        <%})%>
+                                <%}%>
+                                <!-- <li>
                                     <a href="#" uk-toggle="target: body ; cls: is-open">
                                         <div class="story-card" data-src="assets/images/events/listing-5.jpg"
                                             uk-img>
@@ -57,46 +101,7 @@
                                         </div>
                                     </a>
 
-                                </li>
-                                <li>
-
-                                    <a href="#" uk-toggle="target: body ; cls: is-open">
-                                        <div class="story-card" data-src="assets/images/avatars/avatar-lg-4.jpg"
-                                            uk-img>
-                                            <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                                            <div class="story-card-content">
-                                                <h4> Alex </h4>
-                                            </div>
-                                        </div>
-                                    </a>
-
-                                </li>
-                                <li>
-
-                                    <a href="#" uk-toggle="target: body ; cls: is-open">
-                                        <div class="story-card" data-src="assets/images/avatars/avatar-lg-2.jpg"
-                                            uk-img>
-                                            <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                            <div class="story-card-content">
-                                                <h4> Adrian </h4>
-                                            </div>
-                                        </div>
-                                    </a>
-
-                                </li>
-                                <li>
-
-                                    <a href="#" uk-toggle="target: body ; cls: is-open">
-                                        <div class="story-card" data-src="assets/images/avatars/avatar-lg-5.jpg"
-                                            uk-img>
-                                            <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                            <div class="story-card-content">
-                                                <h4> Dennis </h4>
-                                            </div>
-                                        </div>
-                                    </a>
-
-                                </li>
+                                </li> -->
 
                             </ul>
 
@@ -115,569 +120,109 @@
 
                         </div>
                     </div>
-
-                    <div class="post">
-                        <div class="post-heading">
-                            <div class="post-avature">
-                                <img src="assets/images/avatars/avatar-6.jpg" alt="">
-                            </div>
-                            <div class="post-title">
-                                <h4> Mariah Ali </h4>
-                                <p> 5 <span> hrs</span> <i class="uil-users-alt"></i> </p>
-                            </div>
-                            <div class="post-btn-action">
-                                <span class="icon-more uil-ellipsis-h"></span>
-                                <div class="mt-0 p-2" uk-dropdown="pos: top-right;mode:hover ">
-                                    <ul class="uk-nav uk-dropdown-nav">
-                                        <li><a href="#"> <i class="uil-share-alt mr-1"></i> Share</a> </li>
-                                        <li><a href="#"> <i class="uil-edit-alt mr-1"></i> Edit Post </a></li>
-                                        <li><a href="#"> <i class="uil-comment-slash mr-1"></i> Disable comments
-                                            </a></li>
-                                        <li><a href="#"> <i class="uil-favorite mr-1"></i> Add favorites </a>
-                                        </li>
-                                        <li><a href="#" class="text-danger"> <i class="uil-trash-alt mr-1"></i>
-                                                Delete </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="post-description">
-                            <div class="fullsizeimg">
-                                <img src="assets/images/post/img-1.jpg" alt="">
-                            </div>
-
-                            <div class="post-state-details">
-                                <div>
-                                    <img src="assets/images/icons/reactions_like.png" alt="">
-                                    <img src="assets/images/icons/reactions_love.png" alt="">
-                                    <p> 13 </p>
-                                </div>
-                                <p> 24 Comments</p>
-                            </div>
-
-                        </div>
-
-                        <div class="post-state">
-                            <div class="post-state-btns"> <i class="uil-thumbs-up"></i> 126<span> Liked </span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-heart"></i> 18 <span> Coments</span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-share-alt"></i> 193 <span> Shared
-                                </span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-bookmark"></i> 13 <span> Saved </span>
-                            </div>
-                        </div>
-
-                        <!-- post comments -->
-                        <div class="post-comments">
-                            <a href="#" class="view-more-comment"> Veiw 8 more Comments</a>
-                            <div class="post-comments-single">
-                                <div class="post-comment-avatar">
-                                    <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                </div>
-                                <div class="post-comment-text">
-                                    <div class="post-comment-text-inner">
-                                        <h6> Alex Dolgove</h6>
-                                        <p> Ut wisi enim ad minim laoreet dolore magna aliquam erat </p>
+                    <% if(userinfos && posts.length > 0 ) {%>
+                        <% posts.forEach(function(key){%>
+                            <div class="post">
+                                <div class="post-heading">
+                                    <div class="post-avature">
+                                        <img src="/Uploads/Avatar/<%=key.user.avatar%>">
                                     </div>
-                                    <div class="uk-text-small">
-                                        <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
-                                        </a>
-                                        <a href="#" class=" mr-1"> Replay </a>
-                                        <span> 1d</span>
+                                    <div class="post-title" data-href="/profile?userid=<%=key.user._id%>">
+                                       
+                                        <h4> <%=key.user.name%> </h4>
+                                        <p> <%=moment(key.createdAt).fromNow()%></p>
+                                    </div>
+                                    <div class="post-btn-action">
+                                        <span class="icon-more uil-ellipsis-h"></span>
+                                        <div class="mt-0 p-2" uk-dropdown="pos: top-right;mode:hover ">
+                                            <ul class="uk-nav uk-dropdown-nav">
+                                                <%#(key.isdownload ==true)?<li><a href="#"> <i class="uil-share-alt mr-1"></i> download</a> </li>:<li></li> %>
+                                                <!-- <li><a href="#"> <i class="uil-edit-alt mr-1"></i> Edit Post </a></li>
+                                                <li><a href="#"> <i class="uil-comment-slash mr-1"></i> Disable comments
+                                                    </a></li>
+                                                <li><a href="#"> <i class="uil-favorite mr-1"></i> Add favorites </a>
+                                                </li>
+                                                <li><a href="#" class="text-danger"> <i class="uil-trash-alt mr-1"></i>
+                                                        Delete </a></li> -->
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                                <a href="#" class="post-comment-opt"></a>
+                                <div class="post-description">
+                                    <div class="fullsizeimg">
+                                        <% if(key.objtext.substring(key.objtext.length-4,key.objtext.length) ==".mp4"){%>
+                                            <video style="width: 100%; height: auto;" controls autoplay loop>  
+                                                <source src="/Uploads/<%=key.objtext%>" type="video/mp4">  
+                                                Your browser does not support the html video tag.  
+                                              </video>  
+                                        <% }else{ %>
+                                            <img src="/Uploads/<%=key.objtext%>" alt="">
+                                        <%}%>
+                                    </div>
+                                    <div class="post-state-details">
+                                        <div>
+                                            <p> <%= key.description%> </p>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="post-state">
+                                    <input type="hidden" id="toggleinput-<%=key._id%>" value="false">
+                                    <input type="hidden" id="likesinput-<%=key._id%>" value="<%=key.likes.length%>">
+                                    <div class="post-state-btns" onclick="addLikes('<%=key._id%>')" id="noflikes-<%=key._id%>"> <i class="uil-thumbs-up"></i> <%=key.likes.length%><span> Like(s) </span>
+                                    </div>
+                                    <div class="post-state-btns" id="nofcomment-<%=key._id%>"> <i class="uil-heart"></i> <%=key.comments.length%> <span> Comment(s)</span>
+                                    </div>
+                                    <!-- <div class="post-state-btns"> <i class="uil-bookmark"></i> 13 <span> Saved </span>
+                                    </div> -->
+                                </div>
+    
+                                <!-- post comments -->
+                                
+                                <div class="post-comments">
+                                    
+                                    <a href="javascript:;" onclick="getComments('<%=key._id%>')" class="view-more-comment"> View Comments</a>
+                                    
+                                    <div id="commentsection-<%=key._id%>"></div>
+    
+
+                                    <div class="post-add-comment">
+                                        <div class="post-add-comment-avature">
+                                            <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
+                                        </div>
+                                        <div class="post-add-comment-text-area">
+                                            <input type="text" id="commentinput-<%=key._id%>" placeholder="Write your comment...">
+                                            <div class="icons">
+                                                <span class="uil-grin"></span>
+                                                <span class="uil-image"></span>
+                                                <a href="javascript:;" onclick="addComment('<%=key._id%>')">Enter</a>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+    
+                                </div>
+                                
+    
                             </div>
-                            <div class="post-comments-single">
-                                <div class="post-comment-avatar">
-                                    <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                </div>
-                                <div class="post-comment-text">
-                                    <div class="post-comment-text-inner">
-                                        <h6>Stella Johnson</h6>
-                                        <p> Ut wisi enim ad minim laoreet dolore <strong> David !</strong> </p>
-                                    </div>
-                                    <div class="uk-text-small">
-                                        <a href="#" class="text-primary mr-1"> <i class="uil-thumbs-up"></i>
-                                            Like
-                                        </a>
-                                        <a href="#" class=" mr-1"> Replay </a>
-                                        <span> 2d</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="post-comment-opt"></a>
-                            </div>
-                            <div class="post-comments-single">
-                                <div class="post-comment-avatar">
-                                    <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                                </div>
-                                <div class="post-comment-text">
-                                    <div class="post-comment-text-inner">
-                                        <h6> Jonathan Madano </h6>
-                                        <p> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                                            aliquam
-                                            erat
-                                            volutpat.<strong> David !</strong> </p>
-                                    </div>
-                                    <div class="uk-text-small">
-                                        <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
-                                        </a>
-                                        <a href="#" class=" mr-1"> Replay </a>
-                                        <span> 3d</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="post-comment-opt"></a>
-                            </div>
+                        <%})%>
+                        
 
-
-                            <a href="#" class="view-more-comment"> Veiw 8 more Comments</a>
-
-                            <div class="post-add-comment">
-                                <div class="post-add-comment-avature">
-                                    <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                </div>
-                                <div class="post-add-comment-text-area">
-                                    <input type="text" placeholder="Write your comment...">
-                                    <div class="icons">
-                                        <span class="uil-link-alt"></span>
-                                        <span class="uil-grin"></span>
-                                        <span class="uil-image"></span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
+                    <div class="load-more">
+                        <button class="btn button">Load more post</button>
                     </div>
-
-                    <div class="post">
-                        <div class="post-heading">
-                            <div class="post-avature">
-                                <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                            </div>
-                            <div class="post-title">
-                                <h4> Erica Jones </h4>
-                                <p> 5 <span> hrs</span> <i class="uil-users-alt"></i> </p>
-                            </div>
-                            <div class="post-btn-action">
-                                <span class="icon-more uil-ellipsis-h"></span>
-                                <div class="mt-0 p-2" uk-dropdown="pos: top-right;mode:hover ">
-                                    <ul class="uk-nav uk-dropdown-nav">
-                                        <li><a href="#"> <i class="uil-share-alt mr-1"></i> Share</a> </li>
-                                        <li><a href="#"> <i class="uil-edit-alt mr-1"></i> Edit Post </a></li>
-                                        <li><a href="#"> <i class="uil-comment-slash mr-1"></i> Disable comments
-                                            </a></li>
-                                        <li><a href="#"> <i class="uil-favorite mr-1"></i> Add favorites </a>
-                                        </li>
-                                        <li><a href="#" class="text-danger"> <i class="uil-trash-alt mr-1"></i>
-                                                Delete </a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                    <%} else {%>
+                        <div class="post-title load-more">
+                            <a href="/mypage" class="button primary mr-2"> <i class="uil-plus"></i> Create Post</a>
                         </div>
-                        <div class="post-description">
-                            <div class="uk-grid-small" uk-grid>
-                                <div class="uk-width-1-1@m">
-                                    <img src="assets/images/post/img-4.jpg" class="rounded" alt="">
-                                </div>
-                                <div class="uk-width-1-2@m uk-width-1-2">
-                                    <img src="assets/images/post/img-2.jpg" class="rounded" alt="">
-                                </div>
-                                <div class="uk-width-1-2@m uk-width-1-2 uk-position-relative">
-                                    <img src="assets/images/post/img-3.jpg" class="rounded" alt="">
-                                    <div class="uk-position-center uk-light">
-                                        <a href="#">
-                                            <h3> + 15 more </h3>
-                                        </a></div>
-                                </div>
-                            </div>
+                        
+                    <%}%>
+                    
 
-                            <div class="post-state-details">
-                                <div>
-                                    <img src="assets/images/icons/reactions_like.png" alt="">
-                                    <img src="assets/images/icons/reactions_love.png" alt="">
-                                    <p> 13 </p>
-                                </div>
-                                <p> <span class="mr-2"> <i class="uil-eye"></i> Veiws </span> 212 Comments </p>
-                            </div>
-
-                        </div>
-
-                        <div class="post-state">
-                            <div class="post-state-btns"> <i class="uil-thumbs-up"></i> 126<span> Liked </span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-heart"></i> 18 <span> Coments</span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-share-alt"></i> 193 <span> Shared
-                                </span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-bookmark"></i> 13 <span> Saved </span>
-                            </div>
-                        </div>
-
-
-                        <!-- post comments -->
-                        <div class="post-comments">
-                            <a href="#" class="view-more-comment"> Veiw 8 more Comments</a>
-                            <div class="post-comments-single">
-                                <div class="post-comment-avatar">
-                                    <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                </div>
-                                <div class="post-comment-text">
-                                    <div class="post-comment-text-inner">
-                                        <h6> Alex Dolgove</h6>
-                                        <p> Ut wisi enim ad minim laoreet dolore magna aliquam erat </p>
-                                    </div>
-                                    <div class="uk-text-small">
-                                        <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
-                                        </a>
-                                        <a href="#" class=" mr-1"> Replay </a>
-                                        <span> 3d</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="post-comment-opt"></a>
-                            </div>
-                            <div class="post-comments-single">
-                                <div class="post-comment-avatar">
-                                    <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                </div>
-                                <div class="post-comment-text">
-                                    <div class="post-comment-text-inner">
-                                        <h6>Stella Johnson</h6>
-                                        <p> Ut wisi enim ad minim laoreet dolore <strong> David !</strong> </p>
-                                    </div>
-                                    <div class="uk-text-small">
-                                        <a href="#" class="text-primary mr-1"> <i class="uil-thumbs-up"></i>
-                                            Like
-                                        </a>
-                                        <a href="#" class=" mr-1"> Replay </a>
-                                        <span> 3d</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="post-comment-opt"></a>
-                            </div>
-                            <div class="post-comments-single">
-                                <div class="post-comment-avatar">
-                                    <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                                </div>
-                                <div class="post-comment-text">
-                                    <div class="post-comment-text-inner">
-                                        <h6> Jonathan Madano </h6>
-                                        <p> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                                            aliquam
-                                            erat
-                                            volutpat.<strong> David !</strong> </p>
-                                    </div>
-                                    <div class="uk-text-small">
-                                        <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
-                                        </a>
-                                        <a href="#" class=" mr-1"> Replay </a>
-                                        <span> 3d</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="post-comment-opt"></a>
-                            </div>
-
-
-                            <a href="#" class="view-more-comment"> Veiw 8 more Comments</a>
-
-                            <div class="post-add-comment">
-                                <div class="post-add-comment-avature">
-                                    <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                </div>
-                                <div class="post-add-comment-text-area">
-                                    <input type="text" placeholder="Write your comment...">
-                                    <div class="icons">
-                                        <span class="uil-link-alt"></span>
-                                        <span class="uil-grin"></span>
-                                        <span class="uil-image"></span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                    </div>
-
-                    <div class="post">
-                        <div class="post-heading">
-                            <div class="post-avature">
-                                <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                            </div>
-                            <div class="post-title">
-                                <h4> Stella Johnson </h4>
-                                <p> 5 <span> hrs</span> <i class="uil-users-alt"></i> </p>
-                            </div>
-                            <div class="post-btn-action">
-                                <span class="icon-more uil-ellipsis-h"></span>
-                                <div class="mt-0 p-2" uk-dropdown="pos: top-right;mode:hover ">
-                                    <ul class="uk-nav uk-dropdown-nav">
-                                        <li><a href="#"> <i class="uil-share-alt mr-1"></i> Share</a> </li>
-                                        <li><a href="#"> <i class="uil-edit-alt mr-1"></i> Edit Post </a></li>
-                                        <li><a href="#"> <i class="uil-comment-slash mr-1"></i> Disable comments
-                                            </a></li>
-                                        <li><a href="#"> <i class="uil-favorite mr-1"></i> Add favorites </a>
-                                        </li>
-                                        <li><a href="#" class="text-danger"> <i class="uil-trash-alt mr-1"></i>
-                                                Delete </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="post-description">
-
-                            <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
-                                euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                                Ut wisi enim ad minim laoreet dolore magna aliquam erat volutpat</p>
-                            <div class="post-state-details">
-                                <div>
-                                    <img src="assets/images/icons/reactions_like.png" alt="">
-                                    <img src="assets/images/icons/reactions_love.png" alt="">
-                                    <p> 13 </p>
-                                </div>
-                                <p> 24 Comments</p>
-                            </div>
-
-                        </div>
-
-                        <div class="post-state">
-                            <div class="post-state-btns"> <i class="uil-thumbs-up"></i> 126<span> Liked </span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-heart"></i> 18 <span> Coments</span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-share-alt"></i> 193 <span> Shared
-                                </span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-bookmark"></i> 13 <span> Saved </span>
-                            </div>
-                        </div>
-
-                        <!-- post comments -->
-                        <div class="post-comments">
-                            <a href="#" class="view-more-comment"> Veiw 8 more Comments</a>
-                            <div class="post-comments-single">
-                                <div class="post-comment-avatar">
-                                    <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                </div>
-                                <div class="post-comment-text">
-                                    <div class="post-comment-text-inner">
-                                        <h6> Alex Dolgove</h6>
-                                        <p> Ut wisi enim ad minim laoreet dolore magna aliquam erat </p>
-                                    </div>
-                                    <div class="uk-text-small">
-                                        <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
-                                        </a>
-                                        <a href="#" class=" mr-1"> Replay </a>
-                                        <span> 1d</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="post-comment-opt"></a>
-                            </div>
-                            <div class="post-comments-single">
-                                <div class="post-comment-avatar">
-                                    <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                </div>
-                                <div class="post-comment-text">
-                                    <div class="post-comment-text-inner">
-                                        <h6>Stella Johnson</h6>
-                                        <p> Ut wisi enim ad minim laoreet dolore <strong> David !</strong> </p>
-                                    </div>
-                                    <div class="uk-text-small">
-                                        <a href="#" class="text-primary mr-1"> <i class="uil-thumbs-up"></i>
-                                            Like
-                                        </a>
-                                        <a href="#" class=" mr-1"> Replay </a>
-                                        <span> 2d</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="post-comment-opt"></a>
-                            </div>
-
-                            <div class="post-add-comment">
-                                <div class="post-add-comment-avature">
-                                    <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                </div>
-                                <div class="post-add-comment-text-area">
-                                    <input type="text" placeholder="Write your comment...">
-                                    <div class="icons">
-                                        <span class="uil-link-alt"></span>
-                                        <span class="uil-grin"></span>
-                                        <span class="uil-image"></span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                    <div class="post">
-                        <div class="post-heading">
-                            <div class="post-avature">
-                                <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                            </div>
-                            <div class="post-title">
-                                <h4> Dennis Han </h4>
-                                <p> 5 <span> hrs</span> <i class="uil-users-alt"></i> </p>
-                            </div>
-                            <div class="post-btn-action">
-                                <span class="icon-more uil-ellipsis-h"></span>
-                                <div class="mt-0 p-2" uk-dropdown="pos: top-right;mode:hover ">
-                                    <ul class="uk-nav uk-dropdown-nav">
-                                        <li><a href="#"> <i class="uil-share-alt mr-1"></i> Share</a> </li>
-                                        <li><a href="#"> <i class="uil-edit-alt mr-1"></i> Edit Post </a></li>
-                                        <li><a href="#"> <i class="uil-comment-slash mr-1"></i> Disable comments
-                                            </a></li>
-                                        <li><a href="#"> <i class="uil-favorite mr-1"></i> Add favorites </a>
-                                        </li>
-                                        <li><a href="#" class="text-danger"> <i class="uil-trash-alt mr-1"></i>
-                                                Delete </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="post-description">
-
-                            <div class="fullsizevid">
-                                <div class="embed-video">
-                                    <iframe src="https://www.youtube.com/embed/pQN-pnXPaVg" frameborder="0"
-                                        uk-video="automute: true" allowfullscreen uk-responsive></iframe>
-                                </div>
-                            </div>
-
-                            <div class="post-state-details">
-                                <div>
-                                    <img src="assets/images/icons/reactions_like.png" alt="">
-                                    <img src="assets/images/icons/reactions_love.png" alt="">
-                                    <p> 13 </p>
-                                </div>
-                                <p> <span class="mr-2"> <i class="uil-eye"></i> 38 Veiws </span> 212 Comments
-                                </p>
-                            </div>
-
-                        </div>
-
-                        <div class="post-state">
-                            <div class="post-state-btns"> <i class="uil-thumbs-up"></i> 126<span> Liked </span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-heart"></i> 18 <span> Coments</span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-share-alt"></i> 193 <span> Shared
-                                </span>
-                            </div>
-                            <div class="post-state-btns"> <i class="uil-bookmark"></i> 13 <span> Saved </span>
-                            </div>
-                        </div>
-
-
-                        <!-- post comments -->
-                        <div class="post-comments">
-                            <a href="#" class="view-more-comment"> Veiw 8 more Comments</a>
-                            <div class="post-comments-single">
-                                <div class="post-comment-avatar">
-                                    <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                                </div>
-                                <div class="post-comment-text">
-                                    <div class="post-comment-text-inner">
-                                        <h6> Alex Dolgove</h6>
-                                        <p> Ut wisi enim ad minim laoreet dolore magna aliquam erat </p>
-                                    </div>
-                                    <div class="uk-text-small">
-                                        <a href="#" class="text-danger mr-1"> <i class="uil-heart"></i> Love
-                                        </a>
-                                        <a href="#" class=" mr-1"> Replay </a>
-                                        <span> 3d</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="post-comment-opt"></a>
-                            </div>
-                            <div class="post-comments-single">
-                                <div class="post-comment-avatar">
-                                    <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                </div>
-                                <div class="post-comment-text">
-                                    <div class="post-comment-text-inner">
-                                        <h6>Stella Johnson</h6>
-                                        <p> Ut wisi enim ad minim laoreet dolore <strong> David !</strong> </p>
-                                    </div>
-                                    <div class="uk-text-small">
-                                        <a href="#" class="text-primary mr-1"> <i class="uil-thumbs-up"></i>
-                                            Like
-                                        </a>
-                                        <a href="#" class=" mr-1"> Replay </a>
-                                        <span> 3d</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="post-comment-opt"></a>
-                            </div>
-
-                            <div class="post-add-comment">
-                                <div class="post-add-comment-avature">
-                                    <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                                </div>
-                                <div class="post-add-comment-text-area">
-                                    <input type="text" placeholder="Write your comment...">
-                                    <div class="icons">
-                                        <span class="uil-link-alt"></span>
-                                        <span class="uil-grin"></span>
-                                        <span class="uil-image"></span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                    </div>
 
                 </div>
                 <div class="uk-width-expand">
-
-                    <div class="sl_sidebar_sugs_title border-0"> Trending !
-                        <i class="icon-feather-rotate-cw"></i>
-                    </div>
-                    <div class="list-group-item sl_htag">
-                        <a href="#">
-                            <span class="htag_top"> #hello</span>
-                        </a>
-                    </div>
-                    <div class="list-group-item sl_htag">
-                        <a href="#">
-                            <span class="htag_top"> #test</span>
-                        </a>
-                    </div>
-                    <div class="list-group-item sl_htag">
-                        <a href="#">
-                            <span class="htag_top"> #template</span>
-                        </a>
-                    </div>
-                    <div class="list-group-item sl_htag">
-                        <a href="#">
-                            <span class="htag_top"> #social</span>
-                        </a>
-                    </div>
-                    <div class="list-group-item sl_htag">
-                        <a href="#">
-                            <span class="htag_top"> #simplest</span>
-                        </a>
-                    </div>
-                    <div class="list-group-item sl_htag">
-                        <a href="#">
-                            <span class="htag_top"> #new</span>
-                        </a>
-                    </div>
 
                     <div class="sl_sidebar_sugs_title mt-4">Pro Members
                         <i class="icon-feather-rotate-cw"></i>
@@ -783,98 +328,6 @@
                         </div>
                     </div>
 
-                    <div class="sl_sidebar_sugs_title mt-4">Pages you may like
-                        <i class="icon-feather-rotate-cw"></i>
-                    </div>
-                    <div class="sl_sidebar_sugs">
-                        <div class="sl_sidebar_sugs_avatar">
-                            <img src="assets/images/brand/brand-avatar-3.png" alt="">
-                        </div>
-                        <div class="sl_sidebar_sugs_text">
-                            <a href="#" class="sl_user_link_name"> Suranna Brand </a>
-                            <span> Education</span>
-                        </div>
-                        <div class="user-follow-button sl_sidebar_sugs_btns">
-                            <button type="button" class="button small">
-                                <span> Like </span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="sl_sidebar_sugs">
-                        <div class="sl_sidebar_sugs_avatar">
-                            <img src="assets/images/brand/brand-avatar-4.png" alt="">
-                        </div>
-                        <div class="sl_sidebar_sugs_text">
-                            <a href="#" class="sl_user_link_name"> Uk Brands </a>
-                            <span> Shopping</span>
-                        </div>
-                        <div class="user-follow-button sl_sidebar_sugs_btns">
-                            <button type="button" class="button small">
-                                <span> Like </span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="sl_sidebar_sugs_title mt-4">Suggested groups
-                        <i class="icon-feather-rotate-cw"></i>
-                    </div>
-                    <div class="sl_sidebar_sugs">
-                        <div class="sl_sidebar_sugs_avatar">
-                            <img src="assets/images/group/group-2.jpg" alt="">
-                        </div>
-                        <div class="sl_sidebar_sugs_text">
-                            <a href="#" class="sl_user_link_name"> Coffee Addicts </a>
-                            <span> 6 Members</span>
-                        </div>
-                        <div class="user-follow-button sl_sidebar_sugs_btns">
-                            <button type="button" class="button small">
-                                <span> Join </span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="sl_sidebar_sugs">
-                        <div class="sl_sidebar_sugs_avatar">
-                            <img src="assets/images/group/group-1.jpg" alt="">
-                        </div>
-                        <div class="sl_sidebar_sugs_text">
-                            <a href="#" class="sl_user_link_name"> Architecture </a>
-                            <span> 12 Members</span>
-                        </div>
-                        <div class="user-follow-button sl_sidebar_sugs_btns">
-                            <button type="button" class="button small">
-                                <span> Join </span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="sl_sidebar_sugs">
-                        <div class="sl_sidebar_sugs_avatar">
-                            <img src="assets/images/group/group-3.jpg" alt="">
-                        </div>
-                        <div class="sl_sidebar_sugs_text">
-                            <a href="#" class="sl_user_link_name"> Mountain Riders </a>
-                            <span> 32 Members</span>
-                        </div>
-                        <div class="user-follow-button sl_sidebar_sugs_btns">
-                            <button type="button" class="button small">
-                                <span> Join </span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="sl_sidebar_sugs">
-                        <div class="sl_sidebar_sugs_avatar">
-                            <img src="assets/images/group/group-4.jpg" alt="">
-                        </div>
-                        <div class="sl_sidebar_sugs_text">
-                            <a href="#" class="sl_user_link_name"> Graphic Design </a>
-                            <span> 25 Members</span>
-                        </div>
-                        <div class="user-follow-button sl_sidebar_sugs_btns">
-                            <button type="button" class="button small">
-                                <span> Join </span>
-                            </button>
-                        </div>
-                    </div>
-
                     <div class="sl_sidebar_sugs_title mt-4">Online Users 1
                     </div>
 
@@ -892,7 +345,7 @@
                     </form>
 
 
-                    <div class="sl_sidebar_sugs_title mt-4">Promoted Pages
+                    <!-- <div class="sl_sidebar_sugs_title mt-4">Promoted Pages
                         <i class="icon-feather-rotate-cw"></i>
                     </div>
                     <div class="sl_sidebar_sugs">
@@ -950,7 +403,7 @@
                                 <span> Like </span>
                             </button>
                         </div>
-                    </div>
+                    </div> -->
 
 
 
@@ -959,7 +412,7 @@
                     <!-- Footer menus-->
                     <div class="footer-wrapper-sidebar mt-4">
                         <div class="footer-powered">
-                            <p> © 2020 Simplest.net</p>
+                            <p> © <%= moment().format('YYYY')%> Socialize</p>
                         </div>
 
                         <hr>
@@ -1004,13 +457,12 @@
     </div>
 
     <!-- Chat sidebar -->
-    <a class="chat-plus-btn" href="#sidebar-chat" uk-toggle>
+    <!-- <a class="chat-plus-btn" href="#sidebar-chat" uk-toggle>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
         </svg>
-        <!--  Chat -->
-    </a>
-    <div id="sidebar-chat" class="sidebar-chat px-3" uk-offcanvas="flip: true; overlay: true">
+    </a> -->
+    <!-- <div id="sidebar-chat" class="sidebar-chat px-3" uk-offcanvas="flip: true; overlay: true">
         <div class="uk-offcanvas-bar">
 
             <div class="sidebar-chat-head mb-2">
@@ -1048,43 +500,8 @@
                 </div>
             </a>
 
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-1.jpg" alt="">
-                        <span class="online-dot"></span> </div>
-                    <h5> Erica Jones </h5>
-                </div>
-            </a>
-
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-7.jpg" alt="">
-                        <span class="offline-dot"></span> </div>
-                    <h5> Stella Johnson </h5>
-                </div>
-            </a>
-
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                        <span class="offline-dot"></span> </div>
-                    <h5> Alex Dolgove </h5>
-                </div>
-            </a>
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                        <span class="online-dot"></span> </div>
-                    <h5> James Lewis </h5>
-                </div>
-            </a>
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                        <span class="online-dot"></span> </div>
-                    <h5> Erica Jones </h5>
-                </div>
-            </a>
+            
+            
             <a href="#">
                 <div class="contact-list">
                     <div class="contact-list-media"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
@@ -1113,27 +530,12 @@
                     <h5> Erica Jones </h5>
                 </div>
             </a>
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                        <span class="offline-dot"></span> </div>
-                    <h5> Stella Johnson </h5>
-                </div>
-            </a>
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                        <span class="offline-dot"></span> </div>
-                    <h5> Alex Dolgove </h5>
-                </div>
-            </a>
-
 
 
         </div>
-    </div>
+    </div> -->
 
-
+ <!-- view story board -->
     <div class="story-pop uk-animation-slide-bottom-small">
         <div class="story-side uk-width-1-4@s">
 
@@ -1141,141 +543,73 @@
 
             <div class="uk-flex uk-flex-between uk-flex-middle mb-2">
                 <h2 class="mb-0" style="font-weight: 700">All Story</h2>
-                <a href="#" class="text-primary"> Setting</a>
+                <!-- <a href="#" class="text-primary"> Setting</a> -->
             </div>
 
             <div class="story-side-innr" data-simplebar>
                 <h4 class="mb-1"> Your Story</h4>
                 <ul class="story-side-list">
                     <li>
-                        <a href="#">
+                        <a href="#" onclick="viewOneStory('<%=user._id%>')">
                             <div class="story-user-media">
-                                <img src="assets/images/avatars/avatar-1.jpg" alt="">
+                                <img src="/Uploads/Avatar/<%=user.avatar%>" alt="">
                             </div>
                             <div class="story-user-innr">
-                                <h5> Stella Johnson </h5>
+                                <h5> <%=user.name%></h5>
                                 <p> Share a photo or video</p>
                             </div>
+                        </a>
+                        <a href="#storymodal" uk-toggle>
                             <div class="add-story-btn">
                                 <i class="uil-plus"></i>
                             </div>
                         </a>
+                        <!-- story modal -->
+                        <div id='storymodal' class="post-new storymodal" style="margin-right: 30%; float:left; height: 30%;" uk-offcanvas="flip: true;">
+                            <div class="" style="padding: 0px 50px 0 50px;">
+                                <span class="btn-close"
+                                uk-toggle="target: .storymodal ; cls: is-open" style="float:right;"> <i
+                                    class="icon-feather-x"></i> </span>
+                                <form action="/story/add" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="userid" value="<%=user._id%>"/>
+                                    <h5>Upload Story(max of 1)</h5>
+                                        <div style="margin-top: 2%; margin-top: 7%; margin-left: 12%;" >
+                                            <input type="file" name="stories" multiple/><br/>
+                                            <button type="submit" class="button primary px-6"> Upload </button>
+                                        </div>
+                                        
+                                </form>
+                            </div>
+                        </div>
 
                     </li>
                 </ul>
 
                 <div class="uk-flex uk-flex-between uk-flex-middle my-3">
                     <h4 class="m-0"> Friends Story</h4>
-                    <a href="#" class="text-primary"> See all</a>
                 </div>
                 <ul class="story-side-list"
                     uk-switcher="connect: #story-slider-switcher ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium">
+                    <%if(userinfos && stories.length>0){%>
+                        <%stories.forEach(function(key){%>
+                        <li>
+                            <a href="#" onclick="viewOneStory('<%=key.user._id%>')">
+                                <div class="story-user-media">
+                                    <img src="/Uploads/Avatar/<%=key.user.avatar%>" alt="">
+                                </div>
+                                <div class="story-user-innr">
+                                    <h5> <%=key.user.name%> </h5>
+                                    <p> <span class="story-time-ago"><%=moment(key.createdAt).fromNow()%> </span></p>
+                                </div>
+                            </a>
 
-                    <li>
-                        <a href="#">
-                            <div class="story-user-media">
-                                <img src="assets/images/avatars/avatar-1.jpg" alt="">
-                            </div>
-                            <div class="story-user-innr">
-                                <h5> James Lewis </h5>
-                                <p> <span class="story-count"> 2 new </span> <span class="story-time-ago"> 4hr ago
-                                    </span></p>
-                            </div>
-                        </a>
-
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="story-user-media">
-                                <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                            </div>
-                            <div class="story-user-innr">
-                                <h5> Stella Johnson </h5>
-                                <p> <span class="story-count"> 3 new </span> <span class="story-time-ago"> 1hr ago
-                                    </span></p>
-                            </div>
-                        </a>
-
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="story-user-media">
-                                <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                            </div>
-                            <div class="story-user-innr">
-                                <h5> Erica Jones </h5>
-                                <p> <span class="story-count"> 2 new </span> <span class="story-time-ago"> 3hr ago
-                                    </span></p>
-                            </div>
-                        </a>
-
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="story-user-media">
-                                <img src="assets/images/avatars/avatar-7.jpg" alt="">
-                            </div>
-                            <div class="story-user-innr">
-                                <h5> Adrian Mohani </h5>
-                                <p> <span class="story-count"> 1 new </span> <span class="story-time-ago"> 4hr ago
-                                    </span></p>
-                            </div>
-                        </a>
-
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="story-user-media">
-                                <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                            </div>
-                            <div class="story-user-innr">
-                                <h5> Alex Dolgove </h5>
-                                <p> <span class="story-count"> 3 new </span> <span class="story-time-ago"> 7hr ago
-                                    </span></p>
-                            </div>
-                        </a>
-
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="story-user-media">
-                                <img src="assets/images/avatars/avatar-1.jpg" alt="">
-                            </div>
-                            <div class="story-user-innr">
-                                <h5> Stella Johnson </h5>
-                                <p> <span class="story-count"> 2 new </span> <span class="story-time-ago"> 8hr ago
-                                    </span></p>
-                            </div>
-                        </a>
-
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="story-user-media">
-                                <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                            </div>
-                            <div class="story-user-innr">
-                                <h5> Erica Jones </h5>
-                                <p> <span class="story-count"> 3 new </span> <span class="story-time-ago"> 10hr ago
-                                    </span></p>
-                            </div>
-                        </a>
-
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="story-user-media">
-                                <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                            </div>
-                            <div class="story-user-innr">
-                                <h5> Alex Dolgove </h5>
-                                <p> <span class="story-count"> 3 new </span> <span class="story-time-ago"> 14hr ago
-                                    </span></p>
-                            </div>
-                        </a>
-
-                    </li>
-
+                        </li>
+                        <%})%>
+                    <%}else{%>
+                        <li>
+                            No Story
+                        </li>
+                    <%}%>
                 </ul>
 
             </div>
@@ -1289,10 +623,8 @@
 
             <div class="story-content-innr">
 
-                <ul id="story-slider-switcher" class="uk-switcher">
-
+                <ul id="story-slider-switcher" class="uk-switcher" >
                     <li>
-
                         <a href="#" uk-switcher-item="previous"
                             class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
                         <a href="#" uk-switcher-item="next"
@@ -1304,312 +636,13 @@
                             <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
 
                             <!-- Story posted image -->
-                            <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                <li>
-                                    <div
-                                        class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                        <img src="assets/images/post/img-1.jpg" alt="">
-                                    </div>
-                                </li>
-                                <li>
-                                    <div
-                                        class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                        <img src="assets/images/avatars/avatar-lg-1.jpg" alt="">
-                                    </div>
-                                </li>
-                            </ul>
-
-
-                        </div>
-
-
-                    </li>
-
-                    <li>
-
-                        <!-- slider navigation -->
-
-                        <a href="#" uk-switcher-item="previous"
-                            class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
-                        <a href="#" uk-switcher-item="next"
-                            class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
-
-                        <div class="uk-position-relative uk-visible-toggle" uk-slider>
-
-                            <!-- navigation -->
-                            <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
-
-                            <!-- Story posted image -->
-                            <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                <li>
-                                    <div class="story-slider-image">
-                                        <img src="assets/images/post/img-3.jpg" alt="">
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="story-slider-image">
-                                        <img src="assets/images/avatars/avatar-lg-3.jpg" alt="">
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="story-slider-image">
-                                        <img src="assets/images/avatars/avatar-lg-2.jpg" alt="">
-                                    </div>
-                                </li>
-                            </ul>
-
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <!-- slider navigation -->
-
-                        <a href="#" uk-switcher-item="previous"
-                            class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
-                        <a href="#" uk-switcher-item="next"
-                            class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
-
-                        <div class="uk-position-relative uk-visible-toggle" uk-slider>
-                            <!-- navigation -->
-                            <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
-
-                            <!-- Story posted image -->
-                            <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                <li>
-                                    <div
-                                        class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                        <img src="assets/images/avatars/avatar-lg-4.jpg" alt="">
-                                    </div>
-
-                                </li>
+                            <ul class="uk-slider-items uk-child-width-1-1 story-slider" id="storyid">
+                    
+        
                             </ul>
                         </div>
-
                     </li>
-
-                    <li>
-
-                        <!-- slider navigation -->
-
-                        <a href="#" uk-switcher-item="previous"
-                            class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
-                        <a href="#" uk-switcher-item="next"
-                            class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
-
-                        <div class="uk-position-relative uk-visible-toggle" uk-slider>
-                            <!-- navigation -->
-                            <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
-
-                            <!-- Story posted image -->
-                            <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                <li>
-                                    <div
-                                        class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                        <img src="assets/images/avatars/avatar-lg-4.jpg" alt="">
-                                    </div>
-
-                                </li>
-                            </ul>
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <!-- slider navigation -->
-
-                        <a href="#" uk-switcher-item="previous"
-                            class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
-                        <a href="#" uk-switcher-item="next"
-                            class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
-
-                        <div class="uk-position-relative uk-visible-toggle" uk-slider>
-                            <!-- navigation -->
-                            <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
-
-                            <!-- Story posted image -->
-                            <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                <li>
-                                    <div
-                                        class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                        <img src="assets/images/avatars/avatar-lg-4.jpg" alt="">
-                                    </div>
-
-                                </li>
-                            </ul>
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <!-- slider navigation -->
-
-                        <a href="#" uk-switcher-item="previous"
-                            class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
-                        <a href="#" uk-switcher-item="next"
-                            class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
-
-                        <div class="uk-position-relative uk-visible-toggle" uk-slider>
-                            <!-- navigation -->
-                            <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
-
-                            <!-- Story posted image -->
-                            <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                <li>
-                                    <div
-                                        class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                        <img src="assets/images/avatars/avatar-lg-4.jpg" alt="">
-                                    </div>
-
-                                </li>
-                            </ul>
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <!-- slider navigation -->
-
-                        <a href="#" uk-switcher-item="previous"
-                            class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
-                        <a href="#" uk-switcher-item="next"
-                            class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
-
-                        <div class="uk-position-relative uk-visible-toggle" uk-slider>
-                            <!-- navigation -->
-                            <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
-
-                            <!-- Story posted image -->
-                            <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                <li>
-                                    <div
-                                        class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                        <img src="assets/images/avatars/avatar-lg-4.jpg" alt="">
-                                    </div>
-
-                                </li>
-                            </ul>
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <!-- slider navigation -->
-
-                        <a href="#" uk-switcher-item="previous"
-                            class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
-                        <a href="#" uk-switcher-item="next"
-                            class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
-
-                        <div class="uk-position-relative uk-visible-toggle" uk-slider>
-                            <!-- navigation -->
-                            <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
-
-                            <!-- Story posted image -->
-                            <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                <li>
-                                    <div
-                                        class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                        <img src="assets/images/avatars/avatar-lg-4.jpg" alt="">
-                                    </div>
-
-                                </li>
-                            </ul>
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <!-- slider navigation -->
-
-                        <a href="#" uk-switcher-item="previous"
-                            class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
-                        <a href="#" uk-switcher-item="next"
-                            class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
-
-                        <div class="uk-position-relative uk-visible-toggle" uk-slider>
-                            <!-- navigation -->
-                            <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
-
-                            <!-- Story posted image -->
-                            <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                <li>
-                                    <div
-                                        class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                        <img src="assets/images/avatars/avatar-lg-4.jpg" alt="">
-                                    </div>
-
-                                </li>
-                            </ul>
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <!-- slider navigation -->
-
-                        <a href="#" uk-switcher-item="previous"
-                            class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
-                        <a href="#" uk-switcher-item="next"
-                            class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
-
-                        <div class="uk-position-relative uk-visible-toggle" uk-slider>
-                            <!-- navigation -->
-                            <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
-
-                            <!-- Story posted image -->
-                            <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                <li>
-                                    <div
-                                        class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                        <img src="assets/images/avatars/avatar-lg-4.jpg" alt="">
-                                    </div>
-
-                                </li>
-                            </ul>
-                        </div>
-
-                    </li>
-
-                    <li>
-
-                        <!-- slider navigation -->
-
-                        <a href="#" uk-switcher-item="previous"
-                            class="uk-position-center-left-out uk-position-medium slidenav-prev"></a>
-                        <a href="#" uk-switcher-item="next"
-                            class="uk-position-center-right-out uk-position-medium slidenav-next"></a>
-
-                        <div class="uk-position-relative uk-visible-toggle" uk-slider>
-                            <!-- navigation -->
-                            <ul class="uk-slider-nav uk-dotnav story-slider-nav"></ul>
-
-                            <!-- Story posted image -->
-                            <ul class="uk-slider-items uk-child-width-1-1 story-slider">
-                                <li>
-                                    <div
-                                        class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                        <img src="assets/images/avatars/avatar-lg-4.jpg" alt="">
-                                    </div>
-
-                                </li>
-                            </ul>
-                        </div>
-
-                    </li>
-
                 </ul>
-
-
-
-
 
 
 
@@ -1623,5 +656,167 @@
 
 
 </div>
+<script>
+    function getLikes(postid,userid){
+        $.ajax({
+            url:`/post/likes/${postid}`,
+            method:"GET",
+            success:(resp)=>{
+                console.log('likes res',resp)
+                if(resp.post.likes.length>0){
+                    resp.post.likes.map((key,val)=>{
+                      if(key.user==userid){
+                          if(key.togglelike==true){
+                              $('#noflikes-'+postid).html(`<i class="uil-thumbs-up" style="color:red;"></i>${resp.post.likes.length}<span> Like(s) </span>`)
+
+                          }
+                          else{
+                              $('#noflikes-'+postid).html(`<i class="uil-thumbs-up"></i> ${resp.post.likes.length}<span> Like(s) </span>`)
+                          }
+                      }
+                    })
+                }
+            }
+        })
+    }
+    function addLikes(postid){
+        let toggle = $('toggleinput-'+postid).val()
+        let oldlikes = $('likesinput-'+postid).val()
+      //   console.log("oldlikes",oldlikes)
+      let body={
+          toggle:(toggle=="false")?true:false,
+          userid:"<%= user._id%>",
+          postid:postid
+      }
+      $('toggleinput-'+postid).val((toggle=="true")?"false":"true")
+      console.log("body",body)
+      $.ajax({
+          url:`/post/likes/add`,
+          method:"POST",
+          data:body,
+          success: (resp)=>{
+              console.log("likes",resp)
+              $('#commentsection-'+postid).html("")
+              getLikes(postid,'<%=user._id%>')
+          },
+          error:(err)=>{
+              console.log(err)
+          }
+      })
+    }
+    function addComment(postid){
+      let text = $('#commentinput-'+postid).val()
+      let body={
+          text:text,
+          userid:"<%= user._id%>",
+          postid:postid
+      }
+      console.log("body",body)
+      $.ajax({
+          url:`/post/comment/add`,
+          method:"POST",
+          data:body,
+          success: (resp)=>{
+              $('#commentsection-'+postid).html("")
+              $('#commentinput-'+postid).val("")
+              getComments(postid)
+              
+          },
+          error:(err)=>{
+              console.log(err)
+          }
+      })
+    }
+    function getComments(postid){
+        console.log("postid",postid)
+      $.ajax({
+          url:`/post/one/${postid}`,
+          method:"GET",
+          success: (resp)=>{
+              console.log("postinfo",resp.data[0])
+          let divhtml="";
+          $('#nofcomment-'+postid).html(`<i class="uil-heart"></i>${resp.data[0].comments.length} <span> Comment(s)</span>`)
+              if(resp.data[0].comments && resp.data[0].comments.length>0){
+                  resp.data[0].comments.map(async (key,val)=>{
+                      // console.log(key,val)
+                      await $.ajax({
+                          url:`/comment/post/one/${key._id}`,
+                          method:"GET",
+                          success: (resp2)=>{
+                              // console.log("resp2",resp2.data[0])
+                              let dates = moment(resp2.data[0].createdAt).fromNow()
+                              divhtml+=`
+                                  <div class="post-comments-single">
+                                          <div class="post-comment-avatar">
+                                              <img src="/Uploads/Avatar/${resp2.data[0].user.avatar}" alt="">
+                                      </div>
+                                      <div class="post-comment-text">
+                                          <div class="post-comment-text-inner">
+                                              <h6> ${resp2.data[0].user.name}</h6>
+                                              <p> ${resp2.data[0].text}</p>
+                                          </div>
+                                          <div class="uk-text-small">
+                                              <span> ${dates}</span>
+                                          </div>
+                                      </div>
+                                  </div> `
+                          }
+                      })
+                      console.log("code got here")
+                      $('#commentsection-'+postid).html(divhtml)
+                      })
+                      
+
+                  }
+                  else{
+                      divhtml = `<div class="post-comments-single">
+                                      <div class="post-comment-text">
+                                          <p>no comment</p>
+                                      </div>
+                                  </div>
+                                  `
+                  }
+                  console.log("else")
+                  $('#commentsection-'+postid).html(divhtml)
+              
+              }
+          })
+    }
+    function addStory(){
+
+    }
+    function viewOneStory(userid){
+        $.ajax({
+            url:`/story/user/${userid}`,
+            method:"GET",
+            success:(resp)=>{
+                var divhtml = ""
+                console.log("viewonestory",resp)
+                if(resp.status==true && resp.story.length>0){
+                    if(resp.story[0].objtext.length >0){
+                        
+                        resp.story[0].objtext.map((key,val)=>{
+                            console.log(key,val)
+                            
+                                       divhtml+= `
+                                        <li>
+                                            <div
+                                                class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
+                                                <img src="/Uploads/${key}" alt="">
+                                            </div>
+                                        </li>
+                                    `
+
+                    
+                        })
+                        
+                        $('#storyid').html(divhtml)
+                    }
+                }
+                
+            }
+        })
+    }
+</script>
 
 <%- include('main/footer'); %>
