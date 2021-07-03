@@ -17,7 +17,7 @@ class Pages{
        let input = req.body
     if(!input) throw new Error("Emtpy parameters")
     Post.create({
-        description:description,
+        description:req.body.description,
         objtext:(req.body.url)?req.body.url:"",
         isdownload:req.body.isdownload,
         user:req.user._id
