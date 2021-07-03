@@ -47,14 +47,11 @@
                                 <%if(userinfos && friends.length>0){%>
                                     <%friends.forEach(function(key){ %>
                                     <!-- use script tag to access ejs data and local storage -->
-                                    <script>
-                                        localStorage.setItem('<%=key._id%>', JSON.stringify({name:"<%=key.name%>",avatar:"<%=key.avatar%>"}));
-                                    </script>
                                         
                                         <a href="#" class="getmssg" onclick="runMessages('<%=user._id%>','<%=key._id%>')" id="<%=key._id%>">
                                             
                                             <div class="contact-list">
-                                                <div class="contact-list-media"> <img src="/Uploads/Avatar/<%=key.avatar%>" alt="">
+                                                <div class="contact-list-media"> <img src="<%=key.userinfo.avatar%>" alt="">
                                                     <span class="online-dot"></span> </div>
                                                 <h5> <%=key.name%></h5>
                                             </div>
@@ -122,7 +119,7 @@
         converseid = msg.conversationId
               
         // socket.disconnect()
-        $("#messages").scrollTop($("#messages")[0].scrollHeight);
+        $("#messages").scrollTop($("#messages").scrollHeight);
         // getMessages(msg.from,msg.to)
     })
     socket.on('sendmessage',function(msg1){
@@ -171,15 +168,17 @@
 
     
 function runMessages(userid,toid){
+    
     socket.emit('newuser',{from:userid,to:toid})
     $.ajax({
         url:`/user/one?userid=${toid}`,
         method:'GET',
         success:async(resp1)=>{
+            console.log("profile is",resp1.profile)
             $('#changeskin').html(`<div class="post" >
                     <div class="post-heading">
                     <div class="post-avature">
-                        <img src="/Uploads/Avatar/${resp1.profile.avatar}" alt="">
+                        <img src="${resp1.profile.userinfo.avatar}" alt="">
                     </div>
                     <div class="post-title">
                         <h4>${resp1.profile.name}</h4>
@@ -187,8 +186,8 @@ function runMessages(userid,toid){
                 </div>
                 
                 <!-- post comments -->
-                <div class="post-comments" style="max-height: 70vh; min-height:65vh;overflow-y:scroll">
-                <div id="messages">
+                <div class="post-comments" id="scroller" >
+                <div id="messages" style="max-height: 70vh; min-height:65vh;overflow-y:scroll">
                 
                 </div>
 
@@ -207,6 +206,9 @@ function runMessages(userid,toid){
                 </div>
             </div>`)
             getMessages(userid,toid)
+        // console.log("scrollheight",document.getElementById("messages").scrollHeight)
+        //  $("#scroller").scrollTop('600');
+         $('#messages').animate({scrollTop:$('#messages').position().top});
         }
     })
     
@@ -241,7 +243,7 @@ function attachMessage(fromid,toid,message){
 }
     function getMessages(userid,toid){
         let uid = userid+'-'+toid
-        $("#messages").scrollTop($("#messages")[0].scrollHeight);
+        $("#messages").scrollTop($("#messages").scrollHeight);
         var divhtml="";
         
         $.ajax({

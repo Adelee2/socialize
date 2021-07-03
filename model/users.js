@@ -28,9 +28,6 @@ const userSchema = new mongoose.Schema(
       type:Boolean,
       default:false
     },
-    avatar:{
-      type:String
-    },
     userinfo:{
         type: mongoose.Schema.Types.ObjectId,ref:'UserInfo'
     },

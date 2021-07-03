@@ -20,6 +20,7 @@ exports.localReg = function (name,email,password,dob,gender,location) {
 
           console.log("CREATING USER:", name);
           UserInfo.create({
+            avatar:"https://firebasestorage.googleapis.com/v0/b/socializer-69de0.appspot.com/o/images%2Fnoimage.jpg?alt=media&token=ae4d6fc4-3a5e-4011-83cf-29225fb1ac78",
             location:location
           }).
           then(userinfo=>{
@@ -28,7 +29,6 @@ exports.localReg = function (name,email,password,dob,gender,location) {
               email: email,
               password: hash,
               token: uuid(),
-              avatar:"noimage.jpg",
               userinfo:userinfo._id,
               dob:dob,
               gender:gender

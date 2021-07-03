@@ -6,12 +6,12 @@ const User = require("../../model/users")
 class Notification{
     
     index = (req,res)=>{
-        FriendRequest.find({friendrequestto:req.user._id}).populate([{path:'friendrequestfrom'}]).then(ress=>{
+        FriendRequest.find({friendrequestto:req.user._id}).populate([{path:'friendrequestfrom',populate:{path:'userinfo'}}]).then(ress=>{
             return res.json({status:true,friendrequests:ress})
         })
     }
     all = (req,res)=>{
-       let result= FriendRequest.find({}).populate([{path:'friendrequestfrom'},{path:'friendrequestto'}])
+       let result= FriendRequest.find({}).populate([{path:'friendrequestfrom',populate:{path:'userinfo'}},{path:'friendrequestto',populate:{path:'userinfo'}}])
 
        return result;
     }

@@ -2,6 +2,10 @@ const mongoose = require ('mongoose');
 
 const userinfoSchema = new mongoose.Schema(
     {
+        
+    avatar:{
+        type:String
+      },
       location: {
         type: String,
       },

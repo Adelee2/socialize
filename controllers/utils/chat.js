@@ -5,7 +5,7 @@ class Chat{
         let uid = req.params.uid
         let id = uid.split('-')
         let uid1 = id[1]+'-'+id[0]
-        chat.find({$or: [{ conversationid: uid }, { conversationid: uid1 }]}).populate([{path:'to'},{path:'from'}]).then(resp=>{
+        chat.find({$or: [{ conversationid: uid }, { conversationid: uid1 }]}).populate([{path:'to',populate:{path:'userinfo'}},{path:'from',populate:{path:'userinfo'}}]).then(resp=>{
             // console.log("chat find",resp)
             if(resp.length ==0){
                 chat.create({

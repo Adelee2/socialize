@@ -12,7 +12,7 @@ class Users{
     //get all users with userinfo
     index = async ()=>{
          
-                let post = await User.find({},null)
+                let post = await User.find({}).populate([{path:'userinfo'}])
 
                 return post
             
@@ -37,7 +37,7 @@ class Users{
          let userinfo = await UserInfo.findOne({_id:this.req.user.userinfo})
             if(userinfo){
                 
-               let myfriends =  await User.find({"_id":{"$in":userinfo.friends}},null).populate('userinfo')
+               let myfriends =  await User.find({"_id":{"$in":userinfo.friends}},null).populate([{path:'userinfo'}])
                 // console.log("userinfo: ",userinfo)
             
                 return myfriends
@@ -49,7 +49,7 @@ class Users{
         // console.log("profileFriends",user)
            if(user.userinfo){
                
-              let myfriends =  await User.find({"_id":{"$in":user.userinfo.friends}},null).populate('userinfo')
+              let myfriends =  await User.find({"_id":{"$in":user.userinfo.friends}},null).populate([{path:'userinfo'}])
                // console.log("userinfo: ",userinfo)
            
                return myfriends

@@ -19,31 +19,23 @@ class Stories{
                         $gt:moment().subtract(1, "days").format(),
                         $lt:moment().add(1, 'days').format()
                     } 
-                }).populate([{path:'user'},{path:'likes'}])
+                }).populate([{path:'user',populate:{path:'userinfo'}},{path:'likes'}])
         
         
         return result
     }
     add = async (req,res)=>{
-        console.log("stories files",req.files)
-        let files = req.files;
-        let filearr = []
-        await files.map(async(key,val)=>{
-           filearr.push(key.filename)
-        })
-        Story.findOne({user:req.body.userid, "createdAt":{$gt:moment().subtract(1, "days").format(),$lt:moment().add(1, 'days').format()}}).then(story=>{
+        
+        await Story.findOne({user:req.body.userid, "createdAt":{$gt:moment().subtract(1, "days").format(),$lt:moment().add(1, 'days').format()}}).then(story=>{
             console.log("story found?",story)
             if(story){
-                // let newfilearr = [...filearr,...story.objtext]
-                for(let i=0;i<filearr.length;i++){
-                    story.objtext.push(filearr[i])
-
-                    story.save()
-                }
+                story.objtext.push(req.body.url)
+                story.save()
+                
                 
             }else{
                 Story.create({
-                    objtext:filearr,
+                    objtext:req.body.url,
                     description:"",
                     user:req.body.userid
                     }).then(resp=>{
@@ -54,7 +46,7 @@ class Stories{
                         })
                     })
             }
-            res.redirect('/')
+            return res.json({status:true, message:"successful"})
         })
         
         
@@ -62,7 +54,7 @@ class Stories{
     } 
     // get all info for one Story
     showOne = async(req,res)=>{
-        Story.find({"createdAt":{$gt:moment().subtract(1, "days").format(),$lt:moment().add(1, 'days').format()},_id:req.params.storyid}).populate([ {path:'user'}, {path:'comments'},{path:'likes'} ]).sort({'comments.createdAt':-1}).then(resp=>{
+        Story.find({"createdAt":{$gt:moment().subtract(1, "days").format(),$lt:moment().add(1, 'days').format()},_id:req.params.storyid}).populate([ {path:'user',populate:{path:'userinfo'}}, {path:'comments'},{path:'likes'} ]).sort({'comments.createdAt':-1}).then(resp=>{
             return res.json({status:true,data:resp})
         })
     }

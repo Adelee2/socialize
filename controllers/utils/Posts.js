@@ -17,7 +17,13 @@ class Posts{
         var friendids = userinfo.friends;
         friendids.push(this.req.user._id)
         // console.log("friend ids",friendids)
-        let post = await Post.find({"user":{"$in":friendids }},null).populate([{path:'user'},{path:'likes'},{path:'comments'}]).sort([['createdAt', -1]])
+        // let post= await Post.find({"user":{"$in":friendids }}).populate({
+        //     path: 'user',
+        //     populate: {
+        //       path: 'userinfo'
+        //     }
+        //   })
+        let post = await Post.find({"user":{"$in":friendids }}).populate({path:'user', populate:{path:'userinfo'}}).sort([['createdAt', -1]])
         //.populate([ {path:'user'}, {path:'comments'},{path:'likes'} ])
         
         return post
@@ -40,23 +46,23 @@ class Posts{
     showOne = async(req,res)=>{
         // console.log("showOne req",req)
         // console.log("req.params",req.params.postid)
-        Post.find({_id:req.params.postid}).populate([ {path:'user'}, {path:'comments'},{path:'likes'} ]).sort({'comments.createdAt':-1}).then(resp=>{
+        Post.find({_id:req.params.postid}).populate([ {path:'user',populate:{path:'userinfo'}}, {path:'comments'},{path:'likes'} ]).sort({'comments.createdAt':-1}).then(resp=>{
             return res.json({status:true,data:resp})
         })
     }
     //get only my posts
     show= async()=>{
         // console.log("mypost",this.req.user)
-        let post = await Post.find({"user":this.req.user._id },null).populate([{path:'user'}]).sort([['createdAt', -1]])
-        //.populate([ {path:'user'}, {path:'comments'},{path:'likes'} ])
+        let post = await Post.find({"user":this.req.user._id },null).populate({path:'user',populate:{path:'userinfo'}}).sort([['createdAt', -1]])
+        //.populate([ {path:'user',populate:{path:'userinfo'}}, {path:'comments'},{path:'likes'} ])
         
         return post
     }
     //get only posts of a Person
     showProfile= async()=>{
         // console.log("mypost",this.req.user)
-        let post = await Post.find({"user":this.req.query.userid },null).populate([{path:'user'}]).sort([['createdAt', -1]])
-        //.populate([ {path:'user'}, {path:'comments'},{path:'likes'} ])
+        let post = await Post.find({"user":this.req.query.userid },null).populate({path:'user',populate:{path:'userinfo'} }).sort([['createdAt', -1]])
+        //.populate([ {path:'user',populate:{path:'userinfo'}}, {path:'comments'},{path:'likes'} ])
         
         return post
     }

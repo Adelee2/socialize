@@ -51,7 +51,7 @@
                                 class="uk-slider-items uk-child-width-1-5@m uk-child-width-1-3@s uk-child-width-1-3 story-slider uk-grid">
                                 <li>
                                     <a href="#" uk-toggle="target: body ; cls: is-open">
-                                        <div class="story-card"  style="height: 10vh;" data-src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>"
+                                        <div class="story-card"  style="min-height: 10vh;height: 15vh; border-radius:50%;" data-src="<%=(userinfos)?userinfos.avatar:noimage.jpg%>"
                                             uk-img>
                                             <i class="uil-plus"></i>
                                             <div class="story-card-content">
@@ -61,13 +61,13 @@
                                     </a>
 
                                 </li>
-                                <%if(userinfos && stories.length>0){%>
-                                    <%stories.forEach(function(key){%>
+                                <%if(userinfos && JSON.parse(stories).length>0){%>
+                                    <%JSON.parse(stories).forEach(function(key){%>
                                         <li>
                                             <a href="#" uk-toggle="target: body ; cls: is-open">
-                                                <div class="story-card" style="height: 10vh;" data-src="/Uploads/<%=key.objtext%>"
+                                                <div class="story-card" style=" min-height: 10vh;height: 15vh; border-radius:50%;" data-src="<%=key.objtext%>"
                                                     uk-img>
-                                                         <img src="/Uploads/Avatar/<%=key.user.avatar%>" alt="">
+                                                         <img src="<%=key.user.userinfo.avatar%>" alt="">
                                                     
                                                     <div class="story-card-content">
                                                         <h4> <%=key.user.name%> </h4>
@@ -120,12 +120,13 @@
 
                         </div>
                     </div>
-                    <% if(userinfos && posts.length > 0 ) {%>
-                        <% posts.forEach(function(key){%>
+                    <% if(userinfos && JSON.parse(posts).length > 0 ) {%>
+                        <% JSON.parse(posts).forEach(function(key){%>
+                            
                             <div class="post">
                                 <div class="post-heading">
                                     <div class="post-avature">
-                                        <img src="/Uploads/Avatar/<%=key.user.avatar%>">
+                                        <img src="<%=key.user.userinfo.avatar%>">
                                     </div>
                                     <div class="post-title" data-href="/profile?userid=<%=key.user._id%>">
                                        
@@ -150,13 +151,14 @@
                                 </div>
                                 <div class="post-description">
                                     <div class="fullsizeimg">
-                                        <% if(key.objtext.substring(key.objtext.length-4,key.objtext.length) ==".mp4"){%>
-                                            <video style="width: 100%; height: auto;" controls autoplay loop>  
-                                                <source src="/Uploads/<%=key.objtext%>" type="video/mp4">  
+                                        <% let newobj = key.objtext.split('?alt')%>
+                                        <% if(newobj[0].substring(newobj[0].length-4,newobj[0].length) ==".mp4"){%>
+                                            <video style="width: 100%; height: auto;" controls>  
+                                                <source src="<%=key.objtext%>" type="video/mp4">  
                                                 Your browser does not support the html video tag.  
                                               </video>  
                                         <% }else{ %>
-                                            <img src="/Uploads/<%=key.objtext%>" alt="">
+                                            <img src="<%=key.objtext%>" alt="">
                                         <%}%>
                                     </div>
                                     <div class="post-state-details">
@@ -181,15 +183,15 @@
                                 <!-- post comments -->
                                 
                                 <div class="post-comments">
+                                    <input type="hidden" id="inputview-<%=key._id%>" value="false">
+                                    <a href="javascript:;" onclick="getComments('<%=key._id%>')" class="view-more-comment" id="view-<%=key._id%>"> View Comments</a>
                                     
-                                    <a href="javascript:;" onclick="getComments('<%=key._id%>')" class="view-more-comment"> View Comments</a>
-                                    
-                                    <div id="commentsection-<%=key._id%>"></div>
+                                    <div id="commentsection-<%=key._id%>" style="overflow-y: scroll;max-height: 55vh;"></div>
     
 
                                     <div class="post-add-comment">
                                         <div class="post-add-comment-avature">
-                                            <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
+                                            <img src="<%=(userinfos)?userinfos.avatar:noimage.jpg%>" alt="">
                                         </div>
                                         <div class="post-add-comment-text-area">
                                             <input type="text" id="commentinput-<%=key._id%>" placeholder="Write your comment...">
@@ -456,85 +458,6 @@
 
     </div>
 
-    <!-- Chat sidebar -->
-    <!-- <a class="chat-plus-btn" href="#sidebar-chat" uk-toggle>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
-        </svg>
-    </a> -->
-    <!-- <div id="sidebar-chat" class="sidebar-chat px-3" uk-offcanvas="flip: true; overlay: true">
-        <div class="uk-offcanvas-bar">
-
-            <div class="sidebar-chat-head mb-2">
-
-                <div class="btn-actions">
-                    <a href="#" uk-tooltip="title: Search ;offset:7"
-                        uk-toggle="target: .sidebar-chat-search; animation: uk-animation-slide-top-small"> <i
-                            class="icon-feather-search"></i> </a>
-                    <a href="#" uk-tooltip="title: settings ;offset:7"> <i class="icon-feather-settings"></i> </a>
-                    <a href="#"> <i class="uil-ellipsis-v"></i> </a>
-                    <a href="#" class="uk-hidden@s"> <button class="uk-offcanvas-close uk-close" type="button"
-                            uk-close> </button> </a>
-                </div>
-
-                <h2> Chats </h2>
-            </div>
-
-            <div class="sidebar-chat-search" hidden>
-                <input type="text" class="uk-input" placeholder="Search in Messages">
-                <span class="btn-close"
-                    uk-toggle="target: .sidebar-chat-search; animation: uk-animation-slide-top-small"> <i
-                        class="icon-feather-x"></i> </span>
-            </div>
-
-            <ul class="uk-child-width-expand sidebar-chat-tabs" uk-tab>
-                <li class="uk-active"><a href="#">Users</a></li>
-                <li><a href="#">Groups</a></li>
-            </ul>
-
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                        <span class="online-dot"></span> </div>
-                    <h5> James Lewis </h5>
-                </div>
-            </a>
-
-            
-            
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-3.jpg" alt="">
-                        <span class="offline-dot"></span> </div>
-                    <h5> Stella Johnson </h5>
-                </div>
-            </a>
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-5.jpg" alt="">
-                        <span class="offline-dot"></span> </div>
-                    <h5> Alex Dolgove </h5>
-                </div>
-            </a>
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-2.jpg" alt="">
-                        <span class="online-dot"></span> </div>
-                    <h5> James Lewis </h5>
-                </div>
-            </a>
-            <a href="#">
-                <div class="contact-list">
-                    <div class="contact-list-media"> <img src="assets/images/avatars/avatar-4.jpg" alt="">
-                        <span class="online-dot"></span> </div>
-                    <h5> Erica Jones </h5>
-                </div>
-            </a>
-
-
-        </div>
-    </div> -->
-
  <!-- view story board -->
     <div class="story-pop uk-animation-slide-bottom-small">
         <div class="story-side uk-width-1-4@s">
@@ -552,7 +475,7 @@
                     <li>
                         <a href="#" onclick="viewOneStory('<%=user._id%>')">
                             <div class="story-user-media">
-                                <img src="/Uploads/Avatar/<%=user.avatar%>" alt="">
+                                <img src="<%=userinfos.avatar%>" alt="">
                             </div>
                             <div class="story-user-innr">
                                 <h5> <%=user.name%></h5>
@@ -570,12 +493,12 @@
                                 <span class="btn-close"
                                 uk-toggle="target: .storymodal ; cls: is-open" style="float:right;"> <i
                                     class="icon-feather-x"></i> </span>
-                                <form action="/story/add" method="POST" enctype="multipart/form-data">
-                                    <input type="hidden" name="userid" value="<%=user._id%>"/>
+                                <form enctype="multipart/form-data">
+                                    <input type="hidden" id="storyuserid" name="userid" value="<%=user._id%>"/>
                                     <h5>Upload Story(max of 1)</h5>
                                         <div style="margin-top: 2%; margin-top: 7%; margin-left: 12%;" >
-                                            <input type="file" name="stories" multiple/><br/>
-                                            <button type="submit" class="button primary px-6"> Upload </button>
+                                            <input type="file" id="story" name="stories"/><br/>
+                                            <input type="button" class="button primary px-6" onclick="addStory()" id="addstory" value="Upload">
                                         </div>
                                         
                                 </form>
@@ -590,12 +513,12 @@
                 </div>
                 <ul class="story-side-list"
                     uk-switcher="connect: #story-slider-switcher ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium">
-                    <%if(userinfos && stories.length>0){%>
-                        <%stories.forEach(function(key){%>
+                    <%if(userinfos && JSON.parse(stories).length>0){%>
+                        <%JSON.parse(stories).forEach(function(key){%>
                         <li>
                             <a href="#" onclick="viewOneStory('<%=key.user._id%>')">
                                 <div class="story-user-media">
-                                    <img src="/Uploads/Avatar/<%=key.user.avatar%>" alt="">
+                                    <img src="<%=key.user.userinfo.avatar%>" alt="">
                                 </div>
                                 <div class="story-user-innr">
                                     <h5> <%=key.user.name%> </h5>
@@ -656,7 +579,21 @@
 
 
 </div>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
 <script>
+     const firebaseConfig = {
+        apiKey: "AIzaSyBfertyvlc944FRk1k0xnZ4irbGiRXuimM",
+        authDomain: "socializer-69de0.firebaseapp.com",
+        databaseURL: "https://socializer-69de0-default-rtdb.firebaseio.com",
+        projectId: "socializer-69de0",
+        storageBucket: "socializer-69de0.appspot.com",
+        messagingSenderId: "128820802833",
+        appId: "1:128820802833:web:ba86c224372363e3b4c8b0",
+        measurementId: "G-CBGE6ZN4L6"
+    };
+    firebase.initializeApp(firebaseConfig)
+
     function getLikes(postid,userid){
         $.ajax({
             url:`/post/likes/${postid}`,
@@ -719,6 +656,9 @@
           success: (resp)=>{
               $('#commentsection-'+postid).html("")
               $('#commentinput-'+postid).val("")
+              $('#inputview-'+postid).val("false")
+              $('#view-'+postid).html("Hide Comments")
+            //   ($('#inputview-'+postid).val()=="true")? $('#view-'+postid).html("Hide Comment"):$('#view-'+postid).html("View Comment")
               getComments(postid)
               
           },
@@ -729,61 +669,98 @@
     }
     function getComments(postid){
         console.log("postid",postid)
-      $.ajax({
-          url:`/post/one/${postid}`,
-          method:"GET",
-          success: (resp)=>{
-              console.log("postinfo",resp.data[0])
-          let divhtml="";
-          $('#nofcomment-'+postid).html(`<i class="uil-heart"></i>${resp.data[0].comments.length} <span> Comment(s)</span>`)
-              if(resp.data[0].comments && resp.data[0].comments.length>0){
-                  resp.data[0].comments.map(async (key,val)=>{
-                      // console.log(key,val)
-                      await $.ajax({
-                          url:`/comment/post/one/${key._id}`,
-                          method:"GET",
-                          success: (resp2)=>{
-                              // console.log("resp2",resp2.data[0])
-                              let dates = moment(resp2.data[0].createdAt).fromNow()
-                              divhtml+=`
-                                  <div class="post-comments-single">
-                                          <div class="post-comment-avatar">
-                                              <img src="/Uploads/Avatar/${resp2.data[0].user.avatar}" alt="">
-                                      </div>
-                                      <div class="post-comment-text">
-                                          <div class="post-comment-text-inner">
-                                              <h6> ${resp2.data[0].user.name}</h6>
-                                              <p> ${resp2.data[0].text}</p>
-                                          </div>
-                                          <div class="uk-text-small">
-                                              <span> ${dates}</span>
-                                          </div>
-                                      </div>
-                                  </div> `
-                          }
-                      })
-                      console.log("code got here")
-                      $('#commentsection-'+postid).html(divhtml)
-                      })
-                      
+        if($('#inputview-'+postid).val()=="true"){
+            $('#inputview-'+postid).val("false")
+            $('#view-'+postid).html("View Comments")
+            $('#commentsection-'+postid).html("")
+        }else{
+            $('#inputview-'+postid).val("true")
+            $('#view-'+postid).html("Hide Comments")
+            $.ajax({
+                url:`/post/one/${postid}`,
+                method:"GET",
+                success: (resp)=>{
+                    console.log("postinfo",resp.data[0])
+                let divhtml="";
+                $('#nofcomment-'+postid).html(`<i class="uil-heart"></i>${resp.data[0].comments.length} <span> Comment(s)</span>`)
+                    if(resp.data[0].comments && resp.data[0].comments.length>0){
+                        resp.data[0].comments.map(async (key,val)=>{
+                            // console.log(key,val)
+                            await $.ajax({
+                                url:`/comment/post/one/${key._id}`,
+                                method:"GET",
+                                success: (resp2)=>{
+                                    // console.log("resp2",resp2.data[0])
+                                    let dates = moment(resp2.data[0].createdAt).fromNow()
+                                    divhtml+=`
+                                        <div class="post-comments-single">
+                                                <div class="post-comment-avatar">
+                                                    <img src="${resp2.data[0].user.userinfo.avatar}" alt="">
+                                            </div>
+                                            <div class="post-comment-text">
+                                                <div class="post-comment-text-inner">
+                                                    <h6> ${resp2.data[0].user.name}</h6>
+                                                    <p> ${resp2.data[0].text}</p>
+                                                </div>
+                                                <div class="uk-text-small">
+                                                    <span> ${dates}</span>
+                                                </div>
+                                            </div>
+                                        </div> `
+                                }
+                            })
+                            console.log("code got here")
+                            $('#commentsection-'+postid).html(divhtml)
+                            })
+                            
 
-                  }
-                  else{
-                      divhtml = `<div class="post-comments-single">
-                                      <div class="post-comment-text">
-                                          <p>no comment</p>
-                                      </div>
-                                  </div>
-                                  `
-                  }
-                  console.log("else")
-                  $('#commentsection-'+postid).html(divhtml)
-              
-              }
-          })
+                        }
+                        else{
+                            divhtml = `<div class="post-comments-single">
+                                            <div class="post-comment-text">
+                                                <p>no comment</p>
+                                            </div>
+                                        </div>
+                                        `
+                        }
+                        console.log("else")
+                        $('#commentsection-'+postid).html(divhtml)
+                    
+                    }
+                })
+        }
+     
     }
     function addStory(){
+        $('#addstory').val('please wait...')
+        const ref = firebase.storage().ref()
+        let userid = $('#storyuserid').val()
+        let file = document.querySelector('#story').files[0];
+        let path= "stories"
+        let name = 'stories-'+new Date()+"-"+file.name
 
+        const metadata = {
+            contentType:file.type
+        }
+
+        const task = ref.child(path+"/"+name).put(file,metadata)
+        task.then(snapshot=>snapshot.ref.getDownloadURL()).then(url=>{
+            console.log(url)
+            let body={
+              url:url,
+              userid:userid
+          }
+            $.ajax({
+                url:"/story/add",
+                method:"POST",
+                data:body,
+                success:(resp)=>{
+                    if(resp.status==true){
+                        window.location.reload(true)
+                    }
+                }
+            })
+        })
     }
     function viewOneStory(userid){
         $.ajax({
@@ -802,7 +779,7 @@
                                         <li>
                                             <div
                                                 class="story-slider-image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                                                <img src="/Uploads/${key}" alt="">
+                                                <img src="${key}" alt="">
                                             </div>
                                         </li>
                                     `

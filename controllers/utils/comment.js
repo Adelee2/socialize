@@ -76,7 +76,7 @@ class Comment{
     }
 
     show= async (req,res)=>{
-        CommentModel.find({_id:req.params.id}).populate([ {path:'user'}]).then(resp=>{
+        CommentModel.find({_id:req.params.id}).populate([ {path:'user',populate:{path:'userinfo'}}]).then(resp=>{
             return res.json({status:true,data:resp})
         }).catch(err=>{
             console.log(err)

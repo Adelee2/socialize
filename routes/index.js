@@ -16,6 +16,7 @@ const Notification = require('../controllers/utils/Notification');
 const Chat = require('../controllers/utils/chat');
 
 var auth = new Auth();
+
 var storage = multer.diskStorage({
     destination:"./public/Uploads",
     filename: function (req, file, cb) {
@@ -59,15 +60,18 @@ router.get('/logout', auth.ensureAuthenticated,auth.logout);
 router.get('/',auth.ensureAuthenticated,mypages.posts);
 router.get('/feeds',auth.ensureAuthenticated,mypages.realfeeds);
 router.get('/mypage',auth.ensureAuthenticated,mypages.mypage);
-router.post('/post/add',auth.ensureAuthenticated,upload,mypages.postFile);
-router.post('/avatar/add',auth.ensureAuthenticated,uploadavatar,mypages.updateAvatar);
-router.post('/story/add',auth.ensureAuthenticated,uploadstories,new Stories().add);
+
 
 // router.get('/mypagefriends',auth.ensureAuthenticated,mypages.mypagefriends);
 router.get('/explore',auth.ensureAuthenticated,mypages.explore);
 router.get('/chat',auth.ensureAuthenticated,mypages.message);
 router.get('/profile',auth.ensureAuthenticated,mypages.viewProfile)
 // API-like
+
+router.post('/post/add',auth.ensureAuthenticated,mypages.postFile);
+router.post('/avatar/add',auth.ensureAuthenticated,mypages.updateAvatar);
+router.post('/story/add',auth.ensureAuthenticated,new Stories().add);
+
 router.get('/user/one',auth.ensureAuthenticated,mypages.getProfile)
 router.post('/post/comment/add',auth.ensureAuthenticated,new commentutil().postcomment)
 router.post('/feed/comment/add',auth.ensureAuthenticated,new commentutil().feedcomment)

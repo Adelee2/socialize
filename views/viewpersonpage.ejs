@@ -18,7 +18,7 @@
                     <div class="profile-cover">
 
                         <!-- profile cover -->
-                        <img src="/Uploads/Avatar/<%=(newuser && newuser.avatar)?newuser.avatar:noimage.jpg%>" alt="">
+                        <img src="<%=userinfos.avatar%>" alt="">
 
                         <!-- <a href="#"> <i class="uil-camera"></i> Edit </a> -->
 
@@ -26,7 +26,7 @@
 
                     <div class="profile-details">
                         <div class="profile-image">
-                            <img src="/Uploads/Avatar/<%=(newuser && newuser.avatar)?newuser.avatar:noimage.jpg%>" alt="">
+                            <img src="<%=userinfos.avatar%>" alt="">
                             <!-- <a href="#avatarmodal" uk-toggle> </a> -->
                         </div>
                         <div class="profile-details-info">
@@ -112,8 +112,8 @@
                               
     
                             </div>
-                            <% if(newuser && posts.length > 0 ) {%>
-                                <% posts.forEach(function(key){%>
+                            <% if(newuser && JSON.parse(posts).length > 0 ) {%>
+                                <% JSON.parse(posts).forEach(function(key){%>
                                     <div class="post">
                                         <div class="post-heading">
                                             
@@ -139,13 +139,14 @@
                                         </div>
                                         <div class="post-description">
                                             <div class="fullsizeimg">
-                                                <% if(key.objtext.substr(key.objtext.length-4,key.objtext) ==".mp4"){%>
+                                                <% let newobj = key.objtext.split('?alt')%>
+                                                <% if(newobj[0].substring(newobj[0].length-4,newobj[0].length) ==".mp4"){%>
                                                     <video style="width: 100%; height: 85vh;" controls autoplay loop>  
-                                                        <source src="/Uploads/<%=key.objtext%>" type="video/mp4">  
+                                                        <source src="<%=key.objtext%>" type="video/mp4">  
                                                         Your browser does not support the html video tag.  
                                                       </video>  
                                                 <% }else{ %>
-                                                    <img src="/Uploads/<%=key.objtext%>" alt="">
+                                                    <img src="<%=key.objtext%>" alt="">
                                                 <%}%>
                                             </div>
                                             <div class="post-state-details">
@@ -170,15 +171,15 @@
                                         <!-- post comments -->
                                         
                                         <div class="post-comments">
-                                            
-                                            <a href="javascript:;" onclick="getComments('<%=key._id%>')" class="view-more-comment"> View Comments</a>
-                                            
-                                            <div id="commentsection-<%=key._id%>"></div>
+                                            <input type="hidden" id="inputview-<%=key._id%>" value="false">
+                                            <a href="javascript:;" onclick="getComments('<%=key._id%>')" class="view-more-comment" id="view-<%=key._id%>"> View Comments</a>
+                                    
+                                            <div id="commentsection-<%=key._id%>" style="overflow-y: scroll;max-height: 55vh;"></div>
             
         
                                             <div class="post-add-comment">
                                                 <div class="post-add-comment-avature">
-                                                    <img src="/Uploads/Avatar/<%=(newuser && newuser.avatar)?newuser.avatar:noimage.jpg%>" alt="">
+                                                    <img src="<%=userinfos.avatar%>" alt="">
                                                 </div>
                                                 <div class="post-add-comment-text-area">
                                                     <input type="text" id="commentinput-<%=key._id%>" placeholder="Write your comment...">
@@ -240,7 +241,7 @@
                                                 d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zm-1-2V4H5v16h14zM7 6h4v4H7V6zm0 6h10v2H7v-2zm0 4h10v2H7v-2zm6-9h4v2h-4V7z">
                                             </path>
                                         </svg>
-                                        <span id="user_post_count"><%= posts.length%></span> posts </li>
+                                        <span id="user_post_count"><%= JSON.parse(posts).length%></span> posts </li>
                             
                                     <li class="list-group-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
@@ -312,7 +313,7 @@
                                             <li class="sidebar-user-data">
                                                 <div class="sidebar-listed-user-avatar">
                                                     <a href="/profile?userid=<%=key._id%>">
-                                                        <img src="/Uploads/Avatar/<%=key.avatar%>">
+                                                        <img src="<%=key.userinfo.avatar%>" style="max-height: 20vh;">
                                                         <div class="sidebar-listed-user-name"><%=key.name%></div>
                                                     </a>
                                                 </div>
@@ -435,7 +436,9 @@
             data:body,
             success: (resp)=>{
                 $('#commentsection-'+postid).html("")
-                
+                $('#commentinput-'+postid).val("")
+                $('#inputview-'+postid).val("false")
+              $('#view-'+postid).html("Hide Comments")
                 getComments(postid)
                 
             },
@@ -446,58 +449,67 @@
       }
       function getComments(postid){
           console.log("postid",postid)
-        $.ajax({
-            url:`/post/one/${postid}`,
-            method:"GET",
-            success: (resp)=>{
-                console.log("postinfo",resp.data[0])
-            let divhtml="";
-            $('#nofcomment-'+postid).html(`<i class="uil-heart"></i>${resp.data[0].comments.length} <span> Comment(s)</span>`)
-                if(resp.data[0].comments && resp.data[0].comments.length>0){
-                    resp.data[0].comments.map(async (key,val)=>{
-                        // console.log(key,val)
-                        await $.ajax({
-                            url:`/comment/post/one/${key._id}`,
-                            method:"GET",
-                            success: (resp2)=>{
-                                // console.log("resp2",resp2.data[0])
-                                let dates = moment(resp2.data[0].createdAt).fromNow()
-                                divhtml+=`
-                                    <div class="post-comments-single">
-                                            <div class="post-comment-avatar">
-                                                <img src="/Uploads/Avatar/${resp2.data[0].user.avatar}" alt="">
-                                        </div>
-                                        <div class="post-comment-text">
-                                            <div class="post-comment-text-inner">
-                                                <h6> ${resp2.data[0].user.name}</h6>
-                                                <p> ${resp2.data[0].text}</p>
+          if($('#inputview-'+postid).val()=="true"){
+            $('#inputview-'+postid).val("false")
+            $('#view-'+postid).html("View Comments")
+            $('#commentsection-'+postid).html("")
+        }else{
+            $('#inputview-'+postid).val("true")
+            $('#view-'+postid).html("Hide Comments")
+            $.ajax({
+                url:`/post/one/${postid}`,
+                method:"GET",
+                success: (resp)=>{
+                    console.log("postinfo",resp.data[0])
+                let divhtml="";
+                $('#nofcomment-'+postid).html(`<i class="uil-heart"></i>${resp.data[0].comments.length} <span> Comment(s)</span>`)
+                    if(resp.data[0].comments && resp.data[0].comments.length>0){
+                        resp.data[0].comments.map(async (key,val)=>{
+                            // console.log(key,val)
+                            await $.ajax({
+                                url:`/comment/post/one/${key._id}`,
+                                method:"GET",
+                                success: (resp2)=>{
+                                    // console.log("resp2",resp2.data[0])
+                                    let dates = moment(resp2.data[0].createdAt).fromNow()
+                                    divhtml+=`
+                                        <div class="post-comments-single">
+                                                <div class="post-comment-avatar">
+                                                    <img src="${resp2.data[0].user.userinfo.avatar}" alt="">
                                             </div>
-                                            <div class="uk-text-small">
-                                                <span> ${dates}</span>
+                                            <div class="post-comment-text">
+                                                <div class="post-comment-text-inner">
+                                                    <h6> ${resp2.data[0].user.name}</h6>
+                                                    <p> ${resp2.data[0].text}</p>
+                                                </div>
+                                                <div class="uk-text-small">
+                                                    <span> ${dates}</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div> `
-                            }
-                        })
-                        console.log("code got here")
-                        $('#commentsection-'+postid).html(divhtml)
-                        })
-                        
+                                        </div> `
+                                }
+                            })
+                            console.log("code got here")
+                            $('#commentsection-'+postid).html(divhtml)
+                            })
+                            
 
-                    }
-                    else{
-                        divhtml = `<div class="post-comments-single">
-                                        <div class="post-comment-text">
-                                            <p>no comment</p>
+                        }
+                        else{
+                            divhtml = `<div class="post-comments-single">
+                                            <div class="post-comment-text">
+                                                <p>no comment</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    `
+                                        `
+                        }
+                        console.log("else")
+                        $('#commentsection-'+postid).html(divhtml)
+                    
                     }
-                    console.log("else")
-                    $('#commentsection-'+postid).html(divhtml)
-                
-                }
-            })
+                })
+        }
+        
       }
   </script>
     <%- include('main/footer'); %>

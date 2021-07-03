@@ -16,60 +16,17 @@ class Pages{
    postFile= function(req,res){
        let input = req.body
     if(!input) throw new Error("Emtpy parameters")
-
-    // console.log("req",req)
-    // console.log('req.body',input)
-    // console.log("req.user",req.user)
-    if(input.option == "video"){
-        let description = input.description
-        let downloadoption = input.downloadable
-        
-        let objtext = req.file.filename
-        console.log("postsvideo",objtext)
-        Post.create({
-            description:description,
-            objtext:objtext,
-            isdownload:downloadoption,
-            user:req.user._id
-            }).then(resp=>{
-                res.redirect('/mypage')
-            }).catch(err=>{
-                console.log("err",err)
-            })
-    }
-    else if(input.option=="image"){
-        let description = input.description
-        let myfile = req.file
-        let downloadoption = input.downloadable
-        let objtext = req.file.filename
-        console.log("postsimage",objtext)
-        Post.create({
-            description:description,
-            objtext:objtext,
-            isdownload:downloadoption,
-            user:req.user._id
-            }).then(resp=>{
-                res.redirect('/mypage')
-            }).catch(err=>{
-                console.log("err",err)
-            })
-    
-    }
-    else{
-        let description = input.description
-        // let downloadoption = input.downloadable
-        console.log("else")
-        Post.create({
-            description:description,
-            objtext:"",
-            isdownload:false,
-            user:req.user._id
+    Post.create({
+        description:description,
+        objtext:(req.body.url)?req.body.url:"",
+        isdownload:req.body.isdownload,
+        user:req.user._id
         }).then(resp=>{
-            res.redirect('/mypage')
+            return res.json({status:true,message:"successful"})
         }).catch(err=>{
             console.log("err",err)
         })
-    } 
+    
    }
     realfeeds = function(req,res){
         
@@ -93,13 +50,14 @@ class Pages{
             
             posts.index().then(ress1=>{
                 stories.index(req,res).then(ress2=>{
-                    if(ress1.length <=0 && ress2.length<=0){
+                    if(JSON.stringify(ress1).length <=0 && JSON.stringify(ress2).length<=0){
                         res.redirect('/mypage');
                     }
                     else{
-                        // console.log("pposts",ress1)
-                        console.log("sstory",ress2)
-                        res.render('posts',{user: req.user,userinfos:ress,posts:ress1,stories:ress2,moment:moment});
+                        // console.log("pposts",JSON.stringify(ress1))
+                        // console.log("sstory",ress2)
+                        // console.log(res.json(ress1))
+                        res.render('posts',{user: req.user,userinfos:ress,posts:JSON.stringify(ress1),stories:JSON.stringify(ress2),moment:moment});
 
                     }
                 })
@@ -112,12 +70,12 @@ class Pages{
         
     }
     updateAvatar = async function(req,res) {
-        console.log(req.file)
-        UserInfo.updateOne({_id:req.user.userinfo},{$set:{avatar:req.file.filename}}, {upsert: true}, function(err,doc){
+        // console.log(req.file)
+        UserInfo.updateOne({_id:req.user.userinfo},{$set:{avatar:req.body.url}}, {upsert: true}, function(err,doc){
             if(err) throw new Error('could not update')
             // console.log(req.header)
             // console.log("doc",doc)
-            res.redirect(req.header('Referer'))
+            return res.json({status:true,message:"successful"})
         })
     }
     mypage = async function(req,res){
@@ -134,9 +92,9 @@ class Pages{
                 userinfo.friends().then(ress3=>{
                     // result3=ress3
                     // console.log("result1",ress)
-                    // console.log('result2',ress1)
+                    // console.log('mypost userinfo',ress1)
                     // console.log("friends",ress3)
-                    res.render('mypage',{user: req.user, userinfos:ress, posts:ress1,friends:ress3,moment:moment});
+                    res.render('mypage',{user: req.user, userinfos:ress, posts:JSON.stringify(ress1),friends:ress3,moment:moment});
                 });
             });
         });
@@ -153,7 +111,7 @@ class Pages{
             // result1=ress;
             myposts.show().then(ress1=>{
                  userinfo.friends().then(ress2=>{
-                    res.render('mypagefriends',{user: req.user,posts:ress1,userinfos:ress,friends:ress2,moment:moment});
+                    res.render('mypagefriends',{user: req.user,posts:JSON.stringify(ress1),userinfos:ress,friends:ress2,moment:moment});
 
                 })
             })
@@ -170,7 +128,7 @@ class Pages{
             myposts.showProfile().then(ress1=>{
                  userinfo.profileFriends().then(ress2=>{
                     //  console.log("profile",{user:ress,posts:ress1,friends:ress2})
-                    res.render('viewpersonpage',{user:req.user,newuser:ress, posts:ress1,friends:ress2,moment:moment});
+                    res.render('viewpersonpage',{user:req.user,newuser:ress,userinfos:ress.userinfo, posts:JSON.stringify(ress1),friends:ress2,moment:moment});
 
                 })
             })
@@ -219,7 +177,7 @@ class Pages{
 
     //special
     getProfile = (req,res)=>{
-        User.findOne({_id:req.query.userid}).populate('userprofile').then(resp=>{
+        User.findOne({_id:req.query.userid}).populate([{path:'userinfo'}]).then(resp=>{
             return res.json({status:true,profile:resp})
         })
     }

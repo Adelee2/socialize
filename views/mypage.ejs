@@ -44,7 +44,7 @@
                     <div class="profile-cover">
 
                         <!-- profile cover -->
-                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
+                        <img src="<%=(userinfos)?userinfos.avatar:noimage.jpg%>" alt="">
 
                         <a href="#"> <i class="uil-camera"></i> Edit </a>
 
@@ -52,7 +52,7 @@
 
                     <div class="profile-details">
                         <div class="profile-image">
-                            <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
+                            <img src="<%=(userinfos)?userinfos.avatar:noimage.jpg%>" alt="">
                             <a href="#avatarmodal" uk-toggle> </a>
                         </div>
                         <div class="profile-details-info">
@@ -67,7 +67,7 @@
                             <span class="btn-close"
                             uk-toggle="target: .avatarmodal;  cls: is-open" style="float:right;"> <i
                                 class="icon-feather-x"></i> </span>
-                            <form action="/avatar/add" method="POST" enctype="multipart/form-data">
+                            <form method="POST" enctype="multipart/form-data">
                                 <h5>Upload Profile Picture</h5>
                                     <div style="margin-top: 2%; margin-top: 7%; margin-left: 12%;" >
                                         <div class="fileupload fileupload-new" data-provides="fileupload">
@@ -76,7 +76,7 @@
                                             <span class="fileupload-preview"></span>
                                             <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
                                         </div>
-                                        <button type="submit" class="button primary px-6"> Upload </button>
+                                        <input type="button" class="button primary px-6" onclick="postAvatar()" id="postavatar" value="Upload">
                                     </div>
                                     
                             </form>
@@ -183,13 +183,13 @@
                                                     uk-tooltip="title:Close; pos: left "></span>
                                 
                                             </div>
-                                            <form action="/post/add" method="post" enctype="multipart/form-data">
+                                            <form method="post" enctype="multipart/form-data">
                                                 <div class="post-new-media">
                                                     <div class="post-new-media-user">
-                                                        <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
+                                                        <img src="<%=(userinfos)?userinfos.avatar:noimage.jpg%>" alt="">
                                                     </div>
                                                     <div class="post-new-media-input">
-                                                        <input type="text" class="uk-input" name="description"
+                                                        <input type="text" class="uk-input" id="description" name="description"
                                                             placeholder="What's Your Mind ?">
                                                     </div>
                                                 </div>
@@ -219,7 +219,7 @@
                                                         document.getElementById('choose').addEventListener('change',function(){
                                                             let val = $("input[type='radio'][name='option']:checked").val();
 
-                                                            console.log(val)
+                                                            // console.log(val)
                                                             if(val=='video'){
                                                                 document.getElementById('filepicture').style.visibility = 'hidden';
                                                                 document.getElementById('filevideo').style.visibility = 'visible';
@@ -238,7 +238,7 @@
                                                     <span>
                                                     
                                                         <input class="outline-light circle" type="radio" style="
-                                                        border-color: #e6e6e6;  border-width: 1px; " name="downloadable" value="true" placeholder="downloadable?">
+                                                        border-color: #e6e6e6;  border-width: 1px; " name="downloadable" id="downloadable" value="true" placeholder="downloadable?">
                                                         <label for="download">download option</label>
                                                     </span>
                                                     <!-- <div uk-dropdown>
@@ -250,7 +250,7 @@
                                                         </ul>
                                                     </div> -->
                                     
-                                                    <button type="submit" class="button primary px-6" style="float: right;"> Post </button>
+                                                    <input type="button" onclick="postFile()" class="button primary px-6" style="float: right;" id="postfile" value="Post">
                                                 </div>
                                             </form>
                                         </div>
@@ -259,8 +259,8 @@
                               
     
                             </div>
-                            <% if(userinfos && posts.length > 0 ) {%>
-                                <% posts.forEach(function(key){%>
+                            <% if(userinfos && JSON.parse(posts).length > 0 ) {%>
+                                <% JSON.parse(posts).forEach(function(key){%>
                                     <div class="post">
                                         <div class="post-heading">
                                             
@@ -286,13 +286,14 @@
                                         </div>
                                         <div class="post-description">
                                             <div class="fullsizeimg">
-                                                <% if(key.objtext.substring(key.objtext.length-4,key.objtext.length) ==".mp4"){%>
-                                                    <video style="width: 100%; height: auto;" controls autoplay loop>  
-                                                        <source src="/Uploads/<%=key.objtext%>" type="video/mp4">  
+                                                <% let newobj = key.objtext.split('?alt')%>
+                                                <% if(newobj[0].substring(newobj[0].length-4,newobj[0].length) ==".mp4"){%>
+                                                    <video style="width: 100%; height: auto;" controls>  
+                                                        <source src="<%=key.objtext%>" type="video/mp4">  
                                                         Your browser does not support the html video tag.  
                                                       </video>  
                                                 <% }else{ %>
-                                                    <img src="/Uploads/<%=key.objtext%>" alt="">
+                                                    <img src="<%=key.objtext%>" alt="">
                                                 <%}%>
                                             </div>
                                             <div class="post-state-details">
@@ -317,15 +318,15 @@
                                         <!-- post comments -->
                                         
                                         <div class="post-comments">
+                                            <input type="hidden" id="inputview-<%=key._id%>" value="false">
+                                            <a href="javascript:;" onclick="getComments('<%=key._id%>')" class="view-more-comment" id="view-<%=key._id%>"> View Comments</a>
                                             
-                                            <a href="javascript:;" onclick="getComments('<%=key._id%>')" class="view-more-comment"> View Comments</a>
-                                            
-                                            <div id="commentsection-<%=key._id%>"></div>
+                                            <div id="commentsection-<%=key._id%>" style="overflow-y: scroll;max-height: 55vh;"></div>
             
         
                                             <div class="post-add-comment">
                                                 <div class="post-add-comment-avature">
-                                                    <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
+                                                    <img src="<%=(userinfos)?userinfos.avatar:noimage.jpg%>" alt="">
                                                 </div>
                                                 <div class="post-add-comment-text-area">
                                                     <input type="text" id="commentinput-<%=key._id%>" placeholder="Write your comment...">
@@ -388,7 +389,7 @@
                                                 d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zm-1-2V4H5v16h14zM7 6h4v4H7V6zm0 6h10v2H7v-2zm0 4h10v2H7v-2zm6-9h4v2h-4V7z">
                                             </path>
                                         </svg>
-                                        <span id="user_post_count"><%= posts.length%></span> posts </li>
+                                        <span id="user_post_count"><%= JSON.parse(posts).length%></span> posts </li>
                             
                                     <li class="list-group-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
@@ -460,7 +461,7 @@
                                             <li class="sidebar-user-data">
                                                 <div class="sidebar-listed-user-avatar">
                                                     <a href="/profile?userid=<%=key._id%>">
-                                                        <img src="/Uploads/Avatar/<%=key.avatar%>">
+                                                        <img src="<%=key.userinfo.avatar%>">
                                                         <div class="sidebar-listed-user-name"><%=key.name%></div>
                                                     </a>
                                                 </div>
@@ -521,7 +522,96 @@
         </div>
 
     </div>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
   <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyBfertyvlc944FRk1k0xnZ4irbGiRXuimM",
+        authDomain: "socializer-69de0.firebaseapp.com",
+        databaseURL: "https://socializer-69de0-default-rtdb.firebaseio.com",
+        projectId: "socializer-69de0",
+        storageBucket: "socializer-69de0.appspot.com",
+        messagingSenderId: "128820802833",
+        appId: "1:128820802833:web:ba86c224372363e3b4c8b0",
+        measurementId: "G-CBGE6ZN4L6"
+    };
+    firebase.initializeApp(firebaseConfig)
+    // console.log(firebase)
+    function postAvatar(){
+        $('#postavatar').val('please wait...')
+        const ref = firebase.storage().ref()
+        let file = document.querySelector('#avatar').files[0];
+        let path= "avatar"
+        let name = 'avatar-'+new Date()+"-"+file.name
+
+        const metadata = {
+            contentType:file.type
+        }
+
+        const task = ref.child(path+"/"+name).put(file,metadata)
+        task.then(snapshot=>snapshot.ref.getDownloadURL()).then(url=>{
+            console.log(url)
+            let body={
+              url:url
+          }
+          $.ajax({
+              url:"/avatar/add",
+              method:"POST",
+              data:body,
+              success:(resp)=>{
+                if(resp.status==true){
+                    window.location.reload(true)
+                }
+              }
+          })
+        })
+    }
+      function postFile(){
+        $('#postfile').val('please wait...')
+        const ref = firebase.storage().ref()
+        let downloadable = $("#downloadable").val()
+        let name=""
+        let path=""
+        let file ={}
+        // console.log(document.querySelector('.options').value)
+        if(document.querySelector('.options').value=="image"){
+            file = document.querySelector('#picturefile').files[0];
+            path= "images"
+             name = 'post-'+new Date()+"-"+file.name
+        }
+        else{
+             file = document.querySelector('#videofile').files[0];
+             name = 'post'+new Date()+"-"+file.name
+             path= "videos"
+        }
+        let descrip = $('#description').val()
+
+        const metadata = {
+            contentType:file.type
+        }
+
+        const task = ref.child(path+"/"+name).put(file,metadata)
+        task.then(snapshot=>snapshot.ref.getDownloadURL()).then(url=>{
+            console.log(url)
+            let body={
+              description:descrip,
+              url:url,
+              isdownload:downloadable,
+          }
+          $.ajax({
+              url:"/post/add",
+              method:"POST",
+              data:body,
+              success:(resp)=>{
+                if(resp.status==true){
+                    window.location.reload(true)
+                }
+              }
+              
+          })
+        })
+         
+      }
       function getLikes(postid,userid){
           $.ajax({
               url:`/post/likes/${postid}`,
@@ -584,6 +674,8 @@
             success: (resp)=>{
                 $('#commentsection-'+postid).html("")
                 $('#commentinput-'+postid).val("")
+                $('#inputview-'+postid).val("false")
+              $('#view-'+postid).html("Hide Comments")
                 getComments(postid)
                 
             },
@@ -594,7 +686,14 @@
       }
       function getComments(postid){
           console.log("postid",postid)
-        $.ajax({
+          if($('#inputview-'+postid).val()=="true"){
+            $('#inputview-'+postid).val("false")
+            $('#view-'+postid).html("View Comments")
+            $('#commentsection-'+postid).html("")
+        }else{
+            $('#inputview-'+postid).val("true")
+            $('#view-'+postid).html("Hide Comments")
+            $.ajax({
             url:`/post/one/${postid}`,
             method:"GET",
             success: (resp)=>{
@@ -613,7 +712,7 @@
                                 divhtml+=`
                                     <div class="post-comments-single">
                                             <div class="post-comment-avatar">
-                                                <img src="/Uploads/Avatar/${resp2.data[0].user.avatar}" alt="">
+                                                <img src="${resp2.data[0].user.userinfo.avatar}" alt="">
                                         </div>
                                         <div class="post-comment-text">
                                             <div class="post-comment-text-inner">
@@ -646,6 +745,9 @@
                 
                 }
             })
+
+        }
+
       }
   </script>
     <%- include('main/footer'); %>

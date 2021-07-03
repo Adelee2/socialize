@@ -122,7 +122,7 @@
                     </div>
 
                     <!-- profile -image -->
-                    <a class="opts_account" href="#"> <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt=""></a>
+                    <a class="opts_account" href="#"> <img src="<%=(userinfos)?userinfos.avatar:noimage.jpg%>" alt=""></a>
 
                     <!-- profile dropdown-->
                     <div uk-dropdown="mode:click ; animation: uk-animation-slide-bottom-small"
@@ -135,10 +135,10 @@
                             <div class="dropdown-user-details">
 
                                 <div class="dropdown-user-cover">
-                                    <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
+                                    <img src="<%=(userinfos)?userinfos.avatar:noimage.jpg%>" alt="">
                                 </div>
                                 <div class="dropdown-user-avatar">
-                                    <img src="/Uploads/Avatar/<%=(user && user.avatar)?user.avatar:noimage.jpg%>" alt="">
+                                    <img src="<%=(userinfos)?userinfos.avatar:noimage.jpg%>" alt="">
                                 </div>
                                 <div class="dropdown-user-name"><%=(user)? user.name:"" %></div>
                             </div>
@@ -199,7 +199,7 @@
                                 <span style="display:inline-flex;">
                                     <a href="/profile?userid=${key.friendrequestfrom._id}">
                                         <span class="notification-avatar">
-                                            <img src="/Uploads/Avatar/${key.friendrequestfrom.avatar}" alt="">
+                                            <img src="${key.friendrequestfrom.userinfo.avatar}" alt="">
                                         </span>
                                         <span class="notification-text">
                                             <strong>${key.friendrequestfrom.name}</strong> wants to be your friend
