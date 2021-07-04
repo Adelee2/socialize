@@ -11,52 +11,60 @@ class Notification{
         })
     }
     all = (req,res)=>{
-       let result= FriendRequest.find({}).populate([{path:'friendrequestfrom',populate:{path:'userinfo'}},{path:'friendrequestto',populate:{path:'userinfo'}}])
+       let result= FriendRequest.find({}).populate([{path:'friendrequestfrom'},{path:'friendrequestto'}])
 
        return result;
     }
     send = (req,res)=>{
         // console.log("notify reqid",req.user._id)
-        User.findOne({_id:req.user._id}).populate([{path:'userinfo'}]).then(userinfo=>{
-            console.log("notify userinfo",userinfo)
-            let friends = userinfo.userinfo.friends
-            if(friends.length ==0){
-                FriendRequest.create({
-                    friendrequestto:req.body.to,
-                    friendrequestfrom:req.user._id,
-                    accept:false
-                }).then(resp=>{
-                    Notify.create({notify:true}).then(resps =>{
-                        resps.friendrequest.push(resp._id)
-                        resps.save();
-                        return res.json({status:true,message:"successful",request:resp})
-                    })
-                }).catch(err=>{
-                    console.log("friend request err",err)
-                })
-            }
-            else if(friends.includes(req.body.to)){
-                return res.json({status:false,message:"You are already friends"})
+        FriendRequest.findOne({friendrequestfrom:req.user._id, friendrequestto:req.body.to}).then(resuk=>{
+            if(resuk){
+                return res.json({status:false,message:"Friend Request already sent"})
             }
             else{
-                // console.log("frireq body",{friendrequestto:req.body.to,
-                //     friendrequestfrom:req.user._id,
-                //     accept:false})
-                FriendRequest.create({
-                    friendrequestto:req.body.to,
-                    friendrequestfrom:req.user._id,
-                    accept:false
-                }).then(resp=>{
-                    Notify.create({notify:true}).then(resps =>{
-                        resps.friendrequest.push(resp._id)
-                        resps.save();
-                        return res.json({status:true,message:"successful",request:resp})
-                    })
-                }).catch(err=>{
-                    console.log("friend request err",err)
+                User.findOne({_id:req.user._id}).populate([{path:'userinfo'}]).then(userinfo=>{
+                    console.log("notify userinfo",userinfo)
+                    let friends = userinfo.userinfo.friends
+                    if(friends.length ==0){
+                        FriendRequest.create({
+                            friendrequestto:req.body.to,
+                            friendrequestfrom:req.user._id,
+                            accept:false
+                        }).then(resp=>{
+                            Notify.create({notify:true}).then(resps =>{
+                                resps.friendrequest.push(resp._id)
+                                resps.save();
+                                return res.json({status:true,message:"successful",request:resp})
+                            })
+                        }).catch(err=>{
+                            console.log("friend request err",err)
+                        })
+                    }
+                    else if(friends.includes(req.body.to)){
+                        return res.json({status:false,message:"You are already friends"})
+                    }
+                    else{
+                        // console.log("frireq body",{friendrequestto:req.body.to,
+                        //     friendrequestfrom:req.user._id,
+                        //     accept:false})
+                        FriendRequest.create({
+                            friendrequestto:req.body.to,
+                            friendrequestfrom:req.user._id,
+                            accept:false
+                        }).then(resp=>{
+                            Notify.create({notify:true}).then(resps =>{
+                                resps.friendrequest.push(resp._id)
+                                resps.save();
+                                return res.json({status:true,message:"successful",request:resp})
+                            })
+                        }).catch(err=>{
+                            console.log("friend request err",err)
+                        })
+                    }
                 })
             }
         })
+        
         
     } 
     add= (req,res)=>{

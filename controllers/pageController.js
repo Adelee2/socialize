@@ -145,7 +145,7 @@ class Pages{
             userinfo.show().then(ress1=>{
                 friendreq.all(req,res).then(ress2=>{
                     console.log("users",ress)
-                
+                    
                     res.render('explore',{user: req.user,userinfos:ress1,users:ress,friendrequest:ress2,moment:moment});
                 })
                 
