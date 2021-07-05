@@ -1,6 +1,7 @@
 const app = require('express')();
 const request = require('sync-request');
 var cors = require('cors')
+require('dotenv').config()
 const server = require("http").createServer();
 const io = require("socket.io")(server, {
     // cors: {
