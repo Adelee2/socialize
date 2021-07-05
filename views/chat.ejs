@@ -107,7 +107,7 @@
     <script>
     
     let ownerid ="<%=user._id%>";
-    var socket = io.connect('https://socialize--socket.herokuapp.com', {
+    var socket = io.connect('ws://socialize--socket.herokuapp.com', {
                     withCredentials: true,
                     extraHeaders: {
                         "my-custom-header": "abcd"
@@ -119,7 +119,6 @@
         converseid = msg.conversationId
               
         // socket.disconnect()
-        $("#messages").scrollTop($("#messages").scrollHeight);
         // getMessages(msg.from,msg.to)
     })
     socket.on('sendmessage',function(msg1){
@@ -208,7 +207,11 @@ function runMessages(userid,toid){
             getMessages(userid,toid)
         // console.log("scrollheight",document.getElementById("messages").scrollHeight)
         //  $("#scroller").scrollTop('600');
-         $('#messages').animate({scrollTop:$('#messages').position().top});
+        let messages = document.querySelector('#messages')
+        console.log( messages.scrollHeight,messages.clientHeight,messages.offsetTop)
+
+        messages.scrollTop = messages.offsetTop;
+        console.log("scrolltop is now",messages.scrollTop)
         }
     })
     
@@ -240,10 +243,12 @@ function attachMessage(fromid,toid,message){
             `
     }
     $("#messages").append(divhtml)
+    let messages = document.querySelector('messages')
+    messages.scrollTop(messages.scrollHeight - messages.clientHeight);
 }
     function getMessages(userid,toid){
         let uid = userid+'-'+toid
-        $("#messages").scrollTop($("#messages").scrollHeight);
+        
         var divhtml="";
         
         $.ajax({
@@ -300,8 +305,7 @@ function attachMessage(fromid,toid,message){
                     $('#changeskin').html(divhtml)
                 }
                 }
-
-                
+           
             }
         })
             
