@@ -109,7 +109,12 @@
     
     let ownerid ="<%=user._id%>";
     
-    var socket = io.connect('wss://socialize--socket.herokuapp.com')
+    var socket = io.connect('wss://socialize--socket.herokuapp.com', {
+                    withCredentials: true,
+                    extraHeaders: {
+                        "my-custom-header": "abcd"
+                    }
+                })
     let converseid = ""       
     socket.on('newuser',function(msg){
         // console.log("emitting newuserid",msg)
