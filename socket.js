@@ -1,17 +1,24 @@
-// const app = require('express')();
+const app = require('express')();
 const request = require('sync-request');
-// var cors = require('cors')
+var cors = require('cors')
 const server = require("http").createServer();
-// const io = require("socket.io")(server,{ origins: '*:*'});
 const io = require("socket.io")(server, {
-    cors: {
-      origin: "http://127.0.0.1:3000",
-      methods: ["GET", "POST"],
+    // cors: {
+    //   origin: "https://socialize--web.herokuapp.com",
+      // methods: ["GET","PATCH","PUT", "POST"],
+      // allowedHeaders: ["my-custom-header"],
+      // credentials: true
+    // }
+    cors:{
+      origin:['https://socialize--web.herokuapp.com:3000'],
+      methods: ["GET","PATCH","PUT", "POST"],
       allowedHeaders: ["my-custom-header"],
       credentials: true
     }
   });
-// app.use(cors())
+// var WebSocketServer = require("ws").Server
+// var io = new WebSocketServer({server: server})
+app.use(cors())
 const SOCKETPORT = process.env.SOCKETPORT || 3032;
 // const baseUrl = process.env.BASE_URL || '/api/v1/';
 
@@ -92,7 +99,7 @@ server.listen(SOCKETPORT, () => {
 const sendMessage = (message) => {
   request(
     'POST',
-    `http://localhost:${PORT}/message/add`,
+    `https://socialize--web.herokuapp.com/message/add`,
     { json: {
         message:message.text,
         to:message.to,
@@ -102,7 +109,7 @@ const sendMessage = (message) => {
 const getMessage = (message, conversationId) => {
   var res = request(
     'GET',
-    `http://localhost:${PORT}/messages/${conversationId}`,
+    `https://socialize--web.herokuapp.com/messages/${conversationId}`,
     {headers:{'Authorization': message.authorization}}
  );
   console.log(res)
