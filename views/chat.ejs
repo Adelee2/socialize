@@ -108,9 +108,8 @@
     <script>
     
     let ownerid ="<%=user._id%>";
-    let url = 'https://socialize--socket.herokuapp.com'
-    let unewurl = url.replace('https','ws')
-    var socket = new WebSocket('wss://socialize--socket.herokuapp.com')
+    
+    var socket = io.connect('wss://socialize--socket.herokuapp.com')
     let converseid = ""       
     socket.on('newuser',function(msg){
         // console.log("emitting newuserid",msg)
