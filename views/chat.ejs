@@ -109,12 +109,7 @@
     
     let ownerid ="<%=user._id%>";
     
-    var socket = new WebSocket('ws://socialize--socket.herokuapp.com', {
-                    withCredentials: true,
-                    extraHeaders: {
-                        "my-custom-header": "abcd"
-                    }
-                })
+    var socket = new WebSocket('ws://socialize--socket.herokuapp.com')
     let converseid = ""       
     socket.on('newuser',function(msg){
         // console.log("emitting newuserid",msg)
