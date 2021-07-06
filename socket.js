@@ -4,6 +4,7 @@ var cors = require('cors')
 require('dotenv').config()
 const server = require("http").createServer();
 const io = require("socket.io")(server, {
+    path:"/socket", //remove only this if it doesnt work
     // cors: {
     //   origin: "https://socialize--web.herokuapp.com",
       // methods: ["GET","PATCH","PUT", "POST"],
