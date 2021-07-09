@@ -123,12 +123,16 @@ class Pages{
     viewProfile = async function(req,res){
         let userinfo = new Userutil(req,res)
         let myposts = new Postutil(req,res)
-        userinfo.showProfile().then(ress=>{
+        userinfo.show().then(ress=>{
+
             // result1=ress;
             myposts.showProfile().then(ress1=>{
                  userinfo.profileFriends().then(ress2=>{
+                     userinfo.showProfile().then(profile=>{
+                        res.render('viewpersonpage',{user:req.user,newuser:profile, userinfos:ress, posts:JSON.stringify(ress1),friends:ress2,moment:moment});
+
+                     })
                     //  console.log("profile",{user:ress,posts:ress1,friends:ress2})
-                    res.render('viewpersonpage',{user:req.user,newuser:ress,userinfos:ress.userinfo, posts:JSON.stringify(ress1),friends:ress2,moment:moment});
 
                 })
             })
@@ -181,7 +185,17 @@ class Pages{
             return res.json({status:true,profile:resp})
         })
     }
-    
+    getSearch = (req,res)=>{
+        User.find({name:{$regex: req.params.val, $options: 'i'}}).populate([{path:'userinfo'}]).limit(5).then(res1=>{
+            console.log("searched",res1)
+            if(res1){
+                return res.json({status:true,message:res1});
+            }
+            return res.json({status:false,message:"no user found"})
+        }).catch(err=>{
+            console.log("search error",err)
+        })
+    }
     error = (req,res)=>{
         res.render('error')
     }

@@ -18,7 +18,7 @@
                     <div class="profile-cover">
 
                         <!-- profile cover -->
-                        <img src="<%=userinfos.avatar%>" alt="">
+                        <img src="<%=newuser.userinfo.avatar%>" alt="">
 
                         <!-- <a href="#"> <i class="uil-camera"></i> Edit </a> -->
 
@@ -26,7 +26,7 @@
 
                     <div class="profile-details">
                         <div class="profile-image">
-                            <img src="<%=userinfos.avatar%>" alt="">
+                            <img src="<%=newuser.userinfo.avatar%>" alt="">
                             <!-- <a href="#avatarmodal" uk-toggle> </a> -->
                         </div>
                         <div class="profile-details-info">
@@ -38,7 +38,35 @@
                    
 
                     <div class="nav-profile" uk-sticky="media : @s">
-                      
+                        <div class="py-md-2 uk-flex-last" id="friendrequest">
+                            <%if(friends.length>0){ let isfriend = false; %>
+                                <%friends.forEach((key)=>{%>
+                                    <%if(key._id.toString() == user._id.toString()){ isfriend = true; %>
+                                        <button type="button" class="btn button small light mr-2" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="feather feather-message-square">
+                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                            </svg>
+                                            <a href="/chat"><span> Message</span></a>
+                                        </button> 
+                                    <%}%>
+                                <%})%>
+                                <%if(isfriend == false){%>
+                                    <a onclick="addtoFriendRequest('<%= newuser._id%>')" class="button primary mr-2 " > <i class="uil-plus"></i> Add friend</a>
+                                <%}%>
+                            <%}else{%>
+                                <a onclick="addtoFriendRequest('<%= newuser._id%>')" class="button primary mr-2 " > <i class="uil-plus"></i> Add friend</a>
+                            <%}%>
+                            <!-- <a href="#" class="button light button-icon mr-2"> <i class="uil-list-ul"> </i> </a>
+                            <a href="#" class="button light button-icon mr-lg-3"> <i class="uil-ellipsis-h"> </i> </a> -->
+                            <!-- <div uk-dropdown="pos: bottom-left ; mode:hover" class="display-hidden">
+                                <ul class="uk-nav uk-dropdown-nav">
+                                    <li><a href="#" class="uk-input"> Feeds </a></li>
+                                    <li><a href="#" class="uk-input"> Posts </a></li>
+                                </ul>
+                            </div> -->
+                        </div>
                         <div>
                             <nav class="responsive-tab ml-lg-3">
                                 <ul>
@@ -179,7 +207,7 @@
         
                                             <div class="post-add-comment">
                                                 <div class="post-add-comment-avature">
-                                                    <img src="<%=userinfos.avatar%>" alt="">
+                                                    <img src="<%=newuser.userinfo.avatar%>" alt="">
                                                 </div>
                                                 <div class="post-add-comment-text-area">
                                                     <input type="text" id="commentinput-<%=key._id%>" placeholder="Write your comment...">
@@ -375,6 +403,37 @@
 
     </div>
   <script>
+       function addtoFriendRequest(toid){
+        
+            let body={
+                to:toid
+            }
+            console.log(body)
+            $.ajax({
+                url:"/friendrequest/add",
+                method:"POST",
+                data:body,
+                success:(resp)=>{
+                    if(resp.status == true){
+                        $("#friendrequest").html(`
+                        <button type="button" class="btn button small primary"">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="8.5" cy="7" r="4"></circle>
+                                <line x1="20" y1="8" x2="20" y2="14"></line>
+                                <line x1="23" y1="11" x2="17" y2="11"></line>
+                            </svg>
+                            <span> Awaiting</span>
+                        </button>
+                        `)
+                    }
+                    else{
+                        alert(resp.message)
+                    }
+                }
+            })
+        }
       function getLikes(postid,userid){
           $.ajax({
               url:`/post/likes/${postid}`,

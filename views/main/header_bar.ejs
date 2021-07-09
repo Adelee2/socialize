@@ -25,7 +25,7 @@
                     <form>
                         <div class="head_search_cont">
                             <input value="" type="text" class="form-control"
-                                placeholder="Search for Friends , Videos and more.." autocomplete="off">
+                                placeholder="Search for People" autocomplete="off" onkeyup="getSearch(this.value)">
                             <i class="s_icon uil-search-alt"></i>
                         </div>
 
@@ -34,31 +34,10 @@
                             class="dropdown-search display-hidden">
                             <!-- User menu -->
 
-                            <ul class="dropdown-search-list">
-                                <li class="list-title"> Recent Searches </li>
-                                <li> <a href="#">
-                                        <img src="/assets/images/avatars/avatar-2.jpg" alt="">
-                                        <p> Erica Jones <span> 2 hours ago </span> </p>
-                                    </a>
-                                </li>
-                                <li> <a href="#">
-                                        <img src="/assets/images/avatars/avatar-3.jpg" alt="">
-                                        <p> Adrian Mohani <span> 13 days ago </span> </p>
-                                    </a>
-                                </li>
-                                <li> <a href="#">
-                                        <img src="/assets/images/avatars/avatar-4.jpg" alt="">
-                                        <p> Mountain Riders <span> 3 days ago <span>Group</span> </span> </p>
-                                    </a>
-                                </li>
-                                <li> <a href="#">
-                                        <img src="/assets/images/avatars/avatar-5.jpg" alt="">
-                                        <p> Coffee Addicts <span> 12 days ago <span> Page</span></span> </p>
-                                    </a>
-                                </li>
-                                <li class="menu-divider"></li>
-                                <li class="list-footer"> <a href="your-history.html"> Searches History </a>
-                                </li>
+                            <ul class="dropdown-search-list" id="searchlist">
+                                <li class="list-title"> type in name</li>
+                                
+
                             </ul>
 
                         </div>
@@ -174,6 +153,39 @@
         $(document).ready(function(){
             getNotification()
         })
+        let user_id = "<%=user._id%>"
+        const getSearch = (val)=>{
+            console.log("search",val)
+            
+            if(val !== ""){
+                $('#searchlist').html('<li class="list-title"> loading...</li>')
+                $.ajax({
+                    url:`/search/${val}`,
+                    method:"GET",
+                    success:(resp)=>{
+                        let divhtml=""
+                        console.log("search result",resp)
+                        if(Array.isArray(resp.message) && resp.message.length>0){
+                            
+                            resp.message.map((key,val)=>{
+                                if(key._id !==user_id){
+                                    divhtml+=`
+                                    <li> <a href="/profile?userid=${key._id}">
+                                            <img src="${key.userinfo.avatar}" alt="">
+                                            <p> ${key.name}</p>
+                                        </a>
+                                    </li>`
+                                }
+                            })
+                            $('#searchlist').html(divhtml)
+                        }
+                        else{
+                            $('#searchlist').html('<li class="list-title"> No user found</li>')
+                        }
+                    }
+                })
+            }
+        }
         function addtoFriend(requestid){
             console.log("addfriend",requestid)
             $.ajax({

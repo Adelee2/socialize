@@ -93,6 +93,7 @@ router.get('/post/likes/:id',auth.ensureAuthenticated,new likesutil().getpostlik
 router.get('/feed/likes/:id',auth.ensureAuthenticated,new likesutil().getfeedlikes)
 router.get('/story/likes/:id',auth.ensureAuthenticated,new likesutil().getstorylikes)
 
+router.get('/search/:val',auth.ensureAuthenticated,mypages.getSearch)
 // anything friendship
 router.get('/notification',auth.ensureAuthenticated,new Notification().index)
 router.post('/friendrequest/add',auth.ensureAuthenticated,new Notification().send)
