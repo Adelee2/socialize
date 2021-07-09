@@ -155,7 +155,7 @@
         })
         let user_id = "<%=user._id%>"
         const getSearch = (val)=>{
-            console.log("search",val)
+          // console.log("search",val)
             
             if(val !== ""){
                 $('#searchlist').html('<li class="list-title"> loading...</li>')
@@ -164,7 +164,7 @@
                     method:"GET",
                     success:(resp)=>{
                         let divhtml=""
-                        console.log("search result",resp)
+                      // console.log("search result",resp)
                         if(Array.isArray(resp.message) && resp.message.length>0){
                             
                             resp.message.map((key,val)=>{
@@ -187,7 +187,7 @@
             }
         }
         function addtoFriend(requestid){
-            console.log("addfriend",requestid)
+          // console.log("addfriend",requestid)
             $.ajax({
                 url:`/friend/add/${requestid}`,
                 method:"GET",
@@ -204,7 +204,7 @@
                 method:"GET",
                 success: (resp)=>{
                     let nothtml=""
-                    console.log(resp)
+                  // console.log(resp)
                     $('#notify').html(resp.friendrequests.length)
                     resp.friendrequests.map((key,val)=>{
                         nothtml +=`<li>

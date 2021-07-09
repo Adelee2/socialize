@@ -174,7 +174,7 @@ function runMessages(userid,toid){
         url:`/user/one?userid=${toid}`,
         method:'GET',
         success:async(resp1)=>{
-            console.log("profile is",resp1.profile)
+           // console.log("profile is",resp1.profile)
             $('#changeskin').html(`<div class="post" >
                     <div class="post-heading">
                     <div class="post-avature">
@@ -209,10 +209,10 @@ function runMessages(userid,toid){
         // console.log("scrollheight",document.getElementById("messages").scrollHeight)
         //  $("#scroller").scrollTop('600');
         let messages = document.querySelector('#messages')
-        console.log( messages.scrollHeight,messages.clientHeight,messages.offsetTop)
+      // console.log( messages.scrollHeight,messages.clientHeight,messages.offsetTop)
 
         messages.scrollTop = messages.offsetTop;
-        console.log("scrolltop is now",messages.scrollTop)
+      // console.log("scrolltop is now",messages.scrollTop)
         }
     })
     
@@ -257,7 +257,7 @@ function attachMessage(fromid,toid,message){
             method:"GET",
             success:(resp)=>{
                 
-                console.log("message",resp)
+                //console.log("message",resp)
                 if(resp.status== true){
                     
                     if(resp.message.length>0){

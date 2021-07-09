@@ -550,7 +550,7 @@
 
         const task = ref.child(path+"/"+name).put(file,metadata)
         task.then(snapshot=>snapshot.ref.getDownloadURL()).then(url=>{
-            console.log(url)
+            //console.log(url)
             let body={
               url:url
           }
@@ -592,7 +592,7 @@
 
         const task = ref.child(path+"/"+name).put(file,metadata)
         task.then(snapshot=>snapshot.ref.getDownloadURL()).then(url=>{
-            console.log(url)
+            //console.log(url)
             let body={
               description:descrip,
               url:url,
@@ -617,7 +617,7 @@
               url:`/post/likes/${postid}`,
               method:"GET",
               success:(resp)=>{
-                  console.log('likes res',resp)
+                // // console.log('likes res',resp)
                   if(resp.post.likes.length>0){
                       resp.post.likes.map((key,val)=>{
                         if(key.user==userid){
@@ -637,25 +637,25 @@
       function addLikes(postid){
           let toggle = $('toggleinput-'+postid).val()
           let oldlikes = $('likesinput-'+postid).val()
-        //   console.log("oldlikes",oldlikes)
+        // // console.log("oldlikes",oldlikes)
         let body={
             toggle:(toggle=="false")?true:false,
             userid:"<%= user._id%>",
             postid:postid
         }
         $('toggleinput-'+postid).val((toggle=="true")?"false":"true")
-        console.log("body",body)
+        // console.log("body",body)
         $.ajax({
             url:`/post/likes/add`,
             method:"POST",
             data:body,
             success: (resp)=>{
-                console.log("likes",resp)
+                // console.log("likes",resp)
                 $('#commentsection-'+postid).html("")
                 getLikes(postid,'<%=user._id%>')
             },
             error:(err)=>{
-                console.log(err)
+              // console.log(err)
             }
         })
       }
@@ -666,7 +666,7 @@
             userid:"<%= user._id%>",
             postid:postid
         }
-        console.log("body",body)
+        // console.log("body",body)
         $.ajax({
             url:`/post/comment/add`,
             method:"POST",
@@ -680,12 +680,12 @@
                 
             },
             error:(err)=>{
-                console.log(err)
+              // console.log(err)
             }
         })
       }
       function getComments(postid){
-          console.log("postid",postid)
+        // // console.log("postid",postid)
           if($('#inputview-'+postid).val()=="true"){
             $('#inputview-'+postid).val("false")
             $('#view-'+postid).html("View Comments")
@@ -697,7 +697,7 @@
             url:`/post/one/${postid}`,
             method:"GET",
             success: (resp)=>{
-                console.log("postinfo",resp.data[0])
+                // console.log("postinfo",resp.data[0])
             let divhtml="";
             $('#nofcomment-'+postid).html(`<i class="uil-heart"></i>${resp.data[0].comments.length} <span> Comment(s)</span>`)
                 if(resp.data[0].comments && resp.data[0].comments.length>0){
@@ -726,7 +726,7 @@
                                     </div> `
                             }
                         })
-                        console.log("code got here")
+                        // console.log("code got here")
                         $('#commentsection-'+postid).html(divhtml)
                         })
                         
@@ -740,7 +740,7 @@
                                     </div>
                                     `
                     }
-                    console.log("else")
+                    // console.log("else")
                     $('#commentsection-'+postid).html(divhtml)
                 
                 }
