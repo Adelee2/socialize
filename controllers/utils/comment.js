@@ -82,7 +82,9 @@ class Comment{
             console.log(err)
         })
     }
-
+    delete = (id)=>{
+        return CommentModel.deleteMany({postfeedstoryid:id})
+    }
 }
 
 module.exports =Comment

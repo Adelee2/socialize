@@ -273,13 +273,13 @@
                                                 <div class="mt-0 p-2" uk-dropdown="pos: top-right;mode:hover ">
                                                     <ul class="uk-nav uk-dropdown-nav">
                                                         <%#(key.isdownload ==true)?<li><a href="#"> <i class="uil-share-alt mr-1"></i> download</a> </li>:<li></li> %>
-                                                        <!-- <li><a href="#"> <i class="uil-edit-alt mr-1"></i> Edit Post </a></li>
+                                                        <li><a href="#"> <i class="uil-edit-alt mr-1"></i> Edit Post </a></li>
                                                         <li><a href="#"> <i class="uil-comment-slash mr-1"></i> Disable comments
                                                             </a></li>
-                                                        <li><a href="#"> <i class="uil-favorite mr-1"></i> Add favorites </a>
-                                                        </li>
-                                                        <li><a href="#" class="text-danger"> <i class="uil-trash-alt mr-1"></i>
-                                                                Delete </a></li> -->
+                                                        <!-- <li><a href="#"> <i class="uil-favorite mr-1"></i> Add favorites </a>
+                                                        </li> -->
+                                                        <li><a onclick="deletePost('<%=key._id%>')" class="text-danger"> <i class="uil-trash-alt mr-1"></i>
+                                                                Delete </a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -611,6 +611,23 @@
           })
         })
          
+      }
+      function deletePost(postid){
+          if(confirm("Are you sure?")){
+            $.ajax({
+              url:`/post/delete/${postid}`,
+              method: "DELETE",
+              success:(resp)=>{
+                if(resp.status==true){
+                    alert(resp.message)
+                }else{
+                    alert(resp.message)
+                }
+                
+              }
+          })
+          }
+          
       }
       function getLikes(postid,userid){
           $.ajax({

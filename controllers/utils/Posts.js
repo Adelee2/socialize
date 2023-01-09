@@ -1,8 +1,10 @@
 
 const { async } = require('q');
 const Post = require('../../model/posts')
-const UserInfo = require('../../model/userinfo')
-const fileUpload = require('./fileupload')
+const UserInfo = require('../../model/userinfo');
+const Comment = require('./comment');
+const fileUpload = require('./fileupload');
+const Like = require('./likes');
 
 class Posts{
     constructor(req,res){
@@ -66,8 +68,33 @@ class Posts{
         
         return post
     }
-    delete = ()=>{
-
+    delete = (req,res)=>{
+        let comment = new Comment()
+        let likes = new Like()
+        Post.deleteOne({_id:res.params.postid}).then(post=>{
+            if(post){
+                comment.delete(postid).then(resp=>{
+                    if(resp){
+                       likes.delete(postid).then(like=>{
+                           if(like){
+                               return res.json({status:true,message:"successful"})
+                           }else{
+                            return res.json({status:false,message:"An error occured!!"})
+                        }
+                            
+                        }) 
+                    }else{
+                        return res.json({status:false,message:"An error occured!!"})
+                    }
+                    
+                })
+            }else{
+                return res.json({status:false,message:"An error occured!!"})
+            }
+            
+            
+        })
+        
     }
 }
 module.exports=Posts

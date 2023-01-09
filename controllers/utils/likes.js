@@ -121,6 +121,9 @@ class Like{
         })
 
     }
+    delete = (id)=>{
+        return LikeModel.deleteMany({postfeedstoryid:id})
+    }
 }
 
 module.exports =Like

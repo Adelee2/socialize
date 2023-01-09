@@ -10,12 +10,12 @@ class Auth{
     constructor (){
 
         passport.serializeUser(function(user, done) {
-            console.log("serializing " + user.name);
+            //console.log("serializing " + user.name);
             done(null, user);
           });
           
           passport.deserializeUser(function(obj, done) {
-            console.log("deserializing " + obj);
+            //console.log("deserializing " + obj);
             done(null, obj);
           });
           
@@ -32,7 +32,7 @@ class Auth{
                 .then(function (user) {
                     // console.log("user",user)
                     if (user) {
-                        console.log("LOGGED IN AS: " + user.email);
+                       console.log("LOGGED IN AS: " + user.email);
                         req.session.success = 'You are successfully logged in ' + user.email + '!';
                         
                         done(null, user, {message: 'Successfully'});

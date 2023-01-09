@@ -98,6 +98,8 @@ router.get('/search/:val',auth.ensureAuthenticated,mypages.getSearch)
 router.get('/notification',auth.ensureAuthenticated,new Notification().index)
 router.post('/friendrequest/add',auth.ensureAuthenticated,new Notification().send)
 router.get('/friend/add/:requestid',auth.ensureAuthenticated,new Notification().add)
+
+router.delete('/post/delete/:postid',auth.ensureAuthenticated,new Posts().delete)
 // router.get('/friendrequest',auth.ensureAuthenticated,new)
 //chat
 router.post('/message/add',new Chat().add)
