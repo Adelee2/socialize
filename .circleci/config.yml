@@ -2,6 +2,18 @@
 version: 2.1
 
 jobs:
+  lint:
+    docker:
+      - image: circleci
+    steps:
+      - checkout
+      - run:
+          name: install and lint Dockerfile
+          command: |
+              cd ~/project
+              sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
+              sudo chmod +x /bin/hadolint
+              sudo /bin/hadolint Dockerfile
   build_dockerfile:
     docker:
       - image: circleci/node:14
@@ -79,8 +91,8 @@ jobs:
       - run:
           name: Prepare K8S templates
           command: |
-            aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name EKS-Socialize-Cluster
             eksctl create cluster -f ~/project/.circleci/k8s/cluster.yml --kubeconfig=~\.kube\config   
+            aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name EKS-Socialize-Cluster
       - run:
           name: Deploy to EKS
           command: |
@@ -95,7 +107,9 @@ jobs:
 workflows:
   default:
     jobs:
-      - build_dockerfile
+      - lint
+      - build_dockerfile:
+            requires: [lint]
       - deploy_to_kubernetes:
             requires: [build_dockerfile]
 
