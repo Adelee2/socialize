@@ -7,7 +7,9 @@ WORKDIR /src
 COPY . /src
 
 # Install app dependencies
+# hadolint ignore=DL3016,DL3059
 RUN npm install
+# hadolint ignore=DL3016,DL3059
 RUN npm install pm2 -g
 
 EXPOSE 80
