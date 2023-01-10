@@ -12,6 +12,7 @@ jobs:
       # - run:
       #     name: install dependencies
       #     command: yum install curl
+      - setup_remote_docker
       - run: 
           name: build dockerfile
           command: |
