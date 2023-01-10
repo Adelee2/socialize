@@ -11,7 +11,7 @@ jobs:
           keys: [build_docker]
       - run:
           name: install dependencies
-          command: apk add curl
+          command: yum install curl
       - run: 
           name: build dockerfile
           command: |
