@@ -9,9 +9,9 @@ jobs:
       - checkout
       - restore_cache:
           keys: [build_docker]
-      - run:
-          name: install dependencies
-          command: yum install curl
+      # - run:
+      #     name: install dependencies
+      #     command: yum install curl
       - run: 
           name: build dockerfile
           command: |
