@@ -2,18 +2,100 @@
 version: 2.1
 
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+  build_dockerfile:
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
+      - image: circleci/node:14
     steps:
       - checkout
+      - restore_cache:
+          keys: [build_docker]
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: install dependencies
+          command: apk add curl
+      - run: 
+          name: build dockerfile
+          command: |
+              cd ~/project
+              ls -ltr
+              chmod +x run_docker.sh
+              ./run_docker.sh
+      - run: 
+          name: smoke test
+          command: |
+              if curl http://127.0.0.1:3000 
+              then
+                  return 0
+              else 
+                  return 1
+              fi
+      - save_cache:
+          paths: [/node_modules]
+          key: build_docker
+
+  deploy_to_kubernetes:
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+    
+      - run:
+          name: Install awscli and gettext-base
+          command: |
+            sudo pip3 install awscli
+      - run:
+          name: Install aws-iam-authenticator
+          command: |
+            curl -o aws-iam-authenticator curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
+            chmod +x ./aws-iam-authenticator
+            sudo mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
+      - run:
+          name: Install kubectl
+          command: |
+            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin/kubectl
+      - run:
+          name: Install eksctl
+          command: |
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+            eksctl version
+
+      - setup_remote_docker
+      - run:
+          name: build docker image to ECR
+          command: |
+            # eval $(aws ecr get-login-password --region $AWS_DEFAULT_REGION)
+            # docker build -t ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM} .
+            # docker push ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_REPOSITORY_URL}
+            docker build -t socialize .
+            docker tag socialize:latest ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:latest
+            docker push ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:latest
+      # - run:
+      #     name: setup vpc and subnets for k8s
+      #     command: |
+      #         aws cloudformation deploy --region us-east-1 --template-file ~/project/.circleci/eksserver_setup/server.yml --stack-name finalproj-${CIRCLE_WORKFLOW_ID:0:7}
+      - run:
+          name: Prepare K8S templates
+          command: |
+            aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name EKS-Socialize-Cluster
+            eksctl create cluster -f ~/project/.circleci/k8s/cluster.yml --kubeconfig=~\.kube\config   
+      - run:
+          name: Deploy to EKS
+          command: |
+            kubectl apply -f ~/project/.circleci/k8s/deployment.yml
+            kubectl get deployments
+      - run:
+          name: Accessing the Application
+          command: |
+              kubectl apply -f ~/project/.circleci/k8s/service.yml
+              kubectl get services
 
 workflows:
-  say-hello-workflow:
+  default:
     jobs:
-      - say-hello
+      - build_dockerfile
+      - build_image_and_deploy_staging:
+          requires: [build_dockerfile]
+

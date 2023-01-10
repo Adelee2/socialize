@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: socialize
+  template:
+    metadata:
+      labels:
+        app: socialize
+    spec:
+      containers:
+        - name: socialize
+          image: 006936751336.dkr.ecr.us-east-1.amazonaws.com/socialize:latest
+          ports:
+            - containerPort: 3000

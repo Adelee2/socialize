@@ -12,7 +12,7 @@ const io = require("socket.io")(server, {
       // credentials: true
     // }
     cors:{
-      origin:['https://socialize--web.herokuapp.com:3000'],
+      origin:['http://127.0.0.1:3000'],
       methods: ["GET","PATCH","PUT", "POST"],
       allowedHeaders: ["my-custom-header"],
       credentials: true
@@ -101,7 +101,7 @@ server.listen(SOCKETPORT, () => {
 const sendMessage = (message) => {
   request(
     'POST',
-    `https://socialize--web.herokuapp.com/message/add`,
+    `http://127.0.0.1:3000/message/add`,
     { json: {
         message:message.text,
         to:message.to,
@@ -111,7 +111,7 @@ const sendMessage = (message) => {
 const getMessage = (message, conversationId) => {
   var res = request(
     'GET',
-    `https://socialize--web.herokuapp.com/messages/${conversationId}`,
+    `http://127.0.0.1:3000/messages/${conversationId}`,
     {headers:{'Authorization': message.authorization}}
  );
   console.log(res)

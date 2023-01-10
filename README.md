@@ -1,31 +1,25 @@
+[![CircleCI](https://circleci.com/gh/Adelee2/socialize.svg?style=svg)](https://circleci.com/gh/Adelee2/socialize)
+
 ```<b> Features of this app </b>```
 
-# video calling friends 
-# chatting
-# post videosor pictures, likes, comments(based on if the owner wants it)
-# add friends
-# Feeds for everybody can like and comment
-
-* Homepage
-# ScrollView of Feeds + Post(perculiar to your friendlist) which shows the number of likes, comments
-# Add and unadd your like and/or comment
-
-* Left ViewPage
-# List of your friends
-  OnClick of a friend
-   # Can chat,send files, do video call
-
-* Right ViewPage
- # Your profile
- # create Feed or Post(with some settings) by adding a picture or a video of max size 5-10mb)
- # change avatar
- # Grid view list of all your posts and feeds which will be separated
-   OnClick of a post or feed
-    # view likes and comments
+1 video calling friends 
+2 chatting
+3 post videosor pictures, likes, comments(based on if the owner wants it)
+4 add friends
+5 Feeds for everybody can like and comment
 
 
 `Tools`
 * Mongodb
 * firebase
 * docker
+* circleci
 * express and ejs
+
+### Running `app`
+
+1. Standalone:  `npm start`
+2. Run in Docker:  `./run_docker.sh`
+3. Run in Kubernetes:  `./run_kubernetes.sh`
+
+app runs at http://127.0.0.1:3000
