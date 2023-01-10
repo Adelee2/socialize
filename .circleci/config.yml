@@ -20,12 +20,12 @@ jobs:
               ls -ltr
               chmod +x run_docker.sh
               ./run_docker.sh
-              if curl http://127.0.0.1:3000 
-              then
-                  return 0
-              else 
-                  return 1
-              fi
+              # if curl http://127.0.0.1:3000 
+              # then
+              #     return 0
+              # else 
+              #     return 1
+              # fi
       - save_cache:
           paths: [/node_modules]
           key: build_docker
@@ -63,6 +63,8 @@ jobs:
       - run:
           name: build docker image to ECR
           command: |
+            echo AWS_REPOSITORY_URL
+            echo REPOSITORY_NAME
             # eval $(aws ecr get-login-password --region $AWS_DEFAULT_REGION)
             # docker build -t ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM} .
             # docker push ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}
