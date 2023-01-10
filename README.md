@@ -20,6 +20,5 @@
 
 1. Standalone:  `npm start`
 2. Run in Docker:  `./run_docker.sh`
-3. Run in Kubernetes:  `./run_kubernetes.sh`
 
 app runs at http://127.0.0.1:3000
