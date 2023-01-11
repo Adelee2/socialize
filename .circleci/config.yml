@@ -107,6 +107,14 @@ jobs:
               kubectl apply -f ~/project/.circleci/k8s/service.yml
               kubectl get services
               kubectl get nodes -o wide
+      - run: 
+          name: Add port to EC2 nodePort SG
+          command: |
+            export SecurityGroups=$(aws ec2 describe-security-groups --filter Name=vpc-id,Values=vpc-0c87de90c47d1cc66 Name=tag:Name,Values=eksctl-EKS-Socialize-Cluster-nodegroup-EKS-public-workers/SG --query 'SecurityGroups[*].[GroupId]' --no-paginate --output text)
+            for sg in ${SecurityGroups}
+              do
+                aws ec2 authorize-security-group-ingress --group-id ${sg} --port 31479 --protocol tcp 
+            done 
       - destroy-k8s
   smoke_test:
     docker:
@@ -119,14 +127,9 @@ jobs:
             pip3 install awscli
             apk add --update nodejs npm
             apk add curl
-      - run: 
-          name: Add port to EC2 nodeport SG
-          command: |
-            export SecurityGroups=($(aws ec2 describe-security-groups --filter Name=vpc-id,Values=vpc-0c87de90c47d1cc66 Name=tag:Name,Values=eksctl-EKS-Socialize-Cluster-nodegroup-EKS-public-workers/SG --query 'SecurityGroups[*].[GroupId]' --no-paginate --output text))
-            for sg in ${SecurityGroups}
-              do
-                aws ec2 authorize-security-group-ingress --group-id ${sg} --port 31479 --protocol tcp 
-            done
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+            eksctl version
       - run:
           name: Get and test website url 
           command: |
