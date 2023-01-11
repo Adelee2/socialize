@@ -103,6 +103,26 @@ jobs:
           command: |
               kubectl apply -f ~/project/.circleci/k8s/service.yml
               kubectl get services
+              kubectl get nodes -o wide
+  # smoke_test:
+  #   docker:
+  #     - image: python:3.7-alpine3.11
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           pip3 install awscli
+  #           apk add --update nodejs npm
+  #           apk add curl
+  #     - run: 
+  #         name: Add port to SG
+  #         command: |
+  #           aws ec2 authorize-security-group-ingress --group-id sg-90880 --port 31479 --protocol tcp 
+  #     - run:
+  #         name: Get website url
+  #         command: |
+  #             export URL=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=EKS-Socialize-Cluster --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
 
 workflows:
   default:

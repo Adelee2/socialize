@@ -7,6 +7,6 @@ spec:
   selector:
     app: socialize
   ports:
-    - nodePort: 31479
+    - nodePort: 80
       port: 8080
       targetPort: 3000
