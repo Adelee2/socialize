@@ -1,6 +1,18 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine.
 version: 2.1
-
+commands:
+  destroy-k8s:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    parameters:
+      to:
+        type: string
+        default: "EKS-Socialize-Cluster"
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+              eksctl delete cluster --name=<<parameters.to>>
 jobs:
   lint:
     docker:
@@ -32,12 +44,7 @@ jobs:
               ls -ltr
               chmod +x run_docker.sh
               ./run_docker.sh
-              # if curl http://127.0.0.1:3000 
-              # then
-              #     return 0
-              # else 
-              #     return 1
-              # fi
+           
       - save_cache:
           paths: [/node_modules]
           key: build_docker
@@ -75,11 +82,7 @@ jobs:
       - run:
           name: build docker image to ECR
           command: |
-            echo AWS_REPOSITORY_URL
-            echo REPOSITORY_NAME
-            # eval $(aws ecr get-login-password --region $AWS_DEFAULT_REGION)
-            # docker build -t ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM} .
-            # docker push ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}
+          
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_REPOSITORY_URL}
             docker build -t socialize .
             docker tag socialize:latest ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:latest
@@ -104,26 +107,38 @@ jobs:
               kubectl apply -f ~/project/.circleci/k8s/service.yml
               kubectl get services
               kubectl get nodes -o wide
-  # smoke_test:
-  #   docker:
-  #     - image: python:3.7-alpine3.11
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Install dependencies
-  #         command: |
-  #           pip3 install awscli
-  #           apk add --update nodejs npm
-  #           apk add curl
-  #     - run: 
-  #         name: Add port to SG
-  #         command: |
-  #           aws ec2 authorize-security-group-ingress --group-id sg-90880 --port 31479 --protocol tcp 
-  #     - run:
-  #         name: Get website url
-  #         command: |
-  #             export URL=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=EKS-Socialize-Cluster --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
-
+      - destroy-k8s
+  smoke_test:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            pip3 install awscli
+            apk add --update nodejs npm
+            apk add curl
+      - run: 
+          name: Add port to EC2 nodeport SG
+          command: |
+            export SecurityGroups=($(aws ec2 describe-security-groups --filter Name=vpc-id,Values=vpc-0c87de90c47d1cc66 Name=tag:Name,Values=eksctl-EKS-Socialize-Cluster-nodegroup-EKS-public-workers/SG --query 'SecurityGroups[*].[GroupId]' --no-paginate --output text))
+            for sg in ${SecurityGroups}
+              do
+                aws ec2 authorize-security-group-ingress --group-id ${sg} --port 31479 --protocol tcp 
+            done
+      - run:
+          name: Get and test website url 
+          command: |
+              export URL=$(aws ec2 describe-instances --filters Name=tag:Name,Values=EKS-Socialize-Cluster-EKS-public-workers-Node --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+              export WebUrl=http://${URL}:31479/login
+              if curl ${WebUrl} | head -n 1
+              then 
+                return 0
+              else
+                return 1
+              fi
+      - destroy-k8s        
 workflows:
   default:
     jobs:
@@ -132,4 +147,6 @@ workflows:
             requires: [lint]
       - deploy_to_kubernetes:
             requires: [build_dockerfile]
+      - smoke_test:
+            requires: [deploy_to_kubernetes]
 
