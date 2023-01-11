@@ -113,7 +113,7 @@ jobs:
             export SecurityGroups=$(aws ec2 describe-security-groups --filter Name=vpc-id,Values=vpc-0c87de90c47d1cc66 Name=tag:Name,Values=eksctl-EKS-Socialize-Cluster-nodegroup-EKS-public-workers/SG --query 'SecurityGroups[*].[GroupId]' --no-paginate --output text)
             for sg in ${SecurityGroups}
               do
-                aws ec2 authorize-security-group-ingress --group-id ${sg} --port 31479 --protocol tcp 
+                aws ec2 authorize-security-group-ingress --group-id ${sg} --ip-permissions "[{\"IpProtocol\": \"tcp\", \"FromPort\": 31479, \"ToPort\": 31479,\"IpRanges\": [{ \"CidrIp\": \"0.0.0.0/0\"}]}]" 
             done 
       - destroy-k8s
   smoke_test:
@@ -128,7 +128,7 @@ jobs:
             apk add --update nodejs npm
             apk add curl
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-            sudo mv /tmp/eksctl /usr/local/bin
+            mv /tmp/eksctl /usr/local/bin
             eksctl version
       - run:
           name: Get and test website url 
