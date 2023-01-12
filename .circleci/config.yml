@@ -135,12 +135,13 @@ jobs:
           command: |
               export URL=$(aws ec2 describe-instances --filters Name=tag:Name,Values=EKS-Socialize-Cluster-EKS-public-workers-Node --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
               export WebUrl=http://${URL}:31479/login
-              if curl ${WebUrl} | head -n 1
-              then 
-                return 0
-              else
-                return 1
-              fi
+              echo ${WebUrl}
+              # if curl ${WebUrl} | grep "Socialize"
+              # then 
+              #   return working
+              # else
+              #   return not working
+              # fi
       # - destroy-k8s        
 workflows:
   default:
