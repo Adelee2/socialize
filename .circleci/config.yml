@@ -100,12 +100,12 @@ jobs:
           name: Deploy to EKS
           command: |
             kubectl create namespace default-socialize
-            kubectl apply -n argocd -f ~/project/.circleci/k8s/deployment.yml
+            kubectl apply -n default-socialize -f ~/project/.circleci/k8s/deployment.yml
             kubectl get deployments
       - run:
           name: Accessing the Application
           command: |
-              kubectl apply -n argocd -f ~/project/.circleci/k8s/service.yml
+              kubectl apply -n default-socialize -f ~/project/.circleci/k8s/service.yml
               kubectl get services
               kubectl get nodes -o wide
       - run: 
