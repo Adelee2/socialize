@@ -141,7 +141,7 @@ jobs:
               else
                 return 1
               fi
-      - destroy-k8s        
+      # - destroy-k8s        
 workflows:
   default:
     jobs:
