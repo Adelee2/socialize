@@ -1,7 +1,7 @@
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
-  name: EKS-Socialize-Cluster
+  name: eks-Socialize
   region: us-east-1
 
 vpc:

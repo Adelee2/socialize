@@ -6,7 +6,7 @@ commands:
     parameters:
       to:
         type: string
-        default: "EKS-Socialize-Cluster"
+        default: "eks-Socialize"
     steps:
       - run:
           name: Destroy environments
@@ -95,26 +95,31 @@ jobs:
           name: Prepare K8S templates
           command: |
             eksctl create cluster -f ~/project/.circleci/k8s/cluster.yml --kubeconfig=~\.kube\config   
-            aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name EKS-Socialize-Cluster
+            aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name eks-Socialize
       - run:
           name: Deploy to EKS
           command: |
-            kubectl apply -f ~/project/.circleci/k8s/deployment.yml
+            kubectl create namespace default-socialize
+            kubectl apply -n argocd -f ~/project/.circleci/k8s/deployment.yml
             kubectl get deployments
       - run:
           name: Accessing the Application
           command: |
-              kubectl apply -f ~/project/.circleci/k8s/service.yml
+              kubectl apply -n argocd -f ~/project/.circleci/k8s/service.yml
               kubectl get services
               kubectl get nodes -o wide
       - run: 
           name: Add port to EC2 nodePort SG
           command: |
-            export SecurityGroups=$(aws ec2 describe-security-groups --filter Name=vpc-id,Values=vpc-01fb744229471cb5c Name=tag:Name,Values=eksctl-EKS-Socialize-Cluster-nodegroup-EKS-public-workers/SG --query 'SecurityGroups[*].[GroupId]' --no-paginate --output text)
+            export SecurityGroups=$(aws ec2 describe-security-groups --filter Name=vpc-id,Values=vpc-01fb744229471cb5c Name=tag:Name,Values=eksctl-eks-Socialize-nodegroup-EKS-public-workers/SG --query 'SecurityGroups[*].[GroupId]' --no-paginate --output text)
             for sg in ${SecurityGroups}
               do
                 aws ec2 authorize-security-group-ingress --group-id ${sg} --ip-permissions "[{\"IpProtocol\": \"tcp\", \"FromPort\": 31479, \"ToPort\": 31479,\"IpRanges\": [{ \"CidrIp\": \"0.0.0.0/0\"}]}]" 
             done 
+      - run:
+          name: Run k8s by port forwarding
+          command: |
+            kubectl port-forward --address 0.0.0.0 service/eks-Socialize 8080:443 -n default-socialize
       - destroy-k8s
   smoke_test:
     docker:
@@ -133,10 +138,10 @@ jobs:
       - run:
           name: Get and test website url 
           command: |
-              export URL=$(aws ec2 describe-instances --filters Name=tag:Name,Values=EKS-Socialize-Cluster-EKS-public-workers-Node --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+              export URL=$(aws ec2 describe-instances --filters Name=tag:Name,Values=eks-Socialize-EKS-public-workers-Node --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
               export WebUrl=http://${URL}:31479/login
               echo ${WebUrl}
-              # if curl ${WebUrl} | grep "Socialize"
+              # if [ curl ${WebUrl} | grep "Socialize" ]
               # then 
               #   return working
               # else
