@@ -106,8 +106,9 @@ jobs:
           name: Accessing the Application
           command: |
               kubectl apply -n default-socialize -f ~/project/.circleci/k8s/service.yml
-              kubectl get services
-              kubectl get nodes -o wide
+              kubectl get all --namespace default-socialize
+              # kubectl get services
+              # kubectl get nodes -o wide
       - run: 
           name: Add port to EC2 nodePort SG
           command: |
@@ -119,7 +120,7 @@ jobs:
       - run:
           name: Run k8s by port forwarding
           command: |
-            kubectl port-forward --address 0.0.0.0 service/eks-Socialize 8080:443 -n default-socialize
+            kubectl port-forward --address 0.0.0.0 service/webapp 8080:443 -n default-socialize
       - destroy-k8s
   smoke_test:
     docker:
