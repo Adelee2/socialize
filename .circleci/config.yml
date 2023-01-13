@@ -43,9 +43,7 @@ jobs:
               cd ~/project
               # add env file
               echo DATABASE_URL=${DATABASE_URL} >> .env
-              ls -ltr -a
-              echo ".env = "
-              cat .env
+              #ls -ltr -a
               chmod +x run_docker.sh
               ./run_docker.sh
            
@@ -111,7 +109,7 @@ jobs:
           command: |
               kubectl apply -n default-socialize -f ~/project/.circleci/k8s/service.yml
               # wait till the loadbalancer service is ready
-              sleep 120
+              sleep 100
               kubectl get all --namespace default-socialize
       # - run: 
       #     name: Add port to EC2 nodePort SG
@@ -125,8 +123,8 @@ jobs:
           name: Run k8s by port forwarding and Assign an fixed EIP to LoadBalancer IP
           command: |
               kubectl port-forward --address 0.0.0.0 service/webapp 3000:80 -n default-socialize > /dev/null 2>&1 &
-              kubectl patch service webapp  -p '{"spec": {"type": "LoadBalancer", "externalIPs":["172.10.2.10"]}}'
-              kubectl get services webapp
+              # kubectl patch service webapp  -p '{"spec": {"type": "LoadBalancer", "externalIPs":["172.10.2.10"]}}'
+              #kubectl get services
       
       - destroy-k8s
 
@@ -164,8 +162,8 @@ workflows:
       - lint
       - build_dockerfile:
             requires: [lint]
-      # - deploy_to_kubernetes:
-      #       requires: [build_dockerfile]
-      # - smoke_test:
-      #       requires: [deploy_to_kubernetes]
+      - deploy_to_kubernetes:
+            requires: [build_dockerfile]
+      - smoke_test:
+            requires: [deploy_to_kubernetes]
 
