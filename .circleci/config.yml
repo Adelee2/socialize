@@ -120,7 +120,7 @@ jobs:
       - run:
           name: Run k8s by port forwarding
           command: |
-            kubectl port-forward --address 0.0.0.0 service/webapp 8080:443 -n default-socialize
+            kubectl port-forward --address 0.0.0.0 service/webapp 3000:80 -n default-socialize
       - destroy-k8s
   smoke_test:
     docker:
@@ -139,6 +139,7 @@ jobs:
       - run:
           name: Get and test website url 
           command: |
+              
               export URL=$(aws ec2 describe-instances --filters Name=tag:Name,Values=eks-Socialize-EKS-public-workers-Node --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
               export WebUrl=http://${URL}:31479/login
               echo ${WebUrl}
