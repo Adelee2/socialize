@@ -44,6 +44,8 @@ jobs:
               # add env file
               echo DATABASE_URL=${DATABASE_URL} >> .env
               ls -ltr -a
+              echo ".env = "
+              cat .env
               chmod +x run_docker.sh
               ./run_docker.sh
            
