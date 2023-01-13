@@ -41,7 +41,7 @@ jobs:
           name: build dockerfile
           command: |
               cd ~/project
-              ls -ltr
+              ls -ltr -a
               chmod +x run_docker.sh
               ./run_docker.sh
            
@@ -160,8 +160,8 @@ workflows:
       - lint
       - build_dockerfile:
             requires: [lint]
-      - deploy_to_kubernetes:
-            requires: [build_dockerfile]
-      - smoke_test:
-            requires: [deploy_to_kubernetes]
+      # - deploy_to_kubernetes:
+      #       requires: [build_dockerfile]
+      # - smoke_test:
+      #       requires: [deploy_to_kubernetes]
 
