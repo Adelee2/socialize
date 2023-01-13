@@ -32,27 +32,30 @@ class Auth{
                 .then(function (user) {
                     // console.log("user",user)
                     if (user) {
-                       console.log("LOGGED IN AS: " + user.email);
+                        // console.log("LOGGED IN AS: " + user.email);
                         req.session.success = 'You are successfully logged in ' + user.email + '!';
                         
                         done(null, user, {message: 'Successfully'});
                     }
-                    console.log("COULD NOT LOG IN");
+                    // console.log("COULD NOT LOG IN");
                     req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
                     
                     done(null, user, {message: 'Incorrect Username/Email'});
                 })
                 .fail(function (err){
-                    console.log(err.body);
+                    // console.log(err.body);
                 });
             }
           ));
         }
         login= function(req,res){
-        
+            if (req.isAuthenticated()) { return res.redirect('/') }
+            
             res.render('index',{user:''})
         }
         register= function(req,res){
+            if (req.isAuthenticated()) { return res.redirect('/') }
+            
             res.render('singup')
         }
         sessionregister = function(req,res){

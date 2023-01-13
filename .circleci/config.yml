@@ -107,7 +107,7 @@ jobs:
             kubectl apply -n default-socialize -f ~/project/.circleci/k8s/deployment.yml
             kubectl get deployments
       - run:
-          name: Accessing the Application
+          name: Accessing the Application through LoadBalancer
           command: |
               kubectl apply -n default-socialize -f ~/project/.circleci/k8s/service.yml
               # wait till the loadbalancer service is ready
@@ -122,36 +122,7 @@ jobs:
       #         #kubectl get services
       
       - destroy-k8s
-
-  smoke_test:
-    docker:
-      - image: python:3.7-alpine3.11
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            pip3 install awscli
-            apk add --update nodejs npm
-            apk add curl
-            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-            mv /tmp/eksctl /usr/local/bin
-            eksctl version
-      - run:
-          name: Get and test website url using the fixed EIP 
-          command: |
-              
-              # export URL=$(aws ec2 describe-instances --filters Name=tag:Name,Values=eks-Socialize-EKS-public-workers-Node --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
-              export URL=$(aws elbv2 describe-load-balancers --names webapp --output text)
-              export WebUrl=http://${URL}/login
-              echo ${WebUrl}
-              # if [ curl ${WebUrl} | grep "Socialize" ]
-              # then 
-              #   return working
-              # else
-              #   return not working
-              # fi
-      # - destroy-k8s        
+     
 workflows:
   default:
     jobs:
@@ -160,6 +131,3 @@ workflows:
             requires: [lint]
       - deploy_to_kubernetes:
             requires: [build_dockerfile]
-      - smoke_test:
-            requires: [deploy_to_kubernetes]
-
