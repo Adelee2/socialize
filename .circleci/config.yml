@@ -43,7 +43,8 @@ jobs:
               cd ~/project
               # add env file
               echo DATABASE_URL=${DATABASE_URL} >> .env
-              #ls -ltr -a
+              ls -ltr -a
+              cat .env
               chmod +x run_docker.sh
               ./run_docker.sh
            
@@ -89,10 +90,7 @@ jobs:
             docker build -t socialize .
             docker tag socialize:latest ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:latest
             docker push ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:latest
-      # - run:
-      #     name: setup vpc and subnets for k8s
-      #     command: |
-      #         aws cloudformation deploy --region us-east-1 --template-file ~/project/.circleci/eksserver_setup/server.yml --stack-name finalproj-${CIRCLE_WORKFLOW_ID:0:7}
+
       - run:
           name: Prepare K8S templates
           command: |
@@ -111,20 +109,13 @@ jobs:
               # wait till the loadbalancer service is ready
               sleep 100
               kubectl get all --namespace default-socialize
-      # - run: 
-      #     name: Add port to EC2 nodePort SG
+
+      # - run:
+      #     name: Run k8s by port forwarding and Assign an fixed EIP to LoadBalancer IP
       #     command: |
-      #       export SecurityGroups=$(aws ec2 describe-security-groups --filter Name=vpc-id,Values=vpc-01fb744229471cb5c Name=tag:Name,Values=eksctl-eks-Socialize-nodegroup-EKS-public-workers/SG --query 'SecurityGroups[*].[GroupId]' --no-paginate --output text)
-      #       for sg in ${SecurityGroups}
-      #         do
-      #           aws ec2 authorize-security-group-ingress --group-id ${sg} --ip-permissions "[{\"IpProtocol\": \"tcp\", \"FromPort\": 31479, \"ToPort\": 31479,\"IpRanges\": [{ \"CidrIp\": \"0.0.0.0/0\"}]}]" 
-      #       done 
-      - run:
-          name: Run k8s by port forwarding and Assign an fixed EIP to LoadBalancer IP
-          command: |
-              kubectl port-forward --address 0.0.0.0 service/webapp 3000:80 -n default-socialize > /dev/null 2>&1 &
-              # kubectl patch service webapp  -p '{"spec": {"type": "LoadBalancer", "externalIPs":["172.10.2.10"]}}'
-              #kubectl get services
+      #         kubectl port-forward --address 0.0.0.0 service/webapp 3000:80 -n default-socialize
+      #         # kubectl patch service webapp  -p '{"spec": {"type": "LoadBalancer", "externalIPs":["172.10.2.10"]}}'
+      #         #kubectl get services
       
       - destroy-k8s
 
@@ -147,8 +138,9 @@ jobs:
           command: |
               
               # export URL=$(aws ec2 describe-instances --filters Name=tag:Name,Values=eks-Socialize-EKS-public-workers-Node --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
-              export WebUrl=http://172.10.2.10:3000/login
-              curl ${WebUrl}
+              export URL=$(aws elbv2 describe-load-balancers --names webapp --output text)
+              export WebUrl=http://${URL}/login
+              echo ${WebUrl}
               # if [ curl ${WebUrl} | grep "Socialize" ]
               # then 
               #   return working
