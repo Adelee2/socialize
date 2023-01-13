@@ -29,3 +29,4 @@
 4. add the environment variables `AWS_REPOSITORY_URL`, `REPOSITORY_NAME` and `AWS_DEFAULT_REGION` to circleci
 5. run the cloudformation template file in `.circleci/eksserver_setup/server.yml` to setup VPCs and Subnets for kubernetes
 6. update the `.circleci/eksserver_setup/cluster.yml` file with the result gotten in 5. 
+7. Once the deployment is done, app runs at `http://<LB External-IP>`
