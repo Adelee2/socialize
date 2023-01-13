@@ -121,7 +121,7 @@ jobs:
           name: Run k8s by port forwarding and Assign an fixed EIP to LoadBalancer IP
           command: |
               kubectl port-forward --address 0.0.0.0 service/webapp 3000:80 -n default-socialize > /dev/null 2>&1 &
-              kubectl patch svc webapp  -p '{"spec": {"type": "LoadBalancer", "externalIPs":["172.10.2.10"]}}'
+              kubectl patch service webapp  -p '{"spec": {"type": "LoadBalancer", "externalIPs":["172.10.2.10"]}}'
               kubectl get services webapp
       
       - destroy-k8s
