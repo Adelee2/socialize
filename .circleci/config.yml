@@ -89,10 +89,9 @@ jobs:
             echo DATABASE_URL=${DATABASE_URL} >> .env
             ls -ltr -a
             cat .env
-            chmod +x run_docker.sh
-            ./run_docker.sh
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_REPOSITORY_URL}
             docker build -t socialize .
+            docker images
             docker tag socialize:latest ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:latest
             docker push ${AWS_REPOSITORY_URL}/${REPOSITORY_NAME}:latest
 
