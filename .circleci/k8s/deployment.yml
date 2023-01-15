@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: socialize
-          image: 095132937849.dkr.ecr.us-east-1.amazonaws.com/ecr-socialize:latest
+          image: 095132937849.dkr.ecr.us-east-1.amazonaws.com/socialize:latest
           ports:
             - containerPort: 3000

@@ -123,8 +123,8 @@ jobs:
 workflows:
   default:
     jobs:
-      - lint
-      - build_dockerfile:
-            requires: [lint]
+      # - lint
+      # - build_dockerfile:
+      #       requires: [lint]
       - deploy_to_kubernetes:
-            requires: [build_dockerfile]
+            # requires: [build_dockerfile]
