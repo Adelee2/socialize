@@ -126,5 +126,5 @@ workflows:
       # - lint
       # - build_dockerfile:
       #       requires: [lint]
-      - deploy_to_kubernetes:
+      - deploy_to_kubernetes
             # requires: [build_dockerfile]
