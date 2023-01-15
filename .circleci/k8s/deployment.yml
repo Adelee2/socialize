@@ -4,7 +4,7 @@ metadata:
   name: webapp
   namespace: default-socialize
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: socialize

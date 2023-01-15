@@ -50,13 +50,11 @@ class Auth{
         }
         login= function(req,res){
             if (req.isAuthenticated()) { return res.redirect('/') }
-            
-            res.render('index',{user:''})
+            else { res.render('index',{user:''})}
         }
         register= function(req,res){
             if (req.isAuthenticated()) { return res.redirect('/') }
-            
-            res.render('singup')
+            else {res.render('singup')}
         }
         sessionregister = function(req,res){
             let inputs = req.body;
